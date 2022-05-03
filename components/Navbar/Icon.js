@@ -5,10 +5,19 @@ import {
   FaNewspaper,
   FaCogs,
   FaAddressCard,
+  FaMicroblog,
 } from "react-icons/fa";
 
 export default function Icon({ index, _class }) {
-  const icons = [FaHome, FaUsers, FaStore, FaNewspaper, FaCogs, FaAddressCard];
+  const icons = [
+    FaHome,
+    FaUsers,
+    FaStore,
+    FaNewspaper,
+    FaCogs,
+    FaAddressCard,
+    FaMicroblog,
+  ];
   const Fa = icons[index];
   return (
     <>
@@ -19,9 +28,9 @@ export default function Icon({ index, _class }) {
         }
         .nav {
           display: none;
-          margin-right: 0.5rem;
+          margin-right: 0.7rem;
         }
-        @media screen and (max-width: 1150px) {
+        @media screen and (max-width: 1500px) {
           .nav {
             display: flex;
           }

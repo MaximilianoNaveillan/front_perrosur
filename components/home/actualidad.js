@@ -1,7 +1,7 @@
 import { colors, breakpoint } from "../../styles/theme.js";
 import Image from "next/image";
 import { FaFacebookSquare, FaInstagram } from "react-icons/fa";
-export default function Actualidad() {
+export default function Actualidad({ actualidads }) {
   return (
     <>
       <div id="actualidad" className="container">
@@ -20,65 +20,55 @@ export default function Actualidad() {
               </div>
             </div>
           </div>
-          <div className="card">
-            <div className="row ">
-              <div className="col-8 md-7 sm-12">
-                <div className="card-title">
-                  <h1>
-                    {" "}
-                    TALLER PERRO SUR ESTÁ EN EL PARQUE CULTURAL DE VALPARAÍSO
-                  </h1>
+          {actualidads.map((item, i) => (
+            <div key={i} className="card mb-4">
+              <div className="row ">
+                <div className="col-8 md-7 sm-12 ">
+                  <div className="card-title">
+                    <h1>{item.nombre}</h1>
+                  </div>
+                  <div className="card-text">
+                    <p>{item.text}</p>
+                  </div>
                 </div>
-                <div className="card-text">
-                  <p>
-                    Ayer realizamos un hermoso homenaje a nuestra querida Paula
-                    Manzor 💙🌌 (1978-2020) artista gráfica, quien fue la
-                    gestora y artífice de este espacio y proyecto creativo Perro
-                    Sur que funciona desde el año 2013. Inauguramos una
-                    exposición con algunos de sus maravillosos grabados junto al
-                    lanzamiento del libro "El Viaje"📕 un libro único realizado
-                    originalmente en litrografía y que fue editado gracias a la
-                    gestión de @pinturasspinoza y financiado por el Fondo del
-                    Libro 2021, encuadernado a mano en nuestro taller por
-                    @imaquineria y @pamelynda86 Estamos muy honradxs de formar
-                    parte de este legado y de las bellas personas que conforman
-                    esta familia taller. Si quieres visitar la muestra
-                    escríbenos!
-                  </p>
-                </div>
-              </div>
-              <div className="col-2 sm-6 xxs-12">
-                <div className="container-icon">
-                  <div className="card-icon">
-                    <div className="icon-text">
-                      <p>Ir</p>
-                      <p>a la</p>
-                      <p>publicación</p>
-                    </div>
-                    <div className="icon-action">
-                      <button>
-                        <FaFacebookSquare />
-                      </button>
-                      <button>
-                        <FaInstagram />
-                      </button>
+
+                <div className="col-2 sm-6 xxs-12">
+                  <div className="container-icon">
+                    <div className="card-icon">
+                      <div className="icon-text">
+                        <p>Ir</p>
+                        <p>a la</p>
+                        <p>publicación</p>
+                      </div>
+                      <div className="icon-action">
+                        <button
+                          onClick={() => window.open(item.facboock, "_blank")}
+                        >
+                          <FaFacebookSquare />
+                        </button>
+                        <button
+                          onClick={() => window.open(item.instagram, "_blank")}
+                        >
+                          <FaInstagram />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-2 md-3 sm-6 xxs-12">
-                <div className="card-img">
-                  <div className="img">
-                    <Image
-                      src="/images/actualidad1.jpg"
-                      objectFit="cover"
-                      layout="fill"
-                    />
+                <div className="col-2 md-3 sm-6 xxs-12">
+                  <div className="card-img">
+                    <div className="img">
+                      <Image
+                        src={`/images/actualidad-blog-${item._id}.png`}
+                        objectFit="cover"
+                        layout="fill"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
       <style jsx>{`

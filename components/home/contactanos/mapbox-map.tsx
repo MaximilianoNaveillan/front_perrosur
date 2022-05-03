@@ -25,8 +25,8 @@ function MapboxMap() {
       container: node,
       accessToken: process.env.MAPBOX_ACCESS_TOKEN,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [-74.5, 40],
-      zoom: 9,
+      center: [-71.621762, -33.048903],
+      zoom: 14,
     });
 
     // save the map object to React.useState

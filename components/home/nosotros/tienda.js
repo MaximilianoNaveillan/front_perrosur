@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Icon from "../../Img/icon";
 import { colors, breakpoint } from "../../../styles/theme.js";
+import Link from "next/link";
 
 export default function Tienda() {
   return (
@@ -16,14 +17,16 @@ export default function Tienda() {
                 src={`/images/iconobolsa.png`}
                 alt="quehacemos1-entrelazar"
                 width={200}
-                height={200}
+                height={240}
               />
             </div>
           </div>
         </div>
         <div className="icon-primary">
           <div className="contentbutton">
-            <button>Ingresa a nuestra tienda</button>
+            <Link href="/tienda">
+              <button>Ingresa a nuestra tienda</button>
+            </Link>
           </div>
         </div>
       </div>
@@ -73,7 +76,7 @@ export default function Tienda() {
         .title {
           color: black;
           text-align: right;
-          padding: 1rem;
+          padding: 1rem 3rem;
           font-weight: 1000;
           text-shadow: 6px -6px 0px ${colors.primary_darken};
         }

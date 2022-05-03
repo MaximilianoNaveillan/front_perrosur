@@ -1,29 +1,8 @@
 import Img from "../Img/revel";
 import { colors } from "../../styles/theme.js";
+import Link from "next/link";
 
-export default function Equipo() {
-  const team = [
-    {
-      name: "PAMELA \n ESPINOZA",
-      text: "",
-      path: "/images/PAMELA.jpg",
-    },
-    {
-      name: "PAULINA \n RODRÍGUEZ",
-      text: "",
-      path: "/images/PAULINA.png",
-    },
-    {
-      name: "LORETO \n RODRÍGUEZ",
-      text: "",
-      path: "/images/ALMENDRA.png",
-    },
-    {
-      name: "DANIEL \n SOLIS",
-      text: "",
-      path: "/images/DANIEL.png",
-    },
-  ];
+export default function Equipo({ equipos }) {
   return (
     <>
       <div id="equipo" className="container">
@@ -32,13 +11,19 @@ export default function Equipo() {
             <div className="col-12">
               <h1 className=" title">EL EQUIPO</h1>
             </div>
-            {team.map((item, i) => (
+            {equipos.map((item, i) => (
               <div key={i} className="col-3 md-6 xs-12">
-                <div className="content-img">
-                  <div className="card-img">
-                    <Img src={item.path} name={item.name} />
+                <Link href={`/team/${item._id}`}>
+                  <div className="content-img">
+                    <div className="card-img">
+                      <Img
+                        src={`/images/team-index-${item._id}.png`}
+                        name={item.nombre.replace(" ", "\n")}
+                        priority
+                      />
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

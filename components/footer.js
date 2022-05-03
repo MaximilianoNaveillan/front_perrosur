@@ -70,21 +70,29 @@ export default function Footer() {
                 <div className="social">
                   <div className="card">
                     <div className="social-links">
-                      <a>
-                        <i>
-                          <FaFacebookF />
-                        </i>
-                      </a>
-                      <a>
-                        <i>
-                          <FaInstagram />
-                        </i>
-                      </a>
-                      <a>
-                        <i>
-                          <FaVimeoV />
-                        </i>
-                      </a>
+                      <div className="row">
+                        <div className="col-4 sm-12">
+                          <a>
+                            <i>
+                              <FaFacebookF />
+                            </i>
+                          </a>
+                        </div>
+                        <div className="col-4 sm-12">
+                          <a>
+                            <i>
+                              <FaInstagram />
+                            </i>
+                          </a>
+                        </div>
+                        <div className="col-4 sm-12">
+                          <a>
+                            <i>
+                              <FaVimeoV />
+                            </i>
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -172,6 +180,7 @@ export default function Footer() {
         .social {
           margin-top: 2rem;
         }
+
         .card {
           color: rgba(19, 19, 21, 0.6);
           font-size: 3.5rem;
@@ -189,6 +198,12 @@ export default function Footer() {
           margin: auto;
           text-align: center;
         }
+        @media screen and (max-width: ${breakpoint.sm}) {
+          .card {
+            height: 320px;
+            width: 168px;
+          }
+        }
         .social-links {
           height: 90px;
           padding: 20px;
@@ -204,6 +219,7 @@ export default function Footer() {
           border-radius: 100%;
           margin-right: 12px; /*space between*/
           margin-left: 12px;
+          margin-bottom: 6px;
           display: flex;
           align-items: flex-start;
           transition: all 0.4s;
@@ -236,6 +252,8 @@ export default function Footer() {
           margin-top: 4rem;
           margin-bottom: 2rem;
           font-weight: 300;
+          max-width: 100%;
+          overflow: hidden;
         }
         .write-use label {
           font-size: 30px;

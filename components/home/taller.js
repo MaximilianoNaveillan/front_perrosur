@@ -1,36 +1,15 @@
 import Img from "../Img/revel";
 import { breakpoint, colors } from "../../styles/theme.js";
 import Image from "next/image";
-export default function Taller() {
-  const team = [
-    {
-      name: "EL \n TALLER",
-      text: "",
-      path: "/images/taller1.png",
-    },
-    {
-      name: "LA \n GALERIA",
-      text: "",
-      path: "/images/taller2.jpg",
-    },
-    {
-      name: "EL \n TALLER",
-      text: "",
-      path: "/images/taller3.jpg",
-    },
-    {
-      name: "EL \n TALLER",
-      text: "",
-      path: "/images/taller4.jpg",
-    },
-  ];
+import Link from "next/link";
+export default function Taller({ tallers }) {
   return (
     <>
       <div id="taller" className="container">
         <div className="icon-section">
           <div className="float">
             <div className="img-icon">
-              <Image src="/images/trazo.png" layout="fill" />
+              <Image src="/images/trazo.png" layout="fill" priority />
             </div>
           </div>
         </div>
@@ -39,18 +18,26 @@ export default function Taller() {
             <div className="col-12">
               <h1 className=" title">EL TALLER</h1>
             </div>
-            {team.map((item, i) => (
+            {tallers.map((item, i) => (
               <div key={i} className="col-3 md-6 xs-12">
-                <div className="content-img">
-                  <div className="card-img">
-                    <Img src={item.path} name={item.name} />
+                <Link href={`/taller/#${item._id}`} passHref>
+                  <div className="content-img">
+                    <div className="card-img">
+                      <Img
+                        src={`/images/taller-blog-${item._id}.png`}
+                        name={item.nombre.replace(" ", "\n")}
+                        priority
+                      />
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
             <div className="col-12 ">
               <div className="contentbutton">
-                <button>Conoce más del taller</button>
+                <Link href="/taller">
+                  <button>Conoce más del taller</button>
+                </Link>
               </div>
             </div>
           </div>

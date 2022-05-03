@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { breakpoint, colors } from "../../styles/theme.js";
+import Link from "next/link";
 
 export default function Portada() {
   return (
@@ -9,8 +10,12 @@ export default function Portada() {
           src={`/images/portada.jpg`}
           alt="portada-entrelazar"
           objectFit="cover"
-          priority
+          unoptimized={true}
+          loading="eager"
           layout="fill"
+          placeholder="blur"
+          blurDataURL="/images/portada.jpg"
+          priority
         />
         <div className="content-image">
           <div>
@@ -24,7 +29,9 @@ export default function Portada() {
               <h1>TALLER PERROSUR</h1>
               <p>Un espacio para de co-creación y aprendizaje</p>
               <div className="contentbutton">
-                <button>conoce más de nosotros</button>
+                <Link href="/taller">
+                  <button>Conoce más de nosotros</button>
+                </Link>
               </div>
             </div>
           </div>

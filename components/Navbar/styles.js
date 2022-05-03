@@ -1,6 +1,8 @@
 import css from "styled-jsx/css";
 import { colors, fonts, breakpoint } from "../../styles/theme.js";
 
+const media_breakpoint = "1500px";
+
 export default css`
   .container-nav {
     position: fixed;
@@ -18,7 +20,7 @@ export default css`
   }
   .wrapper {
     width: 100%;
-    max-width: 1300px;
+    max-width: calc(${breakpoint.md} + 220px);
     height: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -26,9 +28,23 @@ export default css`
     margin: auto;
   }
   .logo-container {
-    margin-left: 0.5rem;
+    margin-left: 1rem;
     display: flex;
     align-items: center;
+  }
+
+  .container-user {
+    min-width: 96px;
+    text-align: right;
+  }
+  i {
+    position: relative;
+    margin: auto;
+    height: 2.76rem;
+    width: 2.76rem;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: 0.5s all ease;
   }
 
   ul {
@@ -66,7 +82,8 @@ export default css`
   }
   a div span {
     font-size: 0.9rem;
-    margin-left: 6px;
+    margin-left: 0.7rem;
+    transition: 0.3s all ease-in-out;
   }
   li:hover > a {
     color: #fff;
@@ -80,13 +97,16 @@ export default css`
     transition: 0.5s all ease;
   }
   .ahover > label ul {
-    background: red;
     display: block;
   }
   .movile-icon {
     display: none;
     margin-right: 1rem;
   }
+  .ul-menu {
+    left: -100%;
+  }
+
   .ultrue {
     left: -100%;
   }
@@ -106,12 +126,19 @@ export default css`
     text-align: left;
     background: ${colors.primary_darken};
   }
+  .nav-user {
+    display: none;
+  }
+  label {
+    width: initial;
+  }
 
-  @media screen and (min-width: 1150px) {
+  @media screen and (min-width: ${media_breakpoint}) {
     ul li:hover > ul {
       display: block;
       transition: 0.5s all ease-in-out;
     }
+
     li:hover > a div span {
       color: #fff;
       transform: rotate(180deg);
@@ -119,12 +146,21 @@ export default css`
     }
   }
 
-  @media screen and (max-width: 1150px) {
-    input[type="checkbox"]:checked ~ label li ul {
+  @media screen and (max-width: ${media_breakpoint}) {
+    .container-user {
+      display: none !important;
+    }
+    .nav-user {
+      display: block;
+    }
+    label {
+      width: 100%;
+    }
+    ul input[type="checkbox"]:checked ~ label li ul {
       display: block;
       transition: 0.5s all ease-in-out;
     }
-    input[type="checkbox"]:checked ~ label a div span {
+    ul input[type="checkbox"]:checked ~ label a div span {
       color: #fff;
       transform: rotate(180deg);
       transition: 0.5s all ease-in-out;
@@ -179,11 +215,8 @@ export default css`
       width: 100%;
     }
   }
-  input[type="checkbox"] {
+  ul input[type="checkbox"] {
     position: absolute;
     left: -100vw;
-  }
-  label {
-    width: 100%;
   }
 `;
