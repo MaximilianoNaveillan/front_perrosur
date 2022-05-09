@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const EquipoSchema = new mongoose.Schema({
   nombre: {
     type: String,
-    required: [true, "El nombre es requerido"],
+    required: [true, 'El nombre es requerido'],
   },
   email: {
     type: String,
-    required: [true, "El e-mail es requerido"],
+    required: [true, 'El e-mail es requerido'],
   },
   image: {
     type: String,
@@ -26,4 +26,4 @@ const EquipoSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.Equipo || mongoose.model("Equipo", EquipoSchema);
+export default mongoose.models.Equipo || mongoose.model('Equipo', EquipoSchema);

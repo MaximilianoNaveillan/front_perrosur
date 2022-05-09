@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const ActualidadSchema = new mongoose.Schema({
   nombre: {
     type: String,
-    required: [true, "El nombre es requerido"],
+    required: [true, 'El nombre es requerido'],
   },
   image: {
     type: String,
@@ -24,4 +24,4 @@ const ActualidadSchema = new mongoose.Schema({
 });
 
 export default mongoose.models.Actualidad ||
-  mongoose.model("Actualidad", ActualidadSchema);
+  mongoose.model('Actualidad', ActualidadSchema);

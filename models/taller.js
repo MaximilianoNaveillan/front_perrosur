@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const TallerSchema = new mongoose.Schema({
   nombre: {
     type: String,
-    required: [true, "El nombre es requerido"],
+    required: [true, 'El nombre es requerido'],
   },
   image: {
     type: String,
@@ -13,4 +13,4 @@ const TallerSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.Taller || mongoose.model("Taller", TallerSchema);
+export default mongoose.models.Taller || mongoose.model('Taller', TallerSchema);
