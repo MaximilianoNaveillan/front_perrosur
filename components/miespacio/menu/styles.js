@@ -1,5 +1,6 @@
-import css from "styled-jsx/css";
-import { colors, fonts, breakpoint } from "../../../styles/theme";
+/* eslint-disable import/no-extraneous-dependencies */
+import css from 'styled-jsx/css';
+import { colors } from '../../../styles/theme';
 
 export default css`
   *,
@@ -9,7 +10,7 @@ export default css`
   }
 
   :after {
-    content: "";
+    content: '';
   }
   .content-menu {
     float: left;
@@ -66,7 +67,7 @@ export default css`
   }
 
   nav ul li:nth-child(1):after {
-    content: "Página";
+    content: 'Página';
     line-height: 70px;
   }
   nav ul li:hover {

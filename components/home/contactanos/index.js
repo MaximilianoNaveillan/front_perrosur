@@ -1,6 +1,9 @@
-import { colors, breakpoint } from "../../../styles/theme";
-import MapboxMap from "./mapbox-map";
-import Form from "./form";
+/* eslint-disable import/extensions */
+/* eslint-disable react/jsx-filename-extension */
+import { colors } from '../../../styles/theme';
+// eslint-disable-next-line import/no-unresolved
+import MapboxMap from './mapbox';
+import Form from './form';
 
 export default function Contactanos() {
   return (

@@ -1,7 +1,8 @@
-import css from "styled-jsx/css";
-import { colors, fonts, breakpoint } from "../../styles/theme.js";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import css from 'styled-jsx/css';
+import { colors, fonts, breakpoint } from '../../styles/theme';
 
-const media_breakpoint = "1500px";
+const mediabreakpoint = '1500px';
 
 export default css`
   .container-nav {
@@ -133,7 +134,7 @@ export default css`
     width: initial;
   }
 
-  @media screen and (min-width: ${media_breakpoint}) {
+  @media screen and (min-width: ${mediabreakpoint}) {
     ul li:hover > ul {
       display: block;
       transition: 0.5s all ease-in-out;
@@ -146,7 +147,7 @@ export default css`
     }
   }
 
-  @media screen and (max-width: ${media_breakpoint}) {
+  @media screen and (max-width: ${mediabreakpoint}) {
     .container-user {
       display: none !important;
     }
@@ -156,11 +157,11 @@ export default css`
     label {
       width: 100%;
     }
-    ul input[type="checkbox"]:checked ~ label li ul {
+    ul input[type='checkbox']:checked ~ label li ul {
       display: block;
       transition: 0.5s all ease-in-out;
     }
-    ul input[type="checkbox"]:checked ~ label a div span {
+    ul input[type='checkbox']:checked ~ label a div span {
       color: #fff;
       transform: rotate(180deg);
       transition: 0.5s all ease-in-out;
@@ -215,7 +216,7 @@ export default css`
       width: 100%;
     }
   }
-  ul input[type="checkbox"] {
+  ul input[type='checkbox'] {
     position: absolute;
     left: -100vw;
   }

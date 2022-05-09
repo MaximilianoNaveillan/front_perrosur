@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /**
  * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
  * @param {File} imageSrc - Image File url
@@ -8,9 +9,9 @@
 const createImage = (url) =>
   new Promise((resolve, reject) => {
     const image = new Image();
-    image.addEventListener("load", () => resolve(image));
-    image.addEventListener("error", (error) => reject(error));
-    image.setAttribute("crossOrigin", "anonymous"); // needed to avoid cross-origin issues on CodeSandbox
+    image.addEventListener('load', () => resolve(image));
+    image.addEventListener('error', (error) => reject(error));
+    image.setAttribute('crossOrigin', 'anonymous'); // needed to avoid cross-origin issues on CodeSandbox
     image.src = url;
   });
 
@@ -20,8 +21,8 @@ function getRadianAngle(degreeValue) {
 
 export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   const image = await createImage(imageSrc);
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
 
   const maxSize = Math.max(image.width, image.height);
   const safeArea = 2 * ((maxSize / 2) * Math.sqrt(2));
@@ -67,9 +68,10 @@ export const generateDownload = async (imageSrc, crop) => {
   }
 
   const canvas = await getCroppedImg(imageSrc, crop);
-  return canvas.toDataURL();
+  const vaL = canvas.toDataURL();
+  return vaL;
 
-  //return canvas.toBlob(
+  // return canvas.toBlob(
   //  (blob) => {
   //    const previewUrl = window.URL.createObjectURL(blob);
 
@@ -78,9 +80,9 @@ export const generateDownload = async (imageSrc, crop) => {
   //  anchor.href = URL.createObjectURL(blob);
   //  anchor.click();
 
-  //window.URL.revokeObjectURL(previewUrl);
-  //},
-  //"image/jpeg",
-  //0.66
-  //);
+  // window.URL.revokeObjectURL(previewUrl);
+  // },
+  // "image/jpeg",
+  // 0.66
+  // );
 };

@@ -1,7 +1,6 @@
-import { platform } from "os";
-import { FaVestPatches } from "react-icons/fa";
-import css from "styled-jsx/css";
-import { colors, fonts, breakpoint } from "../styles/theme";
+/* eslint-disable import/no-extraneous-dependencies */
+import css from 'styled-jsx/css';
+import { colors, fonts, breakpoint } from '../styles/theme';
 
 export default css.global`
   html,

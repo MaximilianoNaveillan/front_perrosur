@@ -1,11 +1,12 @@
-import Head from "next/head";
-import Link from "next/link";
-import dbConnect from "../../lib/dbConnect";
-import Equipo from "../../models/equipo";
-import Tienda from "../../models/tienda";
-import Img from "../../components/Img/revel";
-import { colors, breakpoint, fonts } from "../../styles/theme.js";
-import Image from "next/image";
+/* eslint-disable react/no-array-index-key */
+import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
+import dbConnect from '../../lib/dbConnect';
+import Equipo from '../../models/equipo';
+import Tienda from '../../models/tienda';
+import Img from '../../components/Img/revel';
+import { colors, breakpoint, fonts } from '../../styles/theme';
 
 function Team({ success, error, tiendas, equipo, equipos }) {
   const tiendaslength = tiendas.length;
@@ -37,15 +38,15 @@ function Team({ success, error, tiendas, equipo, equipos }) {
           <div className="row">
             <div className="col-12">
               <div className="row">
-                {equipos.map((item, i) => (
+                {equipos.map((item) => (
                   <div key={item._id} className="col-3">
-                    <Link href={`/team/${item._id}`}>
+                    <Link href={`/team/${item._id}`} passHref>
                       <div className="aspect-1">
                         <div className="col-img">
                           <Img
                             src={`/images/team-index-${item._id}.png`}
-                            name={item.nombre.replace(" ", "\n")}
-                            selected={item._id === equipo._id ? true : false}
+                            name={item.nombre.replace(' ', '\n')}
+                            selected={item._id === equipo._id}
                           />
                         </div>
                       </div>
@@ -104,7 +105,7 @@ function Team({ success, error, tiendas, equipo, equipos }) {
                 <div className="col-12">
                   <h1 className="title">ALGUNAS DE SUS OBRAS </h1>
                 </div>
-                {tiendas.map((item, i) => (
+                {tiendas.map((item) => (
                   <div key={item._id} className="col-3 md-6 sm-12">
                     <div className="aspect-1">
                       <div className="col-img">
@@ -302,29 +303,28 @@ export async function getServerSideProps({ params }) {
       await dbConnect();
       const equipo = await Equipo.findById(params.id).lean();
       if (!equipo || !equipos) {
-        return { props: { success: false, error: "Información no encotrada" } };
+        return { props: { success: false, error: 'Información no encotrada' } };
       }
       equipo._id = `${equipo._id}`;
       try {
         await dbConnect();
-        const res = await Tienda.find({ equipo: equipo._id });
-        const tiendas = res.map((doc) => {
+        const res2 = await Tienda.find({ equipo: equipo._id });
+        const tiendas = res2.map((doc) => {
           const tienda = doc.toObject();
           tienda._id = `${tienda._id}`;
           return tienda;
         });
         return { props: { success: true, tiendas, equipo, equipos } };
       } catch (error) {
-        return { props: { success: false, error: "error de servidor" } };
+        return { props: { success: false, error: 'error de servidor' } };
       }
     } catch (error) {
-      if (error.kind == "ObjectId") {
-        return { props: { success: false, error: "Id no válido" } };
-      } else {
-        return { props: { success: false, error: "error de servidor" } };
+      if (error.kind === 'ObjectId') {
+        return { props: { success: false, error: 'Id no válido' } };
       }
+      return { props: { success: false, error: 'error de servidor' } };
     }
   } catch (error) {
-    return { props: { success: false, error: "error de servidor" } };
+    return { props: { success: false, error: 'error de servidor' } };
   }
 }

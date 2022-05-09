@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
-import styles from "./styles";
-import Icon from "./Icon";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { FaChevronDown } from "react-icons/fa";
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-no-constructed-context-values */
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { FaChevronDown, FaBars, FaTimes } from 'react-icons/fa';
 
-import { FaBars, FaTimes } from "react-icons/fa";
-import { IconContext } from "react-icons/lib";
-import Login from "../home/login";
-import { useSession } from "next-auth/react";
-import Spiner from "../Spiner";
+import { IconContext } from 'react-icons/lib';
+import { useSession } from 'next-auth/react';
+import Login from '../home/login';
+import Icon from './Icon';
+import styles from './styles';
+import Spiner from '../Spiner';
 
 export default function Navbar({ routes }) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [classModal, setClassModal] = useState("modal-window");
+  const [classModal, setClassModal] = useState('modal-window');
 
   const { data, status } = useSession();
 
@@ -22,10 +23,10 @@ export default function Navbar({ routes }) {
   const { pathname, asPath } = router;
 
   useEffect(() => {
-    if (asPath.includes("/#login-modal")) {
-      setClassModal("modal-window modal-on");
+    if (asPath.includes('/#login-modal')) {
+      setClassModal('modal-window modal-on');
     } else {
-      setClassModal("modal-window");
+      setClassModal('modal-window');
     }
   });
 
@@ -34,17 +35,17 @@ export default function Navbar({ routes }) {
   };
 
   const handleRoute = () => {
-    router.push(pathname, "/#login-modal");
+    router.push(pathname, '/#login-modal');
   };
   return (
     <>
-      <div className="navbar"></div>
+      <div className="navbar" />
       <div className="container-nav">
         <div className="wrapper">
-          <IconContext.Provider value={{ style: { fontSize: "1.7rem" } }}>
+          <IconContext.Provider value={{ style: { fontSize: '1.7rem' } }}>
             <div className="logo-container">
               <Image
-                src={`/images/logoappbar.png`}
+                src="/images/logoappbar.png"
                 alt="portada-entrelazar"
                 height="60px"
                 width="85px"
@@ -62,21 +63,25 @@ export default function Navbar({ routes }) {
                     />
                   </i>
                 ) : (
-                  "REGISTRATE"
+                  'REGISTRATE'
                 )}
               </a>
             </div>
-            <div onClick={() => mobileMenu()} className="movile-icon">
+            <div
+              onClick={() => mobileMenu()}
+              className="movile-icon"
+              role="presentation"
+            >
               {showMobileMenu ? (
                 <FaTimes
                   style={{
-                    marginRight: "0.5rem",
+                    marginRight: '0.5rem',
                   }}
                 />
               ) : (
                 <FaBars
                   style={{
-                    marginRight: "0.5rem",
+                    marginRight: '0.5rem',
                   }}
                 />
               )}
@@ -84,9 +89,13 @@ export default function Navbar({ routes }) {
             <ul className={`ul${!showMobileMenu}`}>
               {routes.map((item, i) =>
                 !item.menu ? (
-                  <li onClick={() => setShowMobileMenu(false)} key={i}>
-                    <Link href={`${item.route}`}>
-                      <a className={item.route === pathname ? "ahover" : ""}>
+                  <li
+                    onClick={() => setShowMobileMenu(false)}
+                    key={i}
+                    role="presentation"
+                  >
+                    <Link href={`${item.route}`} passHref>
+                      <a className={item.route === pathname ? 'ahover' : ''}>
                         <div>
                           <Icon _class="nav" index={i} />
                           {item.name.toUpperCase()}
@@ -95,7 +104,7 @@ export default function Navbar({ routes }) {
                     </Link>
                   </li>
                 ) : (
-                  <label key={i}>
+                  <label htmlFor={`ulControl${i}`} key={i}>
                     <input type="checkbox" id={`ulControl${i}`} />
                     <label htmlFor={`ulControl${i}`} className="btn">
                       <li>
@@ -110,18 +119,19 @@ export default function Navbar({ routes }) {
                         </a>
 
                         <ul>
-                          {item.items.map((item, ii) => (
+                          {item.items.map((_item, ii) => (
                             <li
                               onClick={() => setShowMobileMenu(false)}
-                              key={`2` + ii}
+                              key={`2${ii}`}
+                              role="presentation"
                             >
-                              <Link href={`${item.route}`}>
+                              <Link href={`${_item.route}`} passHref>
                                 <a
                                   className={
-                                    item.route === pathname ? "ahover" : ""
+                                    item.route === pathname ? 'ahover' : ''
                                   }
                                 >
-                                  <div> {item.name.toUpperCase()}</div>
+                                  <div> {_item.name.toUpperCase()}</div>
                                 </a>
                               </Link>
                             </li>
@@ -134,22 +144,20 @@ export default function Navbar({ routes }) {
               )}
 
               <li className="container-user">
-                <a className="btn" onClick={() => handleRoute()}>
-                  {status !== "loading" ? (
+                <a href="#!" className="btn" onClick={() => handleRoute()}>
+                  {status !== 'loading' ? (
                     <div className="container-user">
                       {data ? (
-                        <>
-                          <i>
-                            <Image
-                              src={data.user.image}
-                              alt="portada-entrelazar"
-                              objectFit="cover"
-                              layout="fill"
-                            />
-                          </i>
-                        </>
+                        <i>
+                          <Image
+                            src={data.user.image}
+                            alt="portada-entrelazar"
+                            objectFit="cover"
+                            layout="fill"
+                          />
+                        </i>
                       ) : (
-                        "REGISTRATE"
+                        'REGISTRATE'
                       )}
                     </div>
                   ) : (

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 import {
   FaHome,
   FaUsers,
@@ -6,7 +7,7 @@ import {
   FaCogs,
   FaAddressCard,
   FaMicroblog,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
 export default function Icon({ index, _class }) {
   const icons = [

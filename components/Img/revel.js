@@ -1,5 +1,6 @@
-import Image from "next/image";
-import { breakpoint } from "../../styles/theme.js";
+/* eslint-disable react/jsx-filename-extension */
+import Image from 'next/image';
+import { breakpoint } from '../../styles/theme';
 
 export default function ImgEquipo({ src, name, selected }) {
   return (
@@ -9,7 +10,7 @@ export default function ImgEquipo({ src, name, selected }) {
           <Image src={src} alt={name} objectFit="cover" layout="fill" />
         </div>
         <div className={`overlay overlay-${selected}`}>
-          <div className="text">{name.replace(" ", "\n")}</div>
+          <div className="text">{name.replace(' ', '\n')}</div>
         </div>
       </div>
       <style jsx>{`

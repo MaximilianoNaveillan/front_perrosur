@@ -1,6 +1,7 @@
-import Layout from "../components/Layout";
-import dbConnect from "../lib/dbConnect";
-import User from "../models/user";
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+import dbConnect from '../lib/dbConnect';
+import User from '../models/user';
 
 export default function DashboardAdmin({ users }) {
   return (
@@ -27,6 +28,6 @@ export async function getServerSideProps() {
     });
     return { props: { users } };
   } catch (error) {
-    console.log(error);
+    return { props: { success: false, error: 'Error al cargar datos.' } };
   }
 }

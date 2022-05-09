@@ -1,6 +1,8 @@
-import Image from "next/image";
-import { breakpoint } from "../../styles/theme.js";
-export default function Icon({ src, aspect }) {
+/* eslint-disable react/jsx-filename-extension */
+import Image from 'next/image';
+import { breakpoint } from '../../styles/theme';
+
+export default function Icon({ src }) {
   return (
     <>
       <div className="contentIcon">

@@ -1,4 +1,4 @@
-const NewUser = () => {
+function NewUser() {
   return (
     <>
       <div id="equipo" className="container">
@@ -10,8 +10,8 @@ const NewUser = () => {
               </div>
               <div className="col-12">
                 <div className="omrs-input-group">
-                  <label className="omrs-input-filled">
-                    <input required />
+                  <label htmlFor="user" className="omrs-input-filled">
+                    <input id="user" required />
                     <span className="omrs-input-label">NOMBRE</span>
                     <span className="omrs-input-helper">...</span>
                   </label>
@@ -34,6 +34,6 @@ const NewUser = () => {
       `}</style>
     </>
   );
-};
+}
 
 export default NewUser;

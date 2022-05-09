@@ -1,9 +1,9 @@
-import Head from "next/head";
-import Link from "next/link";
-import dbConnect from "../lib/dbConnect";
-import Taller from "../models/taller";
-import { colors } from "../styles/theme.js";
-import Image from "next/image";
+import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
+import dbConnect from '../lib/dbConnect';
+import Taller from '../models/taller';
+import { colors } from '../styles/theme';
 
 function Team({ success, error, tallers }) {
   if (!success) {
@@ -31,8 +31,8 @@ function Team({ success, error, tallers }) {
       </Head>
       <div className="container container-taller">
         {tallers.map((item, i) => (
-          <div key={i}>
-            <div className="divider" id={item._id}></div>
+          <div key={item._id}>
+            <div className="divider" id={item._id} />
             <div className="content">
               <div className="row">
                 <div className="col-4 xs-12">
@@ -117,7 +117,7 @@ function Team({ success, error, tallers }) {
 
 export default Team;
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps() {
   try {
     await dbConnect();
     const res = await Taller.find({});
@@ -128,10 +128,10 @@ export async function getServerSideProps({ params }) {
     });
 
     if (!tallers) {
-      return { props: { success: false, error: "Información no encotrada" } };
+      return { props: { success: false, error: 'Información no encotrada' } };
     }
     return { props: { success: true, tallers } };
   } catch (error) {
-    return { props: { success: false, error: "error de servidor" } };
+    return { props: { success: false, error: 'error de servidor' } };
   }
 }

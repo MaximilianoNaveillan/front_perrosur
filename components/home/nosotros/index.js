@@ -1,7 +1,8 @@
-import { colors, breakpoint } from "../../../styles/theme.js";
-import Quehacemos from "./quehacemos";
-import Tienda from "./tienda";
-import Image from "next/image";
+/* eslint-disable react/jsx-filename-extension */
+import Image from 'next/image';
+import { colors, breakpoint } from '../../../styles/theme';
+import Quehacemos from './quehacemos';
+import Tienda from './tienda';
 
 export default function Nosotros() {
   return (

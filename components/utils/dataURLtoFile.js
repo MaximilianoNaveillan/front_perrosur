@@ -1,5 +1,7 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable import/prefer-default-export */
 export const dataURLtoFile = (dataurl, filename) => {
-  const arr = dataurl.split(",");
+  const arr = dataurl.split(',');
   const mime = arr[0].match(/:(.*?);/)[1];
   const bstr = atob(arr[1]);
   let n = bstr.length;
