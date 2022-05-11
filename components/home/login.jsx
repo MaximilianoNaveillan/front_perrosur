@@ -69,10 +69,20 @@ export default function Login({ usersession, path, _class }) {
                     Ingresar con {provider.name}
                   </a>
                 ))}
-              <small>
-                AL ingresar tus datos y unirte estás aceptando las póliticas de
-                privacidad y condiciones de uso
-              </small>
+              <p>
+                <small>
+                  AL ingresar tus datos y unirte estás aceptando las póliticas
+                  de privacidad y condiciones de uso
+                </small>
+              </p>
+              <p>
+                <Link href="/terminosycondiciones">Terminos y condiciones</Link>
+              </p>
+              <p>
+                <Link href="/politicadeprivacidad">
+                  Póliticas de privacidad
+                </Link>
+              </p>
             </div>
           )}
         </div>
@@ -166,6 +176,9 @@ export default function Login({ usersession, path, _class }) {
         }
         .link:hover {
           background: ${colors.secondary};
+        }
+        p {
+          margin: 0.7rem 0;
         }
       `}</style>
     </>
