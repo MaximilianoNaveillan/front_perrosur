@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -71,6 +72,13 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
 
   return (
     <>
+      <Head>
+        <title>blog | perrosur</title>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
+      </Head>
       <Menu />
       <div className={`content ${classModal}`}>
         {load.state && (
