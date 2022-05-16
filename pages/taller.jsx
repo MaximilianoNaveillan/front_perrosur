@@ -5,6 +5,8 @@ import dbConnect from '../lib/dbConnect';
 import Taller from '../models/taller';
 import { colors } from '../styles/theme';
 
+const S_URL = process.env.SERVER_URL;
+
 function Team({ success, error, tallers }) {
   if (!success) {
     return (
@@ -41,7 +43,7 @@ function Team({ success, error, tallers }) {
                       <div className="col-img">
                         <div className="img">
                           <Image
-                            src={`/images/taller-blog-${item._id}.png`}
+                            src={`${S_URL}/uploadimg/image/taller-blog-${item._id}.png`}
                             alt={`image-${i}`}
                             objectFit="cover"
                             layout="fill"

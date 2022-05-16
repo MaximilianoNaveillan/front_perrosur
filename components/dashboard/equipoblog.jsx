@@ -7,6 +7,8 @@ import { colors } from '../../styles/theme';
 import EquipoForm from './equipoform';
 import axiosFetch from '../../config/axios';
 
+const S_URL = process.env.SERVER_URL;
+
 export default function Equipo({ equipos, handleDelete }) {
   const [classModal, setClassModal] = useState('modal-window');
   const [keyDelete, setKeyDelete] = useState(undefined);
@@ -84,12 +86,13 @@ export default function Equipo({ equipos, handleDelete }) {
             </div>
             {equipos.map((item) => (
               <div key={item._id} className="col-3 md-6 xs-12">
+                <br />
                 <div className="content-img">
                   <div className="card-img">
                     <div className="img-overlay">
                       <div className="img">
                         <Image
-                          src={`/images/team-index-${item._id}.png`}
+                          src={`${S_URL}/uploadimg/image/team-index-${item._id}.png`}
                           alt={item.nombre}
                           objectFit="cover"
                           layout="fill"

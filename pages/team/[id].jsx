@@ -8,6 +8,7 @@ import Tienda from '../../models/tienda';
 import Img from '../../components/Img/revel';
 import { colors, breakpoint, fonts } from '../../styles/theme';
 
+const S_URL = process.env.SERVER_URL;
 function Team({ success, error, tiendas, equipo, equipos }) {
   const tiendaslength = tiendas.length;
   if (!success) {
@@ -44,9 +45,10 @@ function Team({ success, error, tiendas, equipo, equipos }) {
                       <div className="aspect-1">
                         <div className="col-img">
                           <Img
-                            src={`/images/team-index-${item._id}.png`}
+                            src={`${S_URL}/uploadimg/image/team-index-${item._id}.png`}
                             name={item.nombre.replace(' ', '\n')}
                             selected={item._id === equipo._id}
+                            priority
                           />
                         </div>
                       </div>
@@ -62,7 +64,7 @@ function Team({ success, error, tiendas, equipo, equipos }) {
                   <div className="card-img">
                     <div className="img">
                       <Image
-                        src={`/images/team-blog-${equipo._id}.png`}
+                        src={`${S_URL}/uploadimg/image/team-blog-${equipo._id}.png`}
                         alt={equipo.nombre}
                         objectFit="cover"
                         layout="fill"

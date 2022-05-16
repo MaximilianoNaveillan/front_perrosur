@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Img from '../Img/revel';
 import { colors } from '../../styles/theme';
 
+const S_URL = process.env.SERVER_URL;
 export default function Equipo({ equipos }) {
   return (
     <>
@@ -17,7 +18,7 @@ export default function Equipo({ equipos }) {
                   <div className="content-img">
                     <div className="card-img">
                       <Img
-                        src={`/images/team-index-${item._id}.png`}
+                        src={`${S_URL}/uploadimg/image/team-index-${item._id}.png`}
                         name={item.nombre.replace(' ', '\n')}
                         priority
                       />

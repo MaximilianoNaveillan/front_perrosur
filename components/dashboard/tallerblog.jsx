@@ -7,6 +7,8 @@ import { colors } from '../../styles/theme';
 import TallerForm from './tallerform';
 import axiosFetch from '../../config/axios';
 
+const S_URL = process.env.SERVER_URL;
+
 export default function Taller({ tallers, handleDelete }) {
   const [classModal, setClassModal] = useState('modal-window');
   const [keyDelete, setKeyDelete] = useState(undefined);
@@ -86,7 +88,7 @@ export default function Taller({ tallers, handleDelete }) {
                     <div className="img-overlay">
                       <div className="img">
                         <Image
-                          src={`/images/taller-blog-${item._id}.png`}
+                          src={`${S_URL}/uploadimg/image/taller-blog-${item._id}.png`}
                           alt={item.name}
                           objectFit="cover"
                           layout="fill"

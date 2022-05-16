@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Img from '../Img/revel';
 import { breakpoint, colors } from '../../styles/theme';
 
+const S_URL = process.env.SERVER_URL;
+
 export default function Taller({ tallers }) {
   return (
     <>
@@ -25,7 +27,7 @@ export default function Taller({ tallers }) {
                   <div className="content-img">
                     <div className="card-img">
                       <Img
-                        src={`/images/taller-blog-${item._id}.png`}
+                        src={`${S_URL}/uploadimg/image/taller-blog-${item._id}.png`}
                         name={item.nombre.replace(' ', '\n')}
                         priority
                       />

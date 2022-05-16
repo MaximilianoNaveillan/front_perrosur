@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { FaFacebookSquare, FaInstagram } from 'react-icons/fa';
 import { colors, breakpoint } from '../../styles/theme';
 
+const S_URL = process.env.SERVER_URL;
+
 export default function Actualidad({ actualidads }) {
   return (
     <>
@@ -62,7 +64,7 @@ export default function Actualidad({ actualidads }) {
                   <div className="card-img">
                     <div className="img">
                       <Image
-                        src={`/images/actualidad-blog-${item._id}.png`}
+                        src={`${S_URL}/uploadimg/image/actualidad-blog-${item._id}.png`}
                         objectFit="cover"
                         layout="fill"
                       />

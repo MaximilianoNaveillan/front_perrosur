@@ -7,6 +7,8 @@ import { colors } from '../../styles/theme';
 import ActualidadForm from './actualidadform';
 import axiosFetch from '../../config/axios';
 
+const S_URL = process.env.SERVER_URL;
+
 export default function Acualidad({ handleDelete, actualidads }) {
   const [classModal, setClassModal] = useState('modal-window');
   const [keyDelete, setKeyDelete] = useState(undefined);
@@ -93,7 +95,7 @@ export default function Acualidad({ handleDelete, actualidads }) {
                     <div className="img-overlay">
                       <div className="img">
                         <Image
-                          src={`/images/actualidad-blog-${item._id}.png`}
+                          src={`${S_URL}/uploadimg/image/actualidad-blog-${item._id}.png`}
                           alt={item.name}
                           objectFit="cover"
                           layout="fill"

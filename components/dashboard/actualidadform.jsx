@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import TextareaAutosize from 'react-autosize-textarea';
 import { FaRegImages, FaFacebook, FaInstagramSquare } from 'react-icons/fa';
+import axios from 'axios';
 import { colors, breakpoint, fonts } from '../../styles/theme';
 import CropImg from './cropimg';
-import axiosFetch from '../../config/axios';
 import Spiner from '../Spiner';
 import { dataURLtoFile } from '../utils/dataURLtoFile';
 
@@ -17,6 +17,9 @@ const DATAFORM = {
   instagram: '',
   date: '',
 };
+
+const _URL = process.env.BASE_URL;
+const S_URL = process.env.SERVER_URL;
 
 export default function EquipoForm({ path, _class }) {
   const [form, setForm] = useState(DATAFORM);
@@ -68,15 +71,21 @@ export default function EquipoForm({ path, _class }) {
       const body = new FormData();
       const imgFile = dataURLtoFile(_imageData, `actualidad-blog-${key}.png`);
       body.append('file', imgFile);
-      axiosFetch.post('/api/upload', body).then((res) => {
-        setLoad({
-          state: true,
-          status: res.status,
-          msg: 'Cargando imagen de blog.',
-        });
+      axios
+        .post(`${S_URL}/uploadimg`, body, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          setLoad({
+            state: true,
+            status: res.status,
+            msg: 'Cargando imagen de blog.',
+          });
 
-        router.reload(window.location.pathname);
-      });
+          router.reload(window.location.pathname);
+        });
     } else {
       router.reload(window.location.pathname);
     }
@@ -89,8 +98,8 @@ export default function EquipoForm({ path, _class }) {
       msg: 'Cargando.',
     });
 
-    axiosFetch
-      .put('/api/actualidad', _form, {
+    axios
+      .put(`${_URL}/api/actualidad`, _form, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -118,8 +127,8 @@ export default function EquipoForm({ path, _class }) {
       status: 200,
       msg: 'Cargando imagen de índice.',
     });
-    axiosFetch
-      .post('/api/actualidad', _form, {
+    axios
+      .post(`${_URL}/api/actualidad`, _form, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -137,14 +146,20 @@ export default function EquipoForm({ path, _class }) {
           `actualidad-blog-${data._id}.png`
         );
         body.append('file', imgFile);
-        axiosFetch.post('/api/upload', body).then((resp) => {
-          setLoad({
-            state: true,
-            status: resp.status,
-            msg: 'Cargando imagen de índice.',
+        axios
+          .post(`${S_URL}/uploadimg`, body, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((resp) => {
+            setLoad({
+              state: true,
+              status: resp.status,
+              msg: 'Cargando imagen de índice.',
+            });
+            router.reload(window.location.pathname);
           });
-          router.reload(window.location.pathname);
-        });
       })
       .catch((error) => {
         setLoad({
@@ -171,9 +186,9 @@ export default function EquipoForm({ path, _class }) {
     }
   };
   const getForm = () => {
-    axiosFetch
+    axios
       .patch(
-        '/api/actualidad',
+        `${_URL}/api/actualidad`,
         { id: key },
         {
           headers: {
@@ -241,7 +256,9 @@ export default function EquipoForm({ path, _class }) {
                         key="img-upload-1"
                         contentheight="50vh"
                         url={
-                          key ? `/images/actualidad-blog-${key}.png` : undefined
+                          key
+                            ? `${S_URL}/uploadimg/image/actualidad-blog-${key}.png`
+                            : undefined
                         }
                       />
                     </div>

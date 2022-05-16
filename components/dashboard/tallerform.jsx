@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import TextareaAutosize from 'react-autosize-textarea';
 import { FaRegImages } from 'react-icons/fa';
+import axios from 'axios';
 import { colors, breakpoint, fonts } from '../../styles/theme';
 import CropImg from './cropimg';
-import axiosFetch from '../../config/axios';
 import Spiner from '../Spiner';
 import { dataURLtoFile } from '../utils/dataURLtoFile';
 
@@ -14,6 +14,9 @@ const DATAFORM = {
   image: '',
   text: '',
 };
+
+const _URL = process.env.BASE_URL;
+const S_URL = process.env.SERVER_URL;
 
 export default function EquipoForm({ path, _class }) {
   const [form, setForm] = useState(DATAFORM);
@@ -51,15 +54,21 @@ export default function EquipoForm({ path, _class }) {
       const body = new FormData();
       const imgFile = dataURLtoFile(_imageData, `taller-blog-${key}.png`);
       body.append('file', imgFile);
-      axiosFetch.post('/api/upload', body).then((res) => {
-        setLoad({
-          state: true,
-          status: res.status,
-          msg: 'Cargando imagen de blog.',
-        });
+      axios
+        .post(`${S_URL}/uploadimg`, body, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          setLoad({
+            state: true,
+            status: res.status,
+            msg: 'Cargando imagen de blog.',
+          });
 
-        router.reload(window.location.pathname);
-      });
+          router.reload(window.location.pathname);
+        });
     } else {
       router.reload(window.location.pathname);
     }
@@ -71,9 +80,8 @@ export default function EquipoForm({ path, _class }) {
       status: 200,
       msg: 'Cargando.',
     });
-
-    axiosFetch
-      .put('/api/taller', _form, {
+    axios
+      .put(`${_URL}/api/taller`, _form, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -101,8 +109,8 @@ export default function EquipoForm({ path, _class }) {
       status: 200,
       msg: 'Cargando imagen de índice.',
     });
-    axiosFetch
-      .post('/api/taller', _form, {
+    axios
+      .post(`${_URL}/api/taller`, _form, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -120,14 +128,20 @@ export default function EquipoForm({ path, _class }) {
           `taller-blog-${data._id}.png`
         );
         body.append('file', imgFile);
-        axiosFetch.post('/api/upload', body).then((resp) => {
-          setLoad({
-            state: true,
-            status: resp.status,
-            msg: 'Cargando imagen de índice.',
+        axios
+          .post(`${S_URL}/uploadimg`, body, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((resp) => {
+            setLoad({
+              state: true,
+              status: resp.status,
+              msg: 'Cargando imagen de índice.',
+            });
+            router.reload(window.location.pathname);
           });
-          router.reload(window.location.pathname);
-        });
       })
       .catch((error) => {
         setLoad({
@@ -154,9 +168,9 @@ export default function EquipoForm({ path, _class }) {
   };
 
   const getForm = () => {
-    axiosFetch
+    axios
       .patch(
-        '/api/taller',
+        `${_URL}/api/taller`,
         { id: key },
         {
           headers: {
@@ -216,7 +230,11 @@ export default function EquipoForm({ path, _class }) {
                         _key="1"
                         key="img-upload-1"
                         contentheight="50vh"
-                        url={key ? `/images/taller-blog-${key}.png` : undefined}
+                        url={
+                          key
+                            ? `${S_URL}/uploadimg/image/taller-blog-${key}.png`
+                            : undefined
+                        }
                       />
                     </div>
                   </div>

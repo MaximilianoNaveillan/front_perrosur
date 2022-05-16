@@ -4,6 +4,8 @@ import dbConnect from '../lib/dbConnect';
 import Tienda from '../models/tienda';
 import { colors } from '../styles/theme';
 
+const S_URL = process.env.SERVER_URL;
+
 function Store({ tiendas }) {
   return (
     <>
@@ -43,7 +45,7 @@ function Store({ tiendas }) {
                       <div className="col-img">
                         <div className="img">
                           <Image
-                            src={`/images/tienda-blog-${item._id}.png`}
+                            src={`${S_URL}/uploadimg/image/tienda-blog-${item._id}.png`}
                             alt={item.nombre}
                             objectFit="cover"
                             layout="fill"
