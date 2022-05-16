@@ -108,6 +108,7 @@ export default function Acualidad({ handleDelete, actualidads }) {
                             'es-ES',
                             optionsdate
                           )}
+                          .
                         </div>
                         <div className="actions">
                           <span>
