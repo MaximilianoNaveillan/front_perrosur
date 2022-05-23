@@ -74,10 +74,6 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
     <>
       <Head>
         <title>blog | perrosur</title>
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="upgrade-insecure-requests"
-        />
       </Head>
       <Menu />
       <div className={`content ${classModal}`}>

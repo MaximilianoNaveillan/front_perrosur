@@ -146,6 +146,9 @@ export default css.global`
       font-size: 10px;
       left: 0.3rem;
     }
+    .contentbutton {
+      font-size: 0.6rem !important;
+    }
   }
   @media screen and (max-width: ${breakpoint.xxs}) {
     .xxs-12 {
@@ -213,7 +216,7 @@ export default css.global`
   }
   .contentbutton {
     display: block;
-    height: 34px;
+    height: 38px;
   }
   .contentbutton button {
     position: relative;
@@ -223,7 +226,8 @@ export default css.global`
     color: white;
     padding-left: 32px;
     padding-right: 32px;
-    height: 34px;
+    height: 38px;
+    line-height: 15px;
     text-align: center;
     text-decoration: none;
     cursor: pointer;

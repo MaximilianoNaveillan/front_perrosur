@@ -1,6 +1,10 @@
+import { useRouter } from 'next/router';
 import Navbar from './Navbar';
+import Navbarapp from './Navbar/app';
 
 export default function Layout({ children }) {
+  const router = useRouter();
+  const { pathname, asPath } = router;
   const routes = [
     { name: 'inicio', menu: false, items: [], route: '/', icon: 'FaHome' },
     {
@@ -45,7 +49,7 @@ export default function Layout({ children }) {
       icon: 'FaAddressCard',
     },
     {
-      name: 'mi espacio',
+      name: 'talleres',
       menu: false,
       items: [],
       route: '/miespacio',
@@ -55,7 +59,21 @@ export default function Layout({ children }) {
 
   return (
     <>
-      <Navbar routes={routes} />
+      {asPath.includes('miespacio') ? (
+        <Navbarapp
+          routes={routes}
+          router={router}
+          pathname={pathname}
+          asPath={asPath}
+        />
+      ) : (
+        <Navbar
+          routes={routes}
+          router={router}
+          pathname={pathname}
+          asPath={asPath}
+        />
+      )}
       <main>{children}</main>
     </>
   );

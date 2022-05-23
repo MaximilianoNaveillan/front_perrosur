@@ -11,6 +11,7 @@ export default function Login({ usersession, path, _class }) {
   useEffect(() => {
     (async () => {
       const prov = await getProviders();
+
       setProviders(prov);
     })();
   }, []);
@@ -97,6 +98,7 @@ export default function Login({ usersession, path, _class }) {
         .modal-window {
           position: fixed;
           background-color: rgba(255, 255, 255, 0.45);
+
           top: 0;
           right: 0;
           bottom: 0;
@@ -115,6 +117,8 @@ export default function Login({ usersession, path, _class }) {
         .modal-window > div {
           width: 400px;
           max-width: 98%;
+          max-height: 98%;
+          overflow-y: auto;
           position: absolute;
           top: 50%;
           left: 50%;

@@ -134,9 +134,6 @@ export default function Portada() {
           p {
             font-size: 0.6rem;
           }
-          button {
-            font-size: 0.6rem;
-          }
         }
         .contentbutton {
           margin: 1rem 0.8rem;

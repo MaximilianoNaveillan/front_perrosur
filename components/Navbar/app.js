@@ -3,15 +3,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaChevronDown, FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import { IconContext } from 'react-icons/lib';
 import { useSession } from 'next-auth/react';
 import Login from '../home/login';
-import Icon from './Icon';
 import styles from './styles';
 import Spiner from '../Spiner';
 
-export default function Navbar({ routes, router, pathname, asPath }) {
+export default function Navbarapp({ router, pathname, asPath }) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [classModal, setClassModal] = useState('modal-window');
 
@@ -38,14 +37,16 @@ export default function Navbar({ routes, router, pathname, asPath }) {
       <div className="container-nav">
         <div className="wrapper">
           <IconContext.Provider value={{ style: { fontSize: '1.7rem' } }}>
-            <div className="logo-container">
-              <Image
-                src="/images/logoappbar.png"
-                alt="portada-entrelazar"
-                height="60px"
-                width="85px"
-              />
-            </div>
+            <Link href="/" passHref>
+              <div className="logo-container">
+                <Image
+                  src="/images/logoappbar.png"
+                  alt="portada-entrelazar"
+                  height="60px"
+                  width="85px"
+                />
+              </div>
+            </Link>
             <div className="nav-user">
               <a href="#!" className="btn" onClick={() => handleRoute()}>
                 {data ? (
@@ -82,62 +83,6 @@ export default function Navbar({ routes, router, pathname, asPath }) {
               )}
             </div>
             <ul className={`ul${!showMobileMenu}`}>
-              {routes.map((item, i) =>
-                !item.menu ? (
-                  <li
-                    onClick={() => setShowMobileMenu(false)}
-                    key={i}
-                    role="presentation"
-                  >
-                    <Link href={`${item.route}`} passHref>
-                      <a className={item.route === pathname ? 'ahover' : ''}>
-                        <div>
-                          <Icon _class="nav" index={i} />
-                          {item.name.toUpperCase()}
-                        </div>
-                      </a>
-                    </Link>
-                  </li>
-                ) : (
-                  <label htmlFor={`ulControl${i}`} key={i}>
-                    <input type="checkbox" id={`ulControl${i}`} />
-                    <label htmlFor={`ulControl${i}`} className="btn">
-                      <li>
-                        <a>
-                          <div>
-                            <Icon _class="nav" index={i} />
-                            {item.name.toUpperCase()}
-                            <span>
-                              <FaChevronDown />
-                            </span>
-                          </div>
-                        </a>
-
-                        <ul>
-                          {item.items.map((_item, ii) => (
-                            <li
-                              onClick={() => setShowMobileMenu(false)}
-                              key={`2${ii}`}
-                              role="presentation"
-                            >
-                              <Link href={`${_item.route}`} passHref>
-                                <a
-                                  className={
-                                    item.route === pathname ? 'ahover' : ''
-                                  }
-                                >
-                                  <div> {_item.name.toUpperCase()}</div>
-                                </a>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
-                    </label>
-                  </label>
-                )
-              )}
-
               {asPath.includes('/miespacio') ? (
                 <li className="container-user">
                   <a href="#!" className="btn" onClick={() => handleRoute()}>
