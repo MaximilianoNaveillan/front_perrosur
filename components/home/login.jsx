@@ -11,7 +11,6 @@ export default function Login({ usersession, path, _class }) {
   useEffect(() => {
     (async () => {
       const prov = await getProviders();
-
       setProviders(prov);
     })();
   }, []);

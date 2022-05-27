@@ -84,7 +84,7 @@ export default function EquipoForm({ path, _class }) {
       const imgFile = dataURLtoFile(_imageDataBlog, `team-blog-${key}.png`);
       body.append('file', imgFile);
       axios
-        .post(`${S_URL}/uploadimg/`, body, {
+        .post(`${S_URL}/uploadimg`, body, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -103,7 +103,7 @@ export default function EquipoForm({ path, _class }) {
       const imgFile = dataURLtoFile(_imageData, `team-index-${key}.png`);
       body.append('file', imgFile);
       axios
-        .post(`${S_URL}/uploadimg/`, body, {
+        .post(`${S_URL}/uploadimg`, body, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -129,7 +129,7 @@ export default function EquipoForm({ path, _class }) {
       msg: 'Cargando.',
     });
     axios
-      .put(`${_URL}/api/equipo/`, _form, {
+      .put(`${_URL}/api/equipo`, _form, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -158,7 +158,7 @@ export default function EquipoForm({ path, _class }) {
       msg: 'Cargando.',
     });
     axios
-      .post(`${_URL}/api/equipo/`, _form, {
+      .post(`${_URL}/api/equipo`, _form, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -174,7 +174,7 @@ export default function EquipoForm({ path, _class }) {
         const imgFile = dataURLtoFile(_imageData, `team-index-${data._id}.png`);
         body.append('file', imgFile);
         axios
-          .post(`${S_URL}/uploadimg/`, body, {
+          .post(`${S_URL}/uploadimg`, body, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -192,7 +192,7 @@ export default function EquipoForm({ path, _class }) {
             );
             _body.append('file', _imgFile);
             axios
-              .post(`${S_URL}/uploadimg/`, _body, {
+              .post(`${S_URL}/uploadimg`, _body, {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },
@@ -296,7 +296,7 @@ export default function EquipoForm({ path, _class }) {
   const getForm = () => {
     axios
       .patch(
-        `${_URL}/api/equipo/`,
+        `${_URL}/api/equipo`,
         { id: key },
         {
           headers: {

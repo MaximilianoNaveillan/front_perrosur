@@ -20,11 +20,7 @@ export default css.global`
     z-index: 1;
     max-width: 100%;
   }
-  @media screen and (max-width: ${breakpoint.md}) {
-    .content {
-      width: 100%;
-    }
-  }
+
   .collapse {
     border: 0.3rem solid black;
   }
@@ -32,6 +28,59 @@ export default css.global`
     background-size: contain;
     width: ${breakpoint.md};
     margin: auto;
+    transition: 0.3s;
+  }
+
+  .content-align-left {
+    width: calc(100% - 280px) !important;
+    max-width: calc(100% - 280px) !important;
+    margin-left: 280px;
+    transition: 0.3s;
+  }
+  .force-content-align-left {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    transition: 0.3s;
+  }
+  .menu-right {
+    position: fixed;
+    background-color: ${colors.green};
+    top: 70px;
+    right: ${breakpoint.md};
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 280px;
+    transition: 0.6s;
+  }
+  .force-menu-right {
+    width: auto;
+    right: 100%;
+    transition: 0.6s;
+  }
+
+  @media screen and (max-width: ${breakpoint.media}) {
+    .content-align-left {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+    }
+    .menu-right {
+      width: auto;
+      right: 100%;
+      transition: 0.6s;
+    }
+    .force-menu-right {
+      right: calc(100% - 280px);
+      transition: 0.6s;
+    }
+  }
+
+  @media screen and (max-width: ${breakpoint.md}) {
+    .content {
+      width: 100%;
+    }
   }
 
   .container {

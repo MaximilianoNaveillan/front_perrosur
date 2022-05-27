@@ -2,14 +2,13 @@
 import css from 'styled-jsx/css';
 import { colors, fonts, breakpoint } from '../../styles/theme';
 
-const mediabreakpoint = '1500px';
-
 export default css`
   .container-nav {
     position: fixed;
     top: 0;
     width: 100%;
     height: 70px;
+    max-height: 90vh;
     background-color: ${colors.primary};
     z-index: 3;
   }
@@ -32,6 +31,7 @@ export default css`
     margin-left: 1rem;
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 
   .container-user {
@@ -45,7 +45,6 @@ export default css`
     width: 2.76rem;
     border-radius: 50%;
     overflow: hidden;
-    transition: 0.5s all ease;
   }
 
   ul {
@@ -53,6 +52,7 @@ export default css`
     display: flex;
     justify-content: space-between;
     list-style: none;
+    margin: auto;
   }
   li {
     position: relative;
@@ -70,7 +70,6 @@ export default css`
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: 0.5s all ease;
     text-decoration: none;
   }
   a div {
@@ -79,31 +78,51 @@ export default css`
     display: flex;
     justify-content: left;
     align-items: center;
-    text-transform: capitalize;
   }
   a div span {
-    font-size: 0.9rem;
+    height: 30px;
+    right: 20px;
+    font-size: 0.3rem;
     margin-left: 0.7rem;
-    transition: 0.3s all ease-in-out;
+    transition: 0.3s;
   }
   li:hover > a {
     color: #fff;
     background-color: ${colors.primary_darken};
-    transition: 0.5s all ease;
+    transition: 0.3s;
   }
 
   .ahover {
     color: #fff;
     background-color: ${colors.primary_darken};
-    transition: 0.5s all ease;
   }
   .ahover > label ul {
     display: block;
   }
   .movile-icon {
     display: none;
-    margin-right: 1rem;
+    padding: 6px 12px;
+    margin: 0.7rem;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    text-decoration: none;
+    background: none;
   }
+
   .ul-menu {
     left: -100%;
   }
@@ -118,8 +137,38 @@ export default css`
   ul ul {
     display: none;
     position: absolute;
-    top: 100%;
     width: 100%;
+    z-index: 1;
+    -webkit-animation: fadeTop 0.3s;
+    animation: fadeTop 0.3s;
+  }
+  @-webkit-keyframes fadeTop {
+    0% {
+      opacity: 0;
+      top: -100%;
+    }
+    60% {
+      opacity: 0;
+      top: 50%;
+    }
+    100% {
+      opacity: 1;
+      top: 100%;
+    }
+  }
+  @keyframes fadeTop {
+    0% {
+      opacity: 0;
+      top: -100%;
+    }
+    60% {
+      opacity: 0;
+      top: 50%;
+    }
+    100% {
+      opacity: 1;
+      top: 100%;
+    }
   }
 
   ul ul a {
@@ -134,20 +183,55 @@ export default css`
     width: initial;
   }
 
-  @media screen and (min-width: ${mediabreakpoint}) {
+  .container-ul {
+    width: 100%;
+    min-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  @-webkit-keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  ul .omrs-input-group {
+    height: 100%;
+    max-width: 450px;
+  }
+  ul .omrs-input-group label input {
+    border: 2px solid black;
+    height: 60px;
+    margin-top: 5px;
+    padding-top: 0;
+  }
+
+  @media screen and (min-width: ${breakpoint.media}) {
     ul li:hover > ul {
       display: block;
-      transition: 0.5s all ease-in-out;
     }
 
     li:hover > a div span {
       color: #fff;
       transform: rotate(180deg);
-      transition: 0.5s all ease-in-out;
     }
   }
 
-  @media screen and (max-width: ${mediabreakpoint}) {
+  @media screen and (max-width: ${breakpoint.media}) {
     .container-user {
       display: none !important;
     }
@@ -159,12 +243,10 @@ export default css`
     }
     ul input[type='checkbox']:checked ~ label li ul {
       display: block;
-      transition: 0.5s all ease-in-out;
     }
     ul input[type='checkbox']:checked ~ label a div span {
       color: #fff;
       transform: rotate(180deg);
-      transition: 0.5s all ease-in-out;
     }
     .movile-icon {
       display: flex;
@@ -177,15 +259,27 @@ export default css`
       position: absolute;
       top: 70px;
       width: 100%;
-      height: 90vh;
+      height: 80vh;
+      min-height: 80vh;
+      max-height: 80vh;
       justify-content: center;
       flex-direction: column;
       align-items: center;
-      transition: 0.5 s all ease;
+      border-bottom: 2px solid black;
+      overflow-y: auto;
+    }
+    .container-ul {
+      max-width: 330px;
+      max-height: 80vh;
+      min-width: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     li {
       width: 100%;
       height: 70px;
+      min-height: 70px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -193,27 +287,23 @@ export default css`
     a {
       width: 100%;
     }
-    a div {
-      width: 30%;
-    }
     ul ul {
       background: ${colors.primary};
-      z-index: 3;
+      padding-top: 0;
+      border: none;
+    }
+    ul .omrs-input-group {
+      margin-top: 20px;
     }
   }
-  @media screen and (max-width: 800px) {
-    a div {
-      width: 40%;
+  @media screen and (max-width: ${breakpoint.sm}) {
+    a {
+      font-size: 0.9rem;
     }
   }
-  @media screen and (max-width: 500px) {
-    a div {
-      width: 60%;
-    }
-  }
-  @media screen and (max-width: 350px) {
-    a div {
-      width: 100%;
+  @media screen and (max-width: ${breakpoint.xxs}) {
+    .movile-icon {
+      margin: 0.7rem 0;
     }
   }
   ul input[type='checkbox'] {

@@ -1,33 +1,45 @@
 import { getSession } from 'next-auth/react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Menu from '../../components/miespacio/menu/index';
 
 function Myspace({ session }) {
+  const [toggleleft, setToggleLeft] = useState(false);
+
   return (
     <>
-      <Menu />
-      <div className="content">
-        {session && (
-          <div className="row">
-            <div className="col-6">
-              <div className="container-items">
-                <Link href="/miespacio/blog" passHref>
-                  <a>BLOG</a>
-                </Link>
+      <div
+        className={`container content-align-left ${
+          toggleleft ? 'force-content-align-left' : ''
+        }`}
+      >
+        <Menu setToggleLeft={setToggleLeft} toggleleft={toggleleft} />
+        <div className="content">
+          {session && (
+            <div className="row">
+              <div className="col-6">
+                <div className="container-items">
+                  <Link href="/miespacio/blog" passHref>
+                    <a>BLOG</a>
+                  </Link>
+                </div>
+              </div>
+              <div className="col-6">
+                <div className="container-iems">
+                  <Link href="/blog" passHref>
+                    <a>Blog</a>
+                  </Link>
+                </div>
               </div>
             </div>
-            <div className="col-6">
-              <div className="container-iems">
-                <Link href="/blog" passHref>
-                  <a>Blog</a>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <style jsx>{`
+        .container {
+          background: white;
+        }
         .content {
           background: white;
           min-height: calc(100vh - 70px);

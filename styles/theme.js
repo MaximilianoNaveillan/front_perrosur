@@ -12,6 +12,7 @@ export const colors = {
   green: 'rgb(064,124,081)',
 };
 export const breakpoint = {
+  media: '1500px',
   xxs: '350px',
   xs: '600px',
   sm: '960px',

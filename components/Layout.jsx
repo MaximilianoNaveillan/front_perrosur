@@ -1,10 +1,12 @@
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import axios from 'axios';
 import Navbar from './Navbar';
 import Navbarapp from './Navbar/app';
 
-export default function Layout({ children }) {
-  const router = useRouter();
-  const { pathname, asPath } = router;
+const S_URL = process.env.SERVER_URL;
+export default function Layout({ children, isapp, pathname, asPath, router }) {
+  const { data, status } = useSession();
   const routes = [
     { name: 'inicio', menu: false, items: [], route: '/', icon: 'FaHome' },
     {
@@ -56,15 +58,37 @@ export default function Layout({ children }) {
       icon: 'FaAddressCard',
     },
   ];
+  const userHandler = () => {
+    if (!isapp) router.push('/miespacio');
+    axios
+      .get(`${S_URL}/usuario/email/${data.user.email}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (status === 'loading' && !isapp) router.push('/');
+    if (status === 'authenticated') userHandler();
+  }, [status]);
 
   return (
     <>
-      {asPath.includes('miespacio') ? (
+      {isapp ? (
         <Navbarapp
           routes={routes}
           router={router}
           pathname={pathname}
           asPath={asPath}
+          data={data}
+          status={status}
         />
       ) : (
         <Navbar
@@ -72,6 +96,8 @@ export default function Layout({ children }) {
           router={router}
           pathname={pathname}
           asPath={asPath}
+          data={data}
+          status={status}
         />
       )}
       <main>{children}</main>

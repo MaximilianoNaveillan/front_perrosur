@@ -5,17 +5,23 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FaChevronDown, FaBars, FaTimes } from 'react-icons/fa';
 import { IconContext } from 'react-icons/lib';
-import { useSession } from 'next-auth/react';
+
 import Login from '../home/login';
 import Icon from './Icon';
 import styles from './styles';
 import Spiner from '../Spiner';
 
-export default function Navbar({ routes, router, pathname, asPath }) {
+export default function Navbar({
+  routes,
+  router,
+  pathname,
+  asPath,
+  data,
+  status,
+}) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [classModal, setClassModal] = useState('modal-window');
-
-  const { data, status } = useSession();
+  const [check, setCheck] = useState(-1);
 
   useEffect(() => {
     if (asPath.includes('/#login-modal')) {
@@ -27,6 +33,7 @@ export default function Navbar({ routes, router, pathname, asPath }) {
 
   const mobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
+    setCheck(-1);
   };
 
   const handleRoute = () => {
@@ -62,110 +69,107 @@ export default function Navbar({ routes, router, pathname, asPath }) {
                 )}
               </a>
             </div>
-            <div
+            <button
+              type="button"
               onClick={() => mobileMenu()}
-              className="movile-icon"
-              role="presentation"
+              className="movile-icon "
             >
-              {showMobileMenu ? (
-                <FaTimes
-                  style={{
-                    marginRight: '0.5rem',
-                  }}
-                />
-              ) : (
-                <FaBars
-                  style={{
-                    marginRight: '0.5rem',
-                  }}
-                />
-              )}
-            </div>
+              {showMobileMenu ? <FaTimes /> : <FaBars />}
+            </button>
             <ul className={`ul${!showMobileMenu}`}>
-              {routes.map((item, i) =>
-                !item.menu ? (
-                  <li
-                    onClick={() => setShowMobileMenu(false)}
-                    key={i}
-                    role="presentation"
-                  >
-                    <Link href={`${item.route}`} passHref>
-                      <a className={item.route === pathname ? 'ahover' : ''}>
-                        <div>
-                          <Icon _class="nav" index={i} />
-                          {item.name.toUpperCase()}
-                        </div>
-                      </a>
-                    </Link>
-                  </li>
-                ) : (
-                  <label htmlFor={`ulControl${i}`} key={i}>
-                    <input type="checkbox" id={`ulControl${i}`} />
-                    <label htmlFor={`ulControl${i}`} className="btn">
-                      <li>
-                        <a>
+              <div className="container-ul">
+                {routes.map((item, i) =>
+                  !item.menu ? (
+                    <li
+                      onClick={() => setShowMobileMenu(false)}
+                      key={i}
+                      role="presentation"
+                    >
+                      <Link href={`${item.route}`} passHref>
+                        <a className={item.route === pathname ? 'ahover' : ''}>
                           <div>
                             <Icon _class="nav" index={i} />
                             {item.name.toUpperCase()}
-                            <span>
-                              <FaChevronDown />
-                            </span>
                           </div>
                         </a>
+                      </Link>
+                    </li>
+                  ) : (
+                    <label htmlFor={`ulControl${i}`} key={i}>
+                      <input
+                        type="checkbox"
+                        id={`ulControl${i}`}
+                        onChange={() => {
+                          setCheck(i === check ? -1 : i);
+                        }}
+                        checked={check === i}
+                      />
+                      <label htmlFor={`ulControl${i}`} className="btn">
+                        <li>
+                          <a>
+                            <div>
+                              <Icon _class="nav" index={i} />
+                              {item.name.toUpperCase()}
+                              <span>
+                                <FaChevronDown />
+                              </span>
+                            </div>
+                          </a>
 
-                        <ul>
-                          {item.items.map((_item, ii) => (
-                            <li
-                              onClick={() => setShowMobileMenu(false)}
-                              key={`2${ii}`}
-                              role="presentation"
-                            >
-                              <Link href={`${_item.route}`} passHref>
-                                <a
-                                  className={
-                                    item.route === pathname ? 'ahover' : ''
-                                  }
-                                >
-                                  <div> {_item.name.toUpperCase()}</div>
-                                </a>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
+                          <ul>
+                            {item.items.map((_item, ii) => (
+                              <li
+                                onClick={() => setShowMobileMenu(false)}
+                                key={`2${ii}`}
+                                role="presentation"
+                              >
+                                <Link href={`${_item.route}`} passHref>
+                                  <a
+                                    className={
+                                      item.route === pathname ? 'ahover' : ''
+                                    }
+                                  >
+                                    <div> {_item.name.toUpperCase()}</div>
+                                  </a>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      </label>
                     </label>
-                  </label>
-                )
-              )}
+                  )
+                )}
 
-              {asPath.includes('/miespacio') ? (
-                <li className="container-user">
-                  <a href="#!" className="btn" onClick={() => handleRoute()}>
-                    {status !== 'loading' ? (
-                      <div className="container-user">
-                        {data ? (
-                          <i>
-                            <Image
-                              src={data.user.image}
-                              alt="portada-entrelazar"
-                              objectFit="cover"
-                              layout="fill"
-                            />
-                          </i>
-                        ) : (
-                          'REGISTRARSE'
-                        )}
-                      </div>
-                    ) : (
-                      <div className="container-user">
-                        <Spiner />
-                      </div>
-                    )}
-                  </a>
-                </li>
-              ) : (
-                ''
-              )}
+                {asPath.includes('/miespacio') ? (
+                  <li className="container-user">
+                    <a href="#!" className="btn" onClick={() => handleRoute()}>
+                      {status !== 'loading' ? (
+                        <div className="container-user">
+                          {data ? (
+                            <i>
+                              <Image
+                                src={data.user.image}
+                                alt="portada-entrelazar"
+                                objectFit="cover"
+                                layout="fill"
+                              />
+                            </i>
+                          ) : (
+                            'REGISTRARSE'
+                          )}
+                        </div>
+                      ) : (
+                        <div className="container-user">
+                          <Spiner />
+                        </div>
+                      )}
+                    </a>
+                  </li>
+                ) : (
+                  ''
+                )}
+              </div>
             </ul>
           </IconContext.Provider>
         </div>

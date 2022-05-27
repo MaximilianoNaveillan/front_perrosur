@@ -19,6 +19,7 @@ import { colors, breakpoint } from '../../styles/theme';
 
 function Blog({ equipos, tallers, tiendas, actualidads }) {
   const [classModal, setClassModal] = useState('');
+  const [toggleleft, setToggleLeft] = useState(false);
   const router = useRouter();
   const { pathname, asPath } = router;
   const [load, setLoad] = useState({
@@ -75,62 +76,68 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
       <Head>
         <title>blog | perrosur</title>
       </Head>
-      <Menu />
-      <div className={`content ${classModal}`}>
-        {load.state && (
-          <div className="load">
-            <div className="card-text">
-              <div className="spiner">
-                <Spiner />
+      <div
+        className={`container content-align-left ${
+          toggleleft ? 'force-content-align-left' : ''
+        }`}
+      >
+        <div className={`content ${classModal} content-blog `}>
+          {load.state && (
+            <div className="load">
+              <div className="card-text">
+                <div className="spiner">
+                  <Spiner />
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="row">
+            <div className="col-12">
+              <div className="container-iems">
+                <MenuModal handleModal={() => handleModal()} />
+                <section>
+                  <EquipoBlog handleDelete={handleDelete} equipos={equipos} />
+                </section>
+              </div>
+            </div>
+            <div className="col-12">
+              <div className="container-iems">
+                <MenuModal handleModal={() => handleModalTaller()} />
+                <section>
+                  <TallerBlog handleDelete={handleDelete} tallers={tallers} />
+                </section>
+              </div>
+            </div>
+            <div className="col-12">
+              <div className="container-iems">
+                <MenuModal handleModal={() => handleModalTienda()} />
+                <section>
+                  <TiendaBlog
+                    handleDelete={handleDelete}
+                    tiendas={tiendas}
+                    equipos={equipos}
+                  />
+                </section>
+              </div>
+            </div>
+            <div className="col-12">
+              <div className="container-iems">
+                <MenuModal handleModal={() => handleModalActualidad()} />
+                <section>
+                  <ActualidadBlog
+                    handleDelete={handleDelete}
+                    actualidads={actualidads}
+                  />
+                </section>
               </div>
             </div>
           </div>
-        )}
-        <div className="row">
-          <div className="col-12">
-            <div className="container-iems">
-              <MenuModal handleModal={() => handleModal()} />
-              <section>
-                <EquipoBlog handleDelete={handleDelete} equipos={equipos} />
-              </section>
-            </div>
-          </div>
-          <div className="col-12">
-            <div className="container-iems">
-              <MenuModal handleModal={() => handleModalTaller()} />
-              <section>
-                <TallerBlog handleDelete={handleDelete} tallers={tallers} />
-              </section>
-            </div>
-          </div>
-          <div className="col-12">
-            <div className="container-iems">
-              <MenuModal handleModal={() => handleModalTienda()} />
-              <section>
-                <TiendaBlog
-                  handleDelete={handleDelete}
-                  tiendas={tiendas}
-                  equipos={equipos}
-                />
-              </section>
-            </div>
-          </div>
-          <div className="col-12">
-            <div className="container-iems">
-              <MenuModal handleModal={() => handleModalActualidad()} />
-              <section>
-                <ActualidadBlog
-                  handleDelete={handleDelete}
-                  actualidads={actualidads}
-                />
-              </section>
-            </div>
-          </div>
+          <Menu setToggleLeft={setToggleLeft} toggleleft={toggleleft} />
         </div>
       </div>
 
       <style global jsx>{`
-        .load {
+        .content-blog .load {
           position: fixed;
           top: 0;
           right: 0;
@@ -139,10 +146,10 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           width: 100%;
           z-index: 3;
         }
-        .card-text {
+        .content-blog .card-text {
           height: 100%;
         }
-        .spiner {
+        .content-blog .spiner {
           display: flex;
           height: 100%;
           overflow: hidden;
@@ -150,22 +157,22 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           justify-content: space-around;
           align-items: center;
         }
-        .spiner h4 {
+        .content-blog .spiner h4 {
           position: absolute;
           padding-top: 80px;
           width: 100%;
           text-align: center;
         }
-        .overflow-hidden {
+        .content-blog .overflow-hidden {
           display: block;
           max-height: calc(100vh - 70px - 0.1rem);
           overflow: hidden;
         }
-        .content {
+        .content-blog .content {
           padding: 1rem;
           max-width: 100%;
         }
-        .container-iems {
+        .content-blog .container-iems {
           position: relative;
           display: flex;
           justify-content: space-around;
@@ -174,7 +181,7 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           min-height: 430px;
           padding: 1rem 0;
         }
-        section {
+        .content-blog section {
           display: flex;
           justify-content: space-around;
           align-items: center;
@@ -188,7 +195,7 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           border-radius: 8px;
           transition: 0.5s all ease;
         }
-        .modal {
+        .content-blog .modal {
           position: fixed;
           top: 0;
           right: 0;
@@ -201,7 +208,7 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           align-items: center;
           padding: 1rem;
         }
-        .card-modal {
+        .content-blog .card-modal {
           width: ${breakpoint.xs};
           background-color: white;
           align-items: center;
@@ -209,16 +216,16 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           border: 1px solid black;
           border-radius: 6px;
         }
-        .card-modal-text {
+        .content-blog .card-modal-text {
           padding: 1.7rem 0.7rem;
           text-align: center;
           font-size: 20px;
         }
-        .card-modal-action {
+        .content-blog .card-modal-action {
           text-align: right;
           padding: 0 1rem 1rem;
         }
-        .modal a {
+        .content-blog .modal a {
           background-color: ${colors.primary};
           color: #2f2f30;
           line-height: 2rem;
@@ -231,17 +238,17 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           transition: 0.5s all ease;
           cursor: pointer;
         }
-        .modal a:hover {
+        .content-blog .modal a:hover {
           background-color: ${colors.primary_darken};
         }
 
-        .content-img {
+        .content-blog .content-img {
           width: 100%;
           padding-top: 100%; /* 1:1 Aspect Ratio */
           position: relative; /* If you want text inside of it */
         }
 
-        .text {
+        .content-blog .text {
           color: black;
           font-weight: 1000;
           position: absolute;
@@ -252,16 +259,16 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           text-transform: uppercase;
         }
         @media screen and (max-width: ${breakpoint.xs}) {
-          .text {
+          .content-blog .text {
             left: 1rem;
           }
         }
-        .actions {
+        .content-blog .actions {
           text-align: right;
           background: white;
           padding: 1rem 0;
         }
-        .actions a {
+        .content-blog .actions a {
           color: black;
           margin: 0 0.7rem;
         }
