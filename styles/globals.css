@@ -5,7 +5,7 @@
 }
 /** Form **/
 :root {
-  --omrs-color-ink-lowest-contrast: rgba(47, 60, 85, 0.18);
+  --omrs-color-ink-lowest-contrast: rgba(47, 60, 85, 0.08);
   --omrs-color-ink-low-contrast: rgba(60, 60, 67, 0.3);
   --omrs-color-ink-medium-contrast: rgba(19, 19, 21, 0.6);
   --omrs-color-interaction: #1e4bd1;
@@ -73,7 +73,7 @@ div.omrs-input-group {
 
 .omrs-input-underlined > input:hover,
 .omrs-input-filled > input:hover {
-  background: var(--omrs-color-interaction-minus-two);
+  background: var(--omrs-color-ink-lowest-contrast);
   border-color: var(--omrs-color-ink-high-contrast);
 }
 
@@ -173,7 +173,7 @@ select::-ms-expand {
 }
 /* Arrow */
 .select::after {
-  content: "\25BC";
+  content: '\25BC';
   position: absolute;
   top: 0;
   right: 0;

@@ -215,7 +215,7 @@ export default function EquipoForm({ path, _class }) {
         date: formatDate(new Date()),
       });
     }
-  }, []);
+  }, [key]);
 
   return (
     <>

@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-filename-extension */
-import { FaBookOpen, FaPlayCircle, FaMicroblog } from 'react-icons/fa';
+import { FaBookOpen, FaPlayCircle, FaMicroblog, FaEdit } from 'react-icons/fa';
 
 export default function Icon({ index, _class }) {
-  const icons = [FaBookOpen, FaPlayCircle, FaMicroblog];
+  const icons = [FaBookOpen, FaPlayCircle, FaMicroblog, FaEdit];
   const Fa = icons[index];
   return (
     <>

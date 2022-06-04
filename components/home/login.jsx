@@ -5,7 +5,7 @@ import { FaRegUserCircle, FaEyeSlash } from 'react-icons/fa';
 import Link from 'next/link';
 import { colors } from '../../styles/theme';
 
-export default function Login({ usersession, path, _class }) {
+export default function Login({ handleCloseModalLogin, usersession, _class }) {
   const [providers, setProviders] = useState([]);
 
   useEffect(() => {
@@ -19,9 +19,13 @@ export default function Login({ usersession, path, _class }) {
     <>
       <div id="login-modal" className={_class}>
         <div>
-          <Link href={path} passHref>
-            <a id="modal-close">CERRAR</a>
-          </Link>
+          <button
+            type="button"
+            id="modal-close"
+            onClick={(e) => handleCloseModalLogin(e)}
+          >
+            CERRAR
+          </button>
           <h1>TALLER PERRO SUR</h1>
           <div>
             Plataforma que te permite acceder a un mundo de artes y oficios de
@@ -138,15 +142,25 @@ export default function Login({ usersession, path, _class }) {
           color: black;
           line-height: 2rem;
           margin: 0.5rem 0.5rem 0 0;
-          font-size: 1rem;
+          font-size: 0.95rem;
           font-weight: 500;
           position: absolute;
           right: 0;
-          text-align: center;
           top: 0;
           width: 78px;
-          text-decoration: none;
           transition: 0.5s all ease;
+          text-align: center;
+          white-space: nowrap;
+          vertical-align: middle;
+          -ms-touch-action: manipulation;
+          touch-action: manipulation;
+          cursor: pointer;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          border: none;
+          cursor: pointer;
         }
         #modal-close:hover {
           background-color: ${colors.magenta};

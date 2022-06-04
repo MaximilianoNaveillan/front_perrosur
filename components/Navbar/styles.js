@@ -37,6 +37,7 @@ export default css`
   .container-user {
     min-width: 96px;
     text-align: right;
+    float: right;
   }
   i {
     position: relative;
@@ -106,6 +107,24 @@ export default css`
     font-size: 14px;
     font-weight: 400;
     line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    text-decoration: none;
+    background: none;
+  }
+  .icon-btn {
+    height: 100%;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
@@ -218,6 +237,10 @@ export default css`
     height: 60px;
     margin-top: 5px;
     padding-top: 0;
+  }
+
+  ul .omrs-input-group label input:hover {
+    background-color: rgb(254, 167, 000, 0.6);
   }
 
   @media screen and (min-width: ${breakpoint.media}) {

@@ -9,36 +9,31 @@ import { IconContext } from 'react-icons/lib';
 import Login from '../home/login';
 import Icon from './Icon';
 import styles from './styles';
-import Spiner from '../Spiner';
 
-export default function Navbar({
-  routes,
-  router,
-  pathname,
-  asPath,
-  data,
-  status,
-}) {
+export default function Navbar({ routes, router, pathname, asPath, data }) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [classModal, setClassModal] = useState('modal-window');
   const [check, setCheck] = useState(-1);
-
-  useEffect(() => {
-    if (asPath.includes('/#login-modal')) {
-      setClassModal('modal-window modal-on');
-    } else {
-      setClassModal('modal-window');
-    }
-  });
 
   const mobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
     setCheck(-1);
   };
 
+  const handleCloseModalLogin = () => {
+    router.push(pathname, '/');
+  };
+
   const handleRoute = () => {
     router.push(pathname, '/#login-modal');
   };
+  useEffect(() => {
+    if (asPath.includes('/#login-modal')) {
+      setClassModal('modal-window modal-on');
+    } else {
+      setClassModal('modal-window');
+    }
+  }, [asPath]);
   return (
     <>
       <div className="navbar" />
@@ -140,42 +135,18 @@ export default function Navbar({
                     </label>
                   )
                 )}
-
-                {asPath.includes('/miespacio') ? (
-                  <li className="container-user">
-                    <a href="#!" className="btn" onClick={() => handleRoute()}>
-                      {status !== 'loading' ? (
-                        <div className="container-user">
-                          {data ? (
-                            <i>
-                              <Image
-                                src={data.user.image}
-                                alt="portada-entrelazar"
-                                objectFit="cover"
-                                layout="fill"
-                              />
-                            </i>
-                          ) : (
-                            'REGISTRARSE'
-                          )}
-                        </div>
-                      ) : (
-                        <div className="container-user">
-                          <Spiner />
-                        </div>
-                      )}
-                    </a>
-                  </li>
-                ) : (
-                  ''
-                )}
               </div>
             </ul>
           </IconContext.Provider>
         </div>
       </div>
       {asPath && (
-        <Login usersession={data} _class={classModal} path={pathname} />
+        <Login
+          handleCloseModalLogin={handleCloseModalLogin}
+          usersession={data}
+          _class={classModal}
+          path={pathname}
+        />
       )}
       <style jsx>{styles}</style>
     </>

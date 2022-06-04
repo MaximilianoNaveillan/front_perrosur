@@ -196,7 +196,7 @@ export default function EquipoForm({ path, _class, equipos }) {
     if (key) {
       getForm();
     }
-  }, []);
+  }, [key]);
 
   return (
     <>

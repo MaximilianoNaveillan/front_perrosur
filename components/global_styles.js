@@ -179,6 +179,12 @@ export default css.global`
     .sm-6 {
       width: 50%;
     }
+    .sm-8 {
+      width: 66.66%;
+    }
+    .sm-4 {
+      width: 33.33%;
+    }
   }
   @media screen and (max-width: ${breakpoint.xs}) {
     .xs-12 {
@@ -309,5 +315,48 @@ export default css.global`
   }
   .error-container a:hover {
     color: black;
+  }
+
+  .add {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.45);
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+    transition: 0.6s;
+    animation: fade-in 0.5s forwards;
+  }
+  .add-card {
+    display: flex;
+    height: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .add-card-text {
+    height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: ${breakpoint.xs};
+    max-width: ${breakpoint.xs};
+    margin: 0 0.7rem;
+    border: 1px solid #818181;
+    border-radius: 3px;
+    padding: 1.7rem 1rem 0;
+    background: white;
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;

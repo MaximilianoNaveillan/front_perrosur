@@ -190,7 +190,7 @@ export default function EquipoForm({ path, _class }) {
     if (key) {
       getForm();
     }
-  }, []);
+  }, [key]);
 
   return (
     <>

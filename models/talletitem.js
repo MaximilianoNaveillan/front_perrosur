@@ -1,12 +1,16 @@
 import mongoose from 'mongoose';
 
-const TallerItemSchema = new mongoose.Schema({
+const TalleritemSchema = new mongoose.Schema({
   type: String,
   key: String,
   index: Number,
-  inicio: Date,
-  termino: Date,
+  inicio: { type: Date },
+  termino: { type: Date },
   titulo: String,
+  detalle: String,
+  resumen: String,
+  color: String,
+  bg: Number,
   imagen: String,
   tallerista: String,
   usuarios: Array,
@@ -22,5 +26,5 @@ const TallerItemSchema = new mongoose.Schema({
   status: Boolean,
 });
 
-export default mongoose.models.TallerItem ||
-  mongoose.model('TallerItem', TallerItemSchema);
+export default mongoose.models.Talleritem ||
+  mongoose.model('Talleritem', TalleritemSchema);

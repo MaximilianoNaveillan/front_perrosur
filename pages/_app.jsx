@@ -8,7 +8,6 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const { pathname, asPath } = router;
   const isapp = !!asPath.includes('miespacio');
-
   return (
     <>
       <SessionProvider>

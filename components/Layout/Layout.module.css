@@ -1,0 +1,13 @@
+.nav {
+  background: white;
+}
+.contentt {
+  opacity: 0;
+  transition: 1s;
+  height: auto;
+  overflow: auto;
+}
+
+.fadeIn {
+  opacity: 1;
+}

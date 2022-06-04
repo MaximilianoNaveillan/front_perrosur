@@ -12,7 +12,7 @@ const UsuarioSchema = new mongoose.Schema({
       status: Boolean,
       talleritem: {
         type: mongoose.Schema.ObjectId,
-        ref: 'TallerItem',
+        ref: 'Talleritem',
       },
     },
   ],
@@ -25,7 +25,7 @@ const UsuarioSchema = new mongoose.Schema({
       },
     },
   ],
-  date: Date.now,
+  date: Date,
 });
 
 export default mongoose.models.Usuario ||

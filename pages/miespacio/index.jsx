@@ -1,10 +1,32 @@
 import { getSession } from 'next-auth/react';
-import { useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Menu from '../../components/miespacio/menu/index';
 
+const _URL = process.env.BASE_URL;
 function Myspace({ session }) {
   const [toggleleft, setToggleLeft] = useState(false);
+  const [talleritem, setTalleritem] = useState([]);
+
+  const renderItems = () => {
+    axios
+      .get(`${_URL}/api/talleritem`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        setTalleritem(res.data.talleres);
+      })
+      .catch(() => {
+        setTalleritem([]);
+      });
+  };
+
+  useEffect(() => {
+    if (!session) return;
+    renderItems();
+  }, []);
 
   return (
     <>
@@ -15,23 +37,14 @@ function Myspace({ session }) {
       >
         <Menu setToggleLeft={setToggleLeft} toggleleft={toggleleft} />
         <div className="content">
-          {session && (
-            <div className="row">
-              <div className="col-6">
-                <div className="container-items">
-                  <Link href="/miespacio/blog" passHref>
-                    <a>BLOG</a>
-                  </Link>
+          {talleritem && (
+            <>
+              {talleritem.map((item) => (
+                <div className="row" key={item._id}>
+                  <div className="col-12">{item.titulo}</div>
                 </div>
-              </div>
-              <div className="col-6">
-                <div className="container-iems">
-                  <Link href="/blog" passHref>
-                    <a>Blog</a>
-                  </Link>
-                </div>
-              </div>
-            </div>
+              ))}
+            </>
           )}
         </div>
       </div>
@@ -44,31 +57,6 @@ function Myspace({ session }) {
           background: white;
           min-height: calc(100vh - 70px);
           padding: 1rem;
-        }
-        .container-items {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          width: 100%;
-          height: 7rem;
-          padding: 1rem;
-        }
-        a {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          background: #f4f2f4;
-          height: 100%;
-          width: 100%;
-          text-decoration: none;
-          color: #444444;
-          border: 0.1rem solid #ddd;
-          font-weight: bold;
-          border-radius: 8px;
-          transition: 0.5s all ease;
-        }
-        a:hover {
-          background: #ddd;
         }
       `}</style>
     </>

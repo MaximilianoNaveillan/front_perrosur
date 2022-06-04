@@ -6,7 +6,6 @@ import EquipoBlog from '../../components/dashboard/equipoblog';
 import TallerBlog from '../../components/dashboard/tallerblog';
 import TiendaBlog from '../../components/dashboard/tiendablog';
 import ActualidadBlog from '../../components/dashboard/actualidadblog';
-import Menu from '../../components/miespacio/menu/index';
 import MenuModal from '../../components/dashboard/menumodal';
 import dbConnect from '../../lib/dbConnect';
 import Equipo from '../../models/equipo';
@@ -19,7 +18,6 @@ import { colors, breakpoint } from '../../styles/theme';
 
 function Blog({ equipos, tallers, tiendas, actualidads }) {
   const [classModal, setClassModal] = useState('');
-  const [toggleleft, setToggleLeft] = useState(false);
   const router = useRouter();
   const { pathname, asPath } = router;
   const [load, setLoad] = useState({
@@ -69,19 +67,15 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
     } else {
       setClassModal('');
     }
-  });
+  }, [asPath]);
 
   return (
     <>
       <Head>
         <title>blog | perrosur</title>
       </Head>
-      <div
-        className={`container content-align-left ${
-          toggleleft ? 'force-content-align-left' : ''
-        }`}
-      >
-        <div className={`content ${classModal} content-blog `}>
+      <div className="container">
+        <div className={`content content-blog ${classModal}`}>
           {load.state && (
             <div className="load">
               <div className="card-text">
@@ -132,7 +126,6 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
               </div>
             </div>
           </div>
-          <Menu setToggleLeft={setToggleLeft} toggleleft={toggleleft} />
         </div>
       </div>
 
@@ -163,10 +156,10 @@ function Blog({ equipos, tallers, tiendas, actualidads }) {
           width: 100%;
           text-align: center;
         }
-        .content-blog .overflow-hidden {
+        .overflow-hidden {
           display: block;
-          max-height: calc(100vh - 70px - 0.1rem);
-          overflow: hidden;
+          max-height: calc(100vh - 70px - 0.1rem) !important;
+          overflow-y: hidden !important;
         }
         .content-blog .content {
           padding: 1rem;
