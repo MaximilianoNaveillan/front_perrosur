@@ -1,155 +1,287 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
 import { colors, breakpoint, fonts } from '../../../styles/theme';
 import CropImg from '../cropimg';
 import Select from './selectcolor';
-import MenuToggle from '../../utils/menutogglelevel';
+import SelectCat from './selectcategoria';
+import MenuToggle from './menutogglelevel';
 
-const form = {
-  titulo: '',
-  detalle: '',
-  resumen: '',
-  color: '#ffffff',
-  bg: 0,
-  imagen: '',
-  tallerista: '',
-  categoria: '',
-  duracion: '',
-  dificultad: 1,
-};
-
-function TallerItemAdd() {
+function TallerItemAdd({
+  imageurl,
+  setAdd,
+  cat,
+  tallerista,
+  setAlert,
+  handlePost,
+  form,
+  setForm,
+}) {
   const [imageData, setImageData] = useState(null);
-  const [color, setColor] = useState('#ffffff');
-  const [bg, setBg] = useState(0);
 
-  const background = `rgb(${bg},${bg},${bg},0.2)`;
+  const handelSetAlert = (msg) => {
+    setAlert({
+      statusCode: 400,
+      timestamp: new Date().toISOString(),
+      class: 'bad-request',
+      message: `¡ ${msg} !`,
+    });
+  };
+
   const handleCropImg = (e) => {
+    if (!imageData && form._id) {
+      const inc = Number(form.imagen) + 1;
+      const imagen = `0${inc.toString()}`;
+      setForm({
+        ...form,
+        imagen,
+      });
+    }
     setImageData(e);
   };
 
   const handleColor = (e) => {
-    setColor(e.target.value);
+    setForm({
+      ...form,
+      color: e.target.value,
+    });
   };
 
   const handleChangeColorSelect = (e) => {
-    setColor(e);
+    setForm({
+      ...form,
+      color: e,
+    });
   };
 
   const handleLevel = (l) => {
-    console.log(l);
+    setForm({
+      ...form,
+      dificultad: l,
+    });
   };
+
+  const handleChangeCategori = (val) => {
+    setForm({
+      ...form,
+      categoria: val,
+    });
+  };
+
+  const handlesetBg = (bg) => {
+    setForm({
+      ...form,
+      bg,
+    });
+  };
+
+  useEffect(() => {
+    setForm({
+      ...form,
+      tallerista: tallerista._id,
+    });
+  }, [tallerista]);
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleSave = () => {
+    if (!form.titulo) {
+      handelSetAlert('Debes agregar un título');
+      return;
+    }
+    if (!form.resumen) {
+      handelSetAlert('Debes agregar el resumen');
+      return;
+    }
+    if (!form.detalle) {
+      handelSetAlert('Debes agregar un detalle');
+      return;
+    }
+
+    if (!imageurl && !imageData) {
+      handelSetAlert('Debes agregar una imagen');
+      return;
+    }
+    if (!form.categoria) {
+      handelSetAlert('Debes agregar una categoría');
+      return;
+    }
+
+    handlePost(imageData);
+  };
+
+  const colseDialog = () => {
+    setAdd(false);
+  };
+
+  const { color, bg } = form;
+  const background = `rgb(${bg},${bg},${bg},0.2)`;
+  const phresumen = `Resumen ( breve descripción de taller )  Ej: ${'\n\n'} Un taller para aprender y practicar el ofifio de la impreción en serigrafia.`;
+  const phdetalle = `Detalle ( descripción detallada del taller )  Ej: ${'\n\n'}Pamela es miembro del Taller PerroSur y su experiencia en el arte de la pintura le permite transmitir en sus talleres el valor de la técnica y la comunicación a través de las obras.${'\n'}En este taller, podrás comprender cómo abordar ...`;
 
   return (
     <>
-      <div className="add-card">
+      <div key={form._id ? form._id : 'addItem'} className="add-card">
         <div
           className="add-card-text"
           onClick={(e) => e.stopPropagation()}
           role="presentation"
           style={{ backgroundColor: color }}
         >
-          <div className="row">
-            <div className="col-4 md-12 text-center">
-              <div className="content-crop">
-                <div>
-                  <CropImg
-                    handleCropImg={handleCropImg}
-                    aspect={Number(1)}
-                    _key="1"
-                    key="img-upload-1"
-                    contentheight="400px"
-                    url={undefined}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col-8 md-12 title">
-              <div
-                className="content-text"
-                style={{ backgroundColor: background }}
-              >
-                <div className="omrs-input-group">
-                  <label htmlFor="titulo" className="omrs-input-filled">
-                    <input
-                      type="text"
-                      id="titulo"
-                      name="titulo"
-                      autoComplete="off"
-                      placeholder="TÍTULO"
-                      required
+          <div className="contnet-card-text">
+            <div className="row">
+              <div className="col-4 md-12 text-center">
+                <div className="content-crop">
+                  <div>
+                    <CropImg
+                      handleCropImg={handleCropImg}
+                      handleDelete={handleCropImg}
+                      aspect={Number(4 / 3)}
+                      _key="1"
+                      key="img-upload-1"
+                      contentheight="400px"
+                      url={
+                        form._id
+                          ? `${imageurl}/uploadimg/image/taller-item-${form._id}-${form.imagen}.png`
+                          : undefined
+                      }
                     />
-                  </label>
-                </div>
-                <div className="omrs-input-group">
-                  <TextareaAutosize
-                    id="detalle"
-                    name="detalle"
-                    autoComplete="off"
-                    placeholder="detalle"
-                    style={{
-                      width: '100%',
-                      minWidth: '100%',
-                      maxWidth: '100%',
-                      maxHeight: '226px',
-                      minHeight: '226px',
-                      fontSize: '18px',
-                      boxSizing: 'border-box',
-                      border: 'none',
-                      borderRadius: '3px',
-                      padding: '0 1.7rem 0.7rem 1.7rem',
-                      fontFamily: fonts.base,
-                      fontWeight: 400,
-                      backgroundColor: 'transparent',
-                      boxShadow: null,
-                      outline: 0,
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-6 sm-12">
-                  <div className="level">
-                    <MenuToggle handleLevel={handleLevel} />
                   </div>
                 </div>
-                <div className="col-6 sm-12">
-                  <div className="select-color ">
-                    <div className="row">
-                      <div className="col-9 sm-8">
-                        <div className="content-select">
-                          <Select
-                            colors={colors}
-                            handleChangeColorSelect={handleChangeColorSelect}
+              </div>
+              <div className="col-8 md-12 title">
+                <div
+                  className="content-text"
+                  style={{ backgroundColor: background }}
+                >
+                  <div className="omrs-input-group">
+                    <label htmlFor="titulo" className="omrs-input-filled">
+                      <input
+                        type="text"
+                        id="titulo"
+                        name="titulo"
+                        value={form.titulo}
+                        autoComplete="off"
+                        placeholder="TÍTULO"
+                        onChange={handleChange}
+                        required
+                      />
+                    </label>
+                  </div>
+                  <div className="omrs-input-group">
+                    <TextareaAutosize
+                      id="resumen"
+                      name="resumen"
+                      value={form.resumen}
+                      autoComplete="off"
+                      placeholder={`${phresumen}`}
+                      onChange={handleChange}
+                      style={{
+                        width: '100%',
+                        minWidth: '100%',
+                        maxWidth: '100%',
+                        maxHeight: '88px',
+                        minHeight: '88px',
+                        fontSize: '18px',
+                        boxSizing: 'border-box',
+                        border: 'none',
+                        borderRadius: '3px',
+                        padding: '0 1.7rem ',
+                        borderBottom: '1px solid #818181',
+                        marginBottom: '9px',
+                        fontFamily: fonts.base,
+                        fontWeight: 400,
+                        backgroundColor: 'transparent',
+                        boxShadow: null,
+                        outline: 0,
+                      }}
+                    />
+                    <TextareaAutosize
+                      id="detalle"
+                      name="detalle"
+                      value={form.detalle}
+                      autoComplete="off"
+                      placeholder={`${phdetalle}`}
+                      onChange={handleChange}
+                      style={{
+                        width: '100%',
+                        minWidth: '100%',
+                        maxWidth: '100%',
+                        maxHeight: '148px',
+                        minHeight: '148px',
+                        fontSize: '18px',
+                        boxSizing: 'border-box',
+                        border: 'none',
+                        borderRadius: '3px',
+                        padding: '0 1.7rem',
+                        marginTop: '9px',
+                        fontFamily: fonts.base,
+                        fontWeight: 400,
+                        backgroundColor: 'transparent',
+                        boxShadow: null,
+                        outline: 0,
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6 sm-12">
+                    <div className="level">
+                      <MenuToggle
+                        defaultvalue={form.dificultad}
+                        handleLevel={handleLevel}
+                      />
+                    </div>
+                    <div className="content-select-cat">
+                      <SelectCat
+                        handleChangeCategori={handleChangeCategori}
+                        cat={cat}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6 sm-12">
+                    <div className="select-color ">
+                      <div className="row">
+                        <div className="col-9 sm-8">
+                          <div className="content-select">
+                            <Select
+                              colors={colors}
+                              handleChangeColorSelect={handleChangeColorSelect}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-3 sm-4">
+                          <input
+                            type="color"
+                            id="color"
+                            name="color"
+                            value={color}
+                            onChange={(e) => handleColor(e)}
+                            required
                           />
                         </div>
                       </div>
-                      <div className="col-3 sm-4">
-                        <input
-                          type="color"
-                          id="color"
-                          name="color"
-                          value={color}
-                          onChange={(e) => handleColor(e)}
-                          required
-                        />
+                    </div>
+                    <div className="content-bg-select row">
+                      <div
+                        className="col-6"
+                        onClick={() => handlesetBg(0)}
+                        role="presentation"
+                      >
+                        <div className="bg-0">contraste alto</div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="content-bg-select row">
-                    <div
-                      className="col-6"
-                      onClick={() => setBg(0)}
-                      role="presentation"
-                    >
-                      <div className="bg-0">contraste alto</div>
-                    </div>
-                    <div
-                      className="col-6"
-                      onClick={() => setBg(180)}
-                      role="presentation"
-                    >
-                      <div className="bg-255">contraste bajo</div>
+                      <div
+                        className="col-6"
+                        onClick={() => handlesetBg(240)}
+                        role="presentation"
+                      >
+                        <div className="bg-255">contraste bajo</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -160,7 +292,21 @@ function TallerItemAdd() {
             <div className="col-12">
               <div className="card-action">
                 <div>
-                  <button type="button">agregar taller</button>
+                  <button
+                    type="button"
+                    className="btn-dialog btn-cancel"
+                    onClick={() => colseDialog()}
+                  >
+                    cancelar
+                  </button>
+                  <div className="space" />
+                  <button
+                    className="btn-dialog"
+                    type="button"
+                    onClick={handleSave}
+                  >
+                    agregar taller
+                  </button>
                 </div>
               </div>
             </div>
@@ -187,12 +333,12 @@ function TallerItemAdd() {
           max-width: ${breakpoint.md};
           border: 1px solid #818181;
           border-radius: 3px;
+          padding: 0 !important;
         }
         .add-card-text .title {
           padding: 30px 30px 15px 15px;
         }
         .content-crop {
-          height: 500px;
           padding: 30px 15px 15px 30px;
           width: auto;
           margin: auto;
@@ -203,17 +349,17 @@ function TallerItemAdd() {
 
         .omrs-input-group {
           margin-bottom: 15px;
-          padding-top: 15px;
         }
         .omrs-input-group label input {
           border: none;
-          height: 60px;
-          padding: 0 1rem;
+          height: 50px;
+          padding: 25px 1rem 0;
           font-size: 23px;
           font-weight: bold;
           text-transform: uppercase;
           background: transparent;
           border: 2px solid transparent;
+          margin-bottom: 0;
         }
 
         .select-color {
@@ -289,17 +435,19 @@ function TallerItemAdd() {
         }
         .level {
           display: flex;
-          margin: 0 8px 30px 0;
+          margin: 0 8px 11px 0;
           padding: 0;
           height: 60px;
           border-radius: 3px;
           text-align: left;
           background: ${background};
         }
+        .content-select-cat {
+          padding: 0 8px 14px 0;
+        }
 
         .card-action {
           margin-top: 30px;
-
           text-align: right;
           background: rgb(255, 255, 255, 0.4);
         }
@@ -307,21 +455,6 @@ function TallerItemAdd() {
         .card-action div:first-child {
           padding: 15px 30px 15px;
           background: rgb(255, 255, 255, 0.4);
-        }
-
-        .card-action button {
-          border: none;
-          background-color: rgba(0, 0, 0, 0.5);
-          padding: 14px 28px;
-          margin: 0;
-          font-size: 16px;
-          line-height: 20px;
-          font-weight: bold;
-          cursor: pointer;
-          display: inline-block;
-          border-radius: 5px;
-          text-transform: uppercase;
-          color: white;
         }
 
         @media screen and (max-width: ${breakpoint.md}) {
@@ -339,6 +472,9 @@ function TallerItemAdd() {
           .content-crop {
             padding: 20px 20px 10px;
           }
+          .add-card-text {
+            margin: 0 !important;
+          }
         }
 
         @media screen and (max-width: ${breakpoint.sm}) {
@@ -349,7 +485,11 @@ function TallerItemAdd() {
           .level {
             margin-right: 0;
           }
+          .content-select-cat {
+            padding: 5px 0 14px;
+          }
         }
+
         @media screen and (max-width: ${breakpoint.xxs}) {
           .level {
             max-width: 280px;

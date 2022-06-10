@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   AiOutlineWarning,
   AiFillWarning,
@@ -16,16 +17,24 @@ function SuccessIcon() {
 }
 
 function Alert({ alert, setAlert }) {
+  const [outin, setOutin] = useState('dialog-in');
+  const [key, setKey] = useState('dialog-in');
   const date = alert ? new Date(alert.timestamp).toISOString() : '';
-  const setOutIn =
-    alert && alert.statusCode >= 200 && alert.statusCode <= 399
-      ? 'dialog-out'
-      : 'dialog-in';
+
+  useEffect(() => {
+    if (alert && alert.statusCode < 500) {
+      setOutin('dialog-out');
+    } else {
+      setOutin('dialog-in');
+    }
+    setKey(key + 1);
+  }, [alert]);
 
   return (
     <>
       <div
-        className={`add ${alert ? setOutIn : 'dialog-none'}`}
+        key={key}
+        className={`add ${alert ? outin : 'dialog-none'}`}
         onClick={() => setAlert(undefined)}
         role="presentation"
       >
@@ -43,7 +52,7 @@ function Alert({ alert, setAlert }) {
                     )}
                     {alert.statusCode > 499 && <ErrIcon />}
                   </i>
-                  {alert.statusCode >= 399 && (
+                  {alert.statusCode > 499 && (
                     <h1>Error ({alert.statusCode})</h1>
                   )}
                   <p>{alert.message}</p>
@@ -102,6 +111,7 @@ function Alert({ alert, setAlert }) {
           font-size: 20px;
           color: #666666;
           grid-column-start: 1;
+          text-transform: uppercase;
         }
         .alert .message small {
           color: #666666;
@@ -128,23 +138,31 @@ function Alert({ alert, setAlert }) {
           color: green;
         }
         .dialog-in {
-          display: block;
+          visibility: visible;
         }
         .dialog-none {
-          display: none;
+          visibility: hidden;
         }
         .dialog-out {
+          visibility: hidden;
           opacity: 0;
-          animation: out-dialog 2.8s forwards;
+          animation: out-dialog 2.3s forwards;
         }
         @keyframes out-dialog {
           0% {
+            visibility: visible;
             opacity: 1;
           }
           80% {
+            visibility: visible;
+            opacity: 1;
+          }
+          99% {
+            visibility: visible;
             opacity: 1;
           }
           100% {
+            visibility: hidden;
             opacity: 0;
           }
         }

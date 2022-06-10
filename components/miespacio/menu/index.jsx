@@ -1,19 +1,57 @@
+import { useState, useEffect } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
 import Image from 'next/image';
-import { colors, breakpoint } from '../../../styles/theme';
+import { colors, breakpoint, fonts } from '../../../styles/theme';
 
-export default function Menu({ setToggleLeft, toggleleft }) {
-  const categorias = [
-    'pintura',
-    'Ilustración',
-    'Dibujo',
-    'Encuadernación',
-    'impreción',
-    'Diseño',
-    'fotogrfia',
-    'audiovisual',
-    'arteterapia',
-  ];
+export default function Menu({
+  setToggleLeft,
+  toggleleft,
+  categorias,
+  mistalleres,
+  misrecursos,
+}) {
+  const [poriniciar, setPoriniciar] = useState(0);
+  const [encurso, setEncurso] = useState(0);
+  const [terminado, setTerminado] = useState(0);
+  const [video, setVideo] = useState(0);
+  const [actividad, setActividad] = useState(0);
+  const [test, setTest] = useState(0);
+  const [reunion, setReunion] = useState(0);
+  const [documento, setDocumento] = useState(0);
+
+  useEffect(() => {
+    setPoriniciar(mistalleres.filter((ele) => ele.status === false).length);
+    setEncurso(mistalleres.filter((ele) => ele.status === true).length);
+    setTerminado(mistalleres.filter((ele) => ele.status === null).length);
+  }, [mistalleres]);
+
+  useEffect(() => {
+    setVideo(
+      misrecursos.filter(
+        (ele) => !ele.status && ele.recursoitem.type === 'video'
+      ).length
+    );
+    setActividad(
+      misrecursos.filter(
+        (ele) => !ele.status && ele.recursoitem.type === 'actividad'
+      ).length
+    );
+    setTest(
+      misrecursos.filter(
+        (ele) => !ele.status && ele.recursoitem.type === 'test'
+      ).length
+    );
+    setReunion(
+      misrecursos.filter(
+        (ele) => !ele.status && ele.recursoitem.type === 'reunion'
+      ).length
+    );
+    setDocumento(
+      misrecursos.filter(
+        (ele) => !ele.status && ele.recursoitem.type === 'documento'
+      ).length
+    );
+  }, [misrecursos]);
   return (
     <>
       <div className={`menu-right ${toggleleft ? 'force-menu-right' : ''}`}>
@@ -36,8 +74,8 @@ export default function Menu({ setToggleLeft, toggleleft }) {
             <p className="subtitle">Por Categoría</p>
             <ul>
               {categorias.map((item) => (
-                <li key={item}>
-                  <a>{item}</a>
+                <li key={item._id}>
+                  <a>{item.nombre}</a>
                 </li>
               ))}
             </ul>
@@ -136,6 +174,17 @@ export default function Menu({ setToggleLeft, toggleleft }) {
             <p className="subtitle">Por Recursos</p>
             <ul>
               <li>
+                <a>video</a>
+                <span className="rec">
+                  <Image
+                    src="/images/ICONOGRUPAL.png"
+                    alt="portada-entrelazar"
+                    height="23px"
+                    width="23px"
+                  />
+                </span>
+              </li>
+              <li>
                 <a>actividades</a>
                 <span className="rec">
                   <Image
@@ -157,17 +206,7 @@ export default function Menu({ setToggleLeft, toggleleft }) {
                   />
                 </span>
               </li>
-              <li>
-                <a>grupal</a>
-                <span className="rec">
-                  <Image
-                    src="/images/ICONOGRUPAL.png"
-                    alt="portada-entrelazar"
-                    height="23px"
-                    width="23px"
-                  />
-                </span>
-              </li>
+
               <li>
                 <a>reunión tallerista</a>
                 <span className="rec">
@@ -180,7 +219,7 @@ export default function Menu({ setToggleLeft, toggleleft }) {
                 </span>
               </li>
               <li>
-                <a>docuento</a>
+                <a>documento</a>
                 <span className="rec">
                   <Image
                     src="/images/ICONODOCUMENTO.png"
@@ -192,18 +231,42 @@ export default function Menu({ setToggleLeft, toggleleft }) {
               </li>
             </ul>
             <h2>RECURSOS</h2>
-            <p>Descarga de documentos</p>
-            <p>Aplicación de test</p>
-            <p>Actividades lúdicas</p>
-            <p>Links de referencia</p>
-            <p>Multimedia</p>
+            <p>
+              Videos
+              <i>{video}</i>
+            </p>
+            <p>
+              Actividades
+              <i>{actividad}</i>
+            </p>
+            <p>
+              Aplicación de test
+              <i>{test}</i>
+            </p>
+            <p>
+              Reunion
+              <i>{reunion}</i>
+            </p>
+            <p>
+              Documentos
+              <i>{documento}</i>
+            </p>
             <h2>MIS ENTRELAZAR</h2>
-            <p>Mi lista de favoritos</p>
-            <p>En Curso</p>
+            <p>
+              Por iniciar
+              <i>{poriniciar}</i>
+            </p>
+            <p>
+              En Curso
+              <i>{encurso}</i>
+            </p>
+            <p>
+              Finalizados
+              <i>{terminado}</i>
+            </p>
             <h2>PERFIL ENTRELAZAR</h2>
             <p>Ver Perfil</p>
             <p>Mensajes</p>
-            <p>Mis Talleres</p>
             <p>Foro</p>
             <p>Configuración de cuenta</p>
             <p>Notificaciones</p>
@@ -216,8 +279,8 @@ export default function Menu({ setToggleLeft, toggleleft }) {
         .togle {
           position: absolute;
           top: 0;
-          right: 4px;
-          width: 54px;
+          right: -22px;
+          width: 86px;
           height: 3.7rem;
           transition: 0.3s;
         }
@@ -250,7 +313,7 @@ export default function Menu({ setToggleLeft, toggleleft }) {
           border-radius: 50%;
           border: none;
           margin-right: -0.4rem;
-          margin-top: 0.4rem;
+          margin-top: 65px;
           background: ${colors.green};
           font-size: 30px;
           font-weight: 400;
@@ -261,6 +324,10 @@ export default function Menu({ setToggleLeft, toggleleft }) {
           cursor: pointer;
           decoration: none;
           transition: 0.4s;
+          z-index: 3;
+        }
+        button:hover {
+          background-color: rgb(0, 0, 0, 0.3);
         }
         @media screen and (min-width: ${breakpoint.media}) {
           .force-no-togle button {
@@ -317,6 +384,21 @@ export default function Menu({ setToggleLeft, toggleleft }) {
           font-weight: 370;
           opacity: 0.9;
           margin: 0.3rem 0;
+        }
+        p i {
+          float: right;
+          margin-right: 12px;
+          background: white;
+          width: 30px;
+          color: black;
+          text-align: center;
+          font-size: 14.4px;
+          font-style: normal;
+          font-family: ${fonts.base};
+          font-weight: 500;
+          line-height: 18px;
+          border-radius: 3px;
+          opacity: 0.5;
         }
         .subtitle {
           margin: 0 0 2rem;

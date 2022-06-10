@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { getSession } from 'next-auth/react';
 import Portada from '../components/home/portada';
 import EquipoBlog from '../components/home/equipo';
 import TallerBlog from '../components/home/taller';
@@ -35,7 +36,8 @@ function Home({ equipos, tallers, actualidads }) {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
   try {
     await dbConnect();
     const res = await Equipo.find({}, { _id: 1, nombre: 1 });
@@ -66,7 +68,7 @@ export const getServerSideProps = async () => {
           return actualidad;
         });
 
-        return { props: { equipos, tallers, actualidads } };
+        return { props: { equipos, tallers, actualidads, session } };
       } catch (error) {
         return { props: { success: false, error: 'Error al cargar datos.' } };
       }

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { FaPlusCircle, FaTrashAlt, FaPen } from 'react-icons/fa';
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
+import dbConnect from '../../lib/dbConnect';
+import Usuario from '../../models/usuario';
 import Spiner from '../../components/Spiner';
 import { colors, breakpoint } from '../../styles/theme';
 import Alert from '../../components/utils/alert';
@@ -232,6 +235,8 @@ function Categorias() {
   const [namevalid, setNamevalid] = useState(undefined);
   const [alert, setAlert] = useState(undefined);
   const [keyrender, SetKeyrender] = useState(0);
+  const [scrolling, setScrolling] = useState(false);
+  const [scrollTop, setScrollTop] = useState(0);
 
   const handleError = (error) => {
     if (error.response && error.response.data && error.response.data.class) {
@@ -329,6 +334,16 @@ function Categorias() {
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    const onScroll = (e) => {
+      setScrollTop(e.target.documentElement.scrollTop);
+      setScrolling(e.target.documentElement.scrollTop > +100);
+    };
+    window.addEventListener('scroll', onScroll);
+
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [scrollTop]);
   return (
     <>
       {add && (
@@ -384,28 +399,34 @@ function Categorias() {
         </div>
       )}
 
-      <div className="nav-bar">
-        <div className="nav-bar-content">
-          <div className="row">
-            <div className="col-8 sm-12">
-              <h1 className="title">Categorías</h1>
-            </div>
-            <div className="col-4 sm-12 align-right">
-              <button
-                type="button"
-                className="btn-nav-bar"
-                onClick={() => handleEdit(_form)}
-              >
-                <i>
-                  <FaPlusCircle />
-                </i>
-                agregar categoría
-              </button>
+      <div className="container">
+        <div className="container-nav-bar">
+          <div
+            className={`${!scrolling ? 'nav-bar' : 'nav-bar nav-bar-hidden'} `}
+          >
+            <div className="nav-bar-content">
+              <div className="row">
+                <div className="col-8 sm-12">
+                  <h1 className={`${!scrolling ? 'title' : ' title-hidden'} `}>
+                    Categorías
+                  </h1>
+                </div>
+                <div className="col-4 sm-12 align-right">
+                  <button
+                    type="button"
+                    className="btn-nav-bar"
+                    onClick={() => handleEdit(_form)}
+                  >
+                    <i>
+                      <FaPlusCircle />
+                    </i>
+                    agregar categoría
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="container">
         <div className="content">
           <Render
             handleDelete={handleDelete}
@@ -441,32 +462,72 @@ function Categorias() {
         }
 
         .container {
+          max-width: 100%;
+          margin-top: 160px;
+          overflow-x: hidden;
           background: white;
         }
         .content {
-          background: white;
-          margin-top: 200px;
-          min-height: calc(100vh - 270px);
           padding: 1rem;
         }
+
         .nav-bar {
           background: ${colors.secondary_darken};
           padding: 1.7rem 1rem;
           align: center;
           position: fixed;
-          height: 200px;
+          top: 70px;
+          height: 180px;
           width: 100%;
+          z-index: 1;
+          transition: top 0.8s;
+          transition: all 0.8s ease;
         }
+        .title {
+          position: fixed;
+          top: 100px;
+          text-transform: uppercase;
+          font-weight: 1000;
+          padding-left: 30px;
+          font-size: 30px;
+          max-width: 90vw;
+          max-height: 30px;
+          float: left;
+          animation-name: title-on;
+          animation-duration: 1.3s;
+        }
+
+        .nav-bar-hidden {
+          top: -200px;
+        }
+        .title-hidden {
+          opacity: 0;
+        }
+        @keyframes title-on {
+          0% {
+            top: -200px;
+          }
+          80% {
+            top: 103px;
+          }
+          85% {
+            top: 100px;
+          }
+          90% {
+            top: 103px;
+          }
+          100% {
+            top: 100px;
+          }
+        }
+
         .nav-bar-content {
           max-width: ${breakpoint.media};
           padding: 0 1rem;
           align: center;
           margin: auto;
         }
-        .title {
-          text-transform: uppercase;
-          font-weight: 1000;
-        }
+
         .align-right {
           text-align: center;
         }
@@ -558,5 +619,40 @@ function Categorias() {
     </>
   );
 }
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (!session)
+    return {
+      redirect: {
+        destination: '/#login-modal',
+        permanent: false,
+      },
+    };
+  try {
+    await dbConnect();
+    const res = await Usuario.findOne(
+      { email: session.user.email },
+      { _id: 1, nombre: 1, nivel: 1 }
+    ).lean();
+
+    if (res.nivel > 1)
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+
+    return { props: { session, usersection: false } };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+};
 
 export default Categorias;

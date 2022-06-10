@@ -113,7 +113,7 @@ function Team({ success, error, tiendas, equipo, equipos }) {
                       <div className="col-img">
                         <div className="img">
                           <Image
-                            src={`/images/tienda-blog-${item._id}.png`}
+                            src={`${S_URL}/uploadimg/image/tienda-blog-${item._id}.png`}
                             alt={item.nombre}
                             objectFit="cover"
                             layout="fill"

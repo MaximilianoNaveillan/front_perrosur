@@ -7,7 +7,7 @@ export default function Tienda() {
   return (
     <>
       <div className="card_title">
-        <h1 className="title">TIENDA</h1>
+        <h1 className="title">PORTAFOLIO</h1>
       </div>
       <div className="card_2">
         <div className="icon-primary">
@@ -25,7 +25,7 @@ export default function Tienda() {
         <div className="icon-primary">
           <div className="contentbutton">
             <Link href="/tienda" passHref>
-              <button type="button">Ingresa a nuestra tienda</button>
+              <button type="button">Ingresa al portafolio</button>
             </Link>
           </div>
         </div>

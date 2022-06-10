@@ -370,7 +370,7 @@ export default function EquipoForm({ path, _class }) {
                       <h4>Imagen de blog</h4>
                       <CropImg
                         handleCropImg={handleCropImgBlog}
-                        aspect={Number(2 / 3)}
+                        aspect={Number(3 / 4)}
                         _key="2"
                         key="img-upload-2"
                         contentheight="80vh"

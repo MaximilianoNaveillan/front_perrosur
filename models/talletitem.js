@@ -16,12 +16,19 @@ const TalleritemSchema = new mongoose.Schema({
   usuarios: Array,
   calendar: Array,
   recursos: Array,
-  modulos: Array,
+  modulos: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Modulo',
+    },
+  ],
   categoria: Array,
   duracion: Array,
   dificultad: Array,
   incluyereunion: Boolean,
   incluyerecursos: Boolean,
+  requierepantalla: Boolean,
+  asincronico: Boolean,
   sincronico: Boolean,
   status: Boolean,
 });

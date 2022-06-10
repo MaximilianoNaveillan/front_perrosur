@@ -20,29 +20,18 @@ const _routes = [
   },
   {
     name: 'recursos',
-    menu: true,
-    items: [
-      { name: 'Descarga de documentos', route: '/#equipo' },
-      { name: 'Aplicación detest', route: '/#taller' },
-      { name: 'Actividades Lúdicas', route: '/#que_hacemos' },
-      { name: 'Links de referencias', route: '/#dossier' },
-      { name: 'Multimedias', route: '/#que_hacemos' },
-    ],
+    menu: false,
     route: '/miespacio',
     icon: 'FaUsers',
   },
   {
     name: 'Mis entrelazar',
-    menu: true,
-    items: [
-      { name: 'Iniciados', route: '/#equipo' },
-      { name: 'Sin iniciar', route: '/#taller' },
-      { name: 'Completados', route: '/#que_hacemos' },
-    ],
+    menu: false,
     route: '/miespacio',
     icon: 'FaUsers',
   },
 ];
+
 export default function Navbarapp({ pathname, data, status, usuario }) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [classModal, setClassModal] = useState('modal-window');
@@ -62,25 +51,30 @@ export default function Navbarapp({ pathname, data, status, usuario }) {
   };
 
   useEffect(() => {
-    if (usuario.nivel < 3) {
-      const defaultroutes = [
-        { name: 'gestionar Talleres', route: '/miespacio/gestiontalleritem' },
-      ];
-      const nwroutes =
-        usuario.nivel === 1
-          ? [
-              { name: 'Blog', route: '/miespacio/blog' },
-              { name: 'Categorias', route: '/miespacio/categorias' },
-            ].concat(defaultroutes)
-          : defaultroutes;
-      const nwitem = {
-        name: 'mis parametros',
-        menu: true,
-        items: nwroutes,
-        route: '/miespacio',
-        icon: 'FaUsers',
-      };
-      setRoutes([..._routes, nwitem]);
+    if (usuario) {
+      if (usuario.nivel < 3) {
+        const defaultroutes = [
+          { name: 'gestionar Talleres', route: '/miespacio/gestiontalleritem' },
+        ];
+        const nwroutes =
+          usuario.nivel === 1
+            ? [
+                { name: 'Blog', route: '/miespacio/blog' },
+                { name: 'Categorias', route: '/miespacio/categorias' },
+                { name: 'Gestionar usuarios', route: '/miespacio/usuarios' },
+              ].concat(defaultroutes)
+            : defaultroutes;
+        const nwitem = {
+          name: 'mis parametros',
+          menu: true,
+          items: nwroutes,
+          route: '/miespacio',
+          icon: 'FaUsers',
+        };
+        setRoutes([..._routes, nwitem]);
+      } else {
+        setRoutes([..._routes]);
+      }
     } else {
       setRoutes([..._routes]);
     }
@@ -238,6 +232,7 @@ export default function Navbarapp({ pathname, data, status, usuario }) {
         usersession={data}
         _class={classModal}
       />
+
       <style jsx>{styles}</style>
     </>
   );

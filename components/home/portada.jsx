@@ -7,19 +7,23 @@ export default function Portada() {
     <>
       <div className="container">
         <Image
-          src="/images/portada.jpg"
+          src="/images/portada.png"
           alt="portada-entrelazar"
           objectFit="cover"
           unoptimized
           loading="eager"
           layout="fill"
           placeholder="blur"
-          blurDataURL="/images/portada.jpg"
+          blurDataURL="/images/portada.png"
           priority
         />
         <div className="content-image">
           <div>
-            <Image src="/images/acuarela.png" layout="fill" />
+            <Image
+              alt="portada-entrelazar2"
+              src="/images/acuarela.png"
+              layout="fill"
+            />
           </div>
         </div>
         <div className="card">
@@ -27,7 +31,7 @@ export default function Portada() {
             <div className="border-text " />
             <div className="card-text">
               <h1>TALLER PERROSUR</h1>
-              <p>Un espacio para de co-creación y aprendizaje</p>
+              <p>Un espacio para co-creación y aprendizaje</p>
               <div className="contentbutton">
                 <Link href="/taller" passHref>
                   <button type="button">Conoce más de nosotros</button>

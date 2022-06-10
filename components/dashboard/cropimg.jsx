@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Cropper from 'react-easy-crop';
 import { FaImage } from 'react-icons/fa';
-import Image from 'next/image';
 import { colors } from '../../styles/theme';
 
 import { generateDownload } from '../utils/cropImage';
@@ -13,6 +12,7 @@ export default function CropImg({
   aspect,
   contentheight,
   url,
+  handleDelete,
 }) {
   const inputRef = useRef(null);
   const inputRef2 = useRef(null);
@@ -25,6 +25,11 @@ export default function CropImg({
   const [croppedArea, setCroppedArea] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+
+  const handleDeleteImg = () => {
+    setImage(null);
+    handleDelete(null);
+  };
 
   const onCropComplete = (_croppedAreaPercentage, croppedAreaPixels) => {
     setCroppedArea(croppedAreaPixels);
@@ -53,7 +58,6 @@ export default function CropImg({
   useEffect(() => {
     if (image) onDownload();
   }, [zoom]);
-
   return (
     <>
       <div className="container">
@@ -73,15 +77,15 @@ export default function CropImg({
               <div className={url ? 'image-container' : 'add-image-container'}>
                 {url ? (
                   <div className="image-content">
-                    <div className="img">
-                      <Image
-                        src={url}
-                        alt={_key}
-                        objectFit="cover"
-                        layout="fill"
-                        priority
-                      />
-                    </div>
+                    <div
+                      className="img"
+                      style={{
+                        backgroundImage: `url(${url})`,
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center center',
+                      }}
+                    />
                   </div>
                 ) : (
                   <label htmlFor={`updateimage${_key}`}>
@@ -117,7 +121,7 @@ export default function CropImg({
                 <button
                   type="button"
                   className="btntab"
-                  onClick={() => setImage(null)}
+                  onClick={handleDeleteImg}
                 >
                   ELIMINAR
                 </button>
@@ -173,7 +177,7 @@ export default function CropImg({
           justify-content: center;
           text-align: center;
           border: 3px dashed #2f2f30;
-          height: 400px;
+          height: calc(400px / ${aspect});
           width: calc(400px * ${aspect});
         }
         .add-image-container {

@@ -8,7 +8,14 @@ const nextConfig = {
     SERVER_URL: process.env.SERVER_URL,
   },
   images: {
-    domains: [process.env.SERVER_DOMAIN, 'lh3.googleusercontent.com'],
+    domains: [
+      process.env.SERVER_DOMAIN,
+      'lh3.googleusercontent.com',
+      'localhost',
+      'tallerperrosur.cl',
+    ],
+    disableStaticImages: true,
+    deviceSizes: [640, 768, 1024, 1280, 1536],
   },
 };
 

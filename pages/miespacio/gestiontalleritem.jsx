@@ -1,22 +1,313 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import { FaPlusCircle } from 'react-icons/fa';
+import axios from 'axios';
 import dbConnect from '../../lib/dbConnect';
 import Usuario from '../../models/usuario';
-import Talleritem from '../../models/talletitem';
 import { colors, breakpoint } from '../../styles/theme';
 import Spiner from '../../components/Spiner';
 import ItemAdd from '../../components/dashboard/talleritem/itemeadd';
+import Alert from '../../components/utils/alert';
+import { dataURLtoFile } from '../../components/utils/dataURLtoFile';
+import Items from '../../components/dashboard/talleritem/items';
+import ItemsRecursos from '../../components/dashboard/talleritem/itemrecurso';
 
-function TallerItem({ talleritem }) {
+const S_URL = process.env.SERVER_URL;
+const defaulterror = {
+  statusCode: 500,
+  timestamp: new Date().toISOString(),
+  class: 'server-error',
+  message: '¡ Error del servidor, no se puede obtener taller !',
+};
+const defaulterrorcat = {
+  statusCode: 500,
+  timestamp: new Date().toISOString(),
+  class: 'server-error',
+  message: '¡ Error del servidor, no se puede obtener categorías !',
+};
+const defaulterrortaller = {
+  statusCode: 500,
+  timestamp: new Date().toISOString(),
+  class: 'server-error',
+  message: '¡ Error del servidor, no se puede obtener talleres !',
+};
+
+const _form = {
+  titulo: '',
+  detalle: '',
+  resumen: '',
+  color: '#ffffff',
+  bg: 0,
+  tallerista: '',
+  categoria: '',
+  duracion: '',
+  dificultad: 1,
+  imagen: '00',
+};
+
+function TallerItem({ tallerista }) {
   const [load, setload] = useState(false);
   const [add, setAdd] = useState(false);
-  // console.log(session);
+  const [recurso, setRecurso] = useState(null);
+  const [alert, setAlert] = useState(undefined);
+  const [cat, setCat] = useState([]);
+  const [keyrender, SetKeyrender] = useState(0);
+  const [items, setItems] = useState([]);
+  const [squeleton, setSqueleton] = useState(true);
+  const [scrolling, setScrolling] = useState(false);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [form, setForm] = useState(_form);
+
+  const hadleMountTaller = () => {
+    const body = { tallerista: tallerista._id };
+    axios
+      .patch(`/api/talleritem`, body)
+      .then((res) => {
+        setItems(res.data.talleres);
+        setSqueleton(false);
+        SetKeyrender(keyrender + 1);
+        setload(false);
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.class
+        ) {
+          setAlert(error.response.data);
+        } else {
+          setAlert(defaulterrortaller);
+        }
+      });
+  };
+
+  const hadleMountCat = () => {
+    axios
+      .get(`/api/categoria`)
+      .then((res) => {
+        const _cat = Array.from(res.data.categoria).map((obj) => ({
+          value: `${obj._id}`,
+          label: `${obj.nombre.charAt(0).toUpperCase() + obj.nombre.slice(1)}`,
+        }));
+        setCat(_cat);
+        hadleMountTaller();
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.class
+        ) {
+          setAlert(error.response.data);
+        } else {
+          setAlert(defaulterrorcat);
+        }
+      });
+  };
+
+  const handleImageData = async (imageData, data) => {
+    if (form._id) {
+      const inc = Number(data.taller.imagen) - 1;
+      const name = `${data.taller._id}-0${inc.toString()}.png`;
+      const fileName = `taller-item-${name}`;
+      axios.delete(`${S_URL}/uploadimg/${fileName}`);
+    }
+    const body = new FormData();
+    const imgFile = dataURLtoFile(
+      imageData,
+      `taller-item-${data.taller._id}-${data.taller.imagen}.png`
+    );
+    body.append('file', imgFile);
+    axios
+      .post(`${S_URL}/uploadimg`, body, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(() => {
+        setAlert(data);
+        hadleMountTaller();
+        setload(false);
+        setAdd(false);
+      })
+      .catch(() => {
+        setAlert({
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+          class: 'server-error',
+          message: '¡ Error del servidor, no se puede cargar la imagen !',
+        });
+      });
+  };
+
+  const handleCreate = (imageData) => {
+    setload(true);
+    axios
+      .post(`${S_URL}/talleritem`, form, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        handleImageData(imageData, res.data);
+      })
+      .catch((error) => {
+        setload(false);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.class
+        ) {
+          setAlert(error.response.data);
+        } else {
+          setAlert(defaulterror);
+        }
+      });
+  };
+
+  const handlePut = (imageData) => {
+    const id = form._id;
+    setload(true);
+    axios
+      .put(`${S_URL}/talleritem/${id}`, form, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        if (imageData) {
+          handleImageData(imageData, res.data);
+        } else {
+          setAlert(res.data);
+          hadleMountTaller();
+          setload(false);
+          setAdd(false);
+        }
+      })
+      .catch((error) => {
+        setload(false);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.class
+        ) {
+          setAlert(error.response.data);
+        } else {
+          setAlert(defaulterror);
+        }
+      });
+  };
+
+  const handlePost = (imageData) => {
+    if (form._id) {
+      handlePut(imageData);
+    } else {
+      handleCreate(imageData);
+    }
+  };
+  const handleEdit = (item) => {
+    setForm(item);
+    setAdd(true);
+  };
+
+  const handleChange = (itemform, id) => {
+    setload(true);
+    axios
+      .put(`${S_URL}/talleritem/${id}`, itemform, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        hadleMountTaller();
+      })
+      .catch((error) => {
+        setload(false);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.class
+        ) {
+          setAlert(error.response.data);
+        } else {
+          setAlert(defaulterror);
+        }
+      });
+  };
+  const handleDelete = (item) => {
+    const id = item._id;
+    const fileName = `taller-item-${id}-${item.imagen}.png`;
+    axios.delete(`${S_URL}/uploadimg/${fileName}`);
+
+    axios
+      .delete(`${S_URL}/talleritem/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        setAlert(res.data);
+        hadleMountTaller();
+        setload(false);
+      })
+      .catch((error) => {
+        setload(false);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.class
+        ) {
+          setAlert(error.response.data);
+        } else {
+          setAlert(defaulterror);
+        }
+      });
+  };
+
+  useEffect(() => {
+    hadleMountCat();
+  }, []);
+
+  useEffect(() => {
+    if (!add) setForm(_form);
+  }, [add]);
+
+  useEffect(() => {
+    const onScroll = (e) => {
+      setScrollTop(e.target.documentElement.scrollTop);
+      setScrolling(e.target.documentElement.scrollTop > scrollTop);
+    };
+    window.addEventListener('scroll', onScroll);
+
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [scrollTop]);
+
+  const imageurl = S_URL;
   return (
     <>
+      {recurso && recurso._id && (
+        <div key={`add-${keyrender}`} className="add">
+          <ItemsRecursos
+            setRecurso={setRecurso}
+            recurso={recurso}
+            handlePut={handlePut}
+            hadleMountTaller={hadleMountTaller}
+            setload={setload}
+          />
+        </div>
+      )}
       {add && (
-        <div className="add" onClick={() => setAdd(false)} role="presentation">
-          <ItemAdd />
+        <div className="add">
+          <ItemAdd
+            imageurl={imageurl}
+            setAdd={setAdd}
+            setAlert={setAlert}
+            cat={cat}
+            tallerista={tallerista}
+            handlePost={handlePost}
+            form={form}
+            setForm={setForm}
+          />
         </div>
       )}
       {load && (
@@ -28,41 +319,47 @@ function TallerItem({ talleritem }) {
           </div>
         </div>
       )}
-      <div className="nav-bar">
-        <div className="nav-bar-content">
-          <div className="row">
-            <div className="col-8 sm-12">
-              <h1 className="title">Mis talleres</h1>
-            </div>
-            <div className="col-4 sm-12 align-right">
-              <button
-                type="button"
-                className="btn-nav-bar"
-                onClick={() => setAdd(true)}
-              >
-                <i>
-                  <FaPlusCircle />
-                </i>
-                agregar taller
-              </button>
+
+      <div className="container-nav-bar">
+        <div className={!scrolling ? 'nav-bar' : 'nav-bar nav-bar-hidden'}>
+          <div className="nav-bar-content">
+            <div className="row">
+              <div className="col-8 sm-12">
+                <h1 className="title">Mis talleres</h1>
+              </div>
+              <div className="col-4 sm-12 align-right">
+                <button
+                  type="button"
+                  className="btn-nav-bar"
+                  onClick={() => setAdd(true)}
+                >
+                  <i>
+                    <FaPlusCircle />
+                  </i>
+                  agregar taller
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="container">
-        <div className="content">
-          {talleritem && (
-            <>
-              {talleritem.map((item) => (
-                <div className="card" key={item._id}>
-                  <div className="row">
-                    <div className="col-12">{item.titulo}</div>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
+      <div
+        className={`container ${
+          (recurso && recurso._id) || add ? 'container-hidde-hoverflow' : ''
+        }`}
+      >
+        <div className="content" key={keyrender}>
+          <Items
+            readonly={false}
+            items={items}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            handleChange={handleChange}
+            squeleton={squeleton}
+            setRecurso={setRecurso}
+          />
         </div>
+        <Alert alert={alert} setAlert={setAlert} />
       </div>
 
       <style jsx>{`
@@ -70,7 +367,7 @@ function TallerItem({ talleritem }) {
           position: fixed;
           top: 0;
           right: 0;
-          background-color: rgba(255, 255, 255, 0.45);
+          background-color: transparent;
           height: 100%;
           width: 100%;
           z-index: 3;
@@ -95,22 +392,32 @@ function TallerItem({ talleritem }) {
           width: 100%;
           z-index: 3;
         }
-        .container {
-          background: white;
-        }
-        .content {
-          background: white;
-          margin-top: 200px;
-          min-height: calc(100vh - 70px);
-          padding: 1rem;
-        }
+
         .nav-bar {
           background: ${colors.magenta};
           padding: 1.7rem 1rem;
           align: center;
           position: fixed;
-          height: 200px;
+          top: 70px;
+          height: 160px;
           width: 100%;
+          z-index: 1;
+          transition: top 0.8s;
+        }
+        .nav-bar-hidden {
+          top: -200px;
+        }
+        .container {
+          max-width: 100%;
+          margin-top: 160px;
+          overflow-x: hidden;
+        }
+        .container-hidde-hoverflow {
+          overflow: hidden;
+          max-height: calc(100vh - 230px);
+        }
+        .content {
+          padding: 1rem;
         }
         .nav-bar-content {
           max-width: ${breakpoint.media};
@@ -153,7 +460,6 @@ function TallerItem({ talleritem }) {
           background: rgba(104, 104, 104, 0.5);
         }
         .card {
-          background: red;
           margin: 2rem 0;
         }
         @media screen and (max-width: ${breakpoint.xs}) {
@@ -164,6 +470,7 @@ function TallerItem({ talleritem }) {
         }
         @media screen and (max-width: ${breakpoint.xxs}) {
           .btn-nav-bar {
+            margin-top: 10px;
             font-size: 11px;
           }
         }
@@ -183,7 +490,15 @@ export const getServerSideProps = async (context) => {
     };
   try {
     await dbConnect();
-    const res = await Usuario.findOne({ email: session.user.email });
+    const res = await Usuario.findOne(
+      { email: session.user.email },
+      { _id: 1, nombre: 1 }
+    ).lean();
+
+    const tallerista = {
+      nombre: res.nombre,
+      _id: `${res._id}`,
+    };
 
     if (res.nivel > 2)
       return {
@@ -192,27 +507,8 @@ export const getServerSideProps = async (context) => {
           permanent: false,
         },
       };
-    try {
-      await dbConnect();
-      const _talleritem = await Talleritem.find({});
-      const talleritem = _talleritem.map((doc) => {
-        const taller = doc.toObject();
-        // eslint-disable-next-line no-underscore-dangle
-        taller._id = `${taller._id}`;
-        taller.inicio = taller.inicio.toString();
-        taller.termino = taller.termino.toString();
-        return taller;
-      });
 
-      return { props: { session, talleritem } };
-    } catch (error) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      };
-    }
+    return { props: { session, tallerista } };
   } catch (error) {
     return {
       redirect: {

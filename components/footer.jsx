@@ -21,7 +21,7 @@ export default function Footer() {
   const routes = [
     { key: 0, name: 'inicio', route: '/', icon: 'FaHome' },
     { key: 1, name: 'quienes somos', route: '/#que_hacemos', icon: 'FaUsers' },
-    { key: 2, name: 'tienda', route: '/tienda', icon: 'FaStore' },
+    { key: 2, name: 'portafolio', route: '/tienda', icon: 'FaStore' },
     { key: 3, name: 'actualidad', route: '/#actualidad', icon: 'FaNewspaper' },
     { key: 4, name: 'recursos', route: '/', icon: 'FaCogs' },
     { key: 5, name: 'contacto', route: '/#dossier', icon: 'FaAddressCard' },
@@ -113,7 +113,7 @@ export default function Footer() {
                   <i>
                     <FaMailBulk />
                   </i>
-                  <span>contacto@tallerperrosur.cl</span>
+                  <span>contacto@perrosurvalparaiso@gmail.com</span>
                 </div>
               </div>
             </div>

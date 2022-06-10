@@ -3,10 +3,14 @@ import css from 'styled-jsx/css';
 import { colors, fonts, breakpoint } from '../styles/theme';
 
 export default css.global`
+  html {
+    overflow-y: scroll;
+  }
   html,
   body {
     font-family: ${fonts.base};
-    background: ${colors.secondary_lighten};
+    background: white;
+
     scroll-behavior: smooth;
     z-index: 1;
   }
@@ -53,6 +57,7 @@ export default css.global`
     width: 280px;
     max-width: 280px;
     transition: 0.6s;
+    z-index: 2;
   }
   .force-menu-right {
     width: auto;
@@ -94,7 +99,11 @@ export default css.global`
     display: flex;
     flex-wrap: wrap;
   }
-
+  .col-0 {
+    width: 0px;
+    max-width: 0px;
+    visibility: hidden;
+  }
   /* 1/12 */
   .col-1 {
     width: 8.33%;
@@ -159,6 +168,11 @@ export default css.global`
     .content {
       width: 100%;
     }
+    .md-0 {
+      width: 0px;
+      max-width: 0px;
+      visibility: hidden;
+    }
     .md-12 {
       width: 100%;
     }
@@ -168,6 +182,9 @@ export default css.global`
     .md-7 {
       width: 58.33%;
     }
+    .md-9 {
+      width: 75%;
+    }
     .md-3 {
       width: 25%;
     }
@@ -176,19 +193,41 @@ export default css.global`
     .sm-12 {
       width: 100%;
     }
+    .sm-3 {
+      width: 25%;
+    }
     .sm-6 {
       width: 50%;
     }
     .sm-8 {
       width: 66.66%;
     }
+    .sm-9 {
+      width: 75%;
+    }
     .sm-4 {
       width: 33.33%;
+    }
+    .sm-0 {
+      width: 0px;
+      max-width: 0px;
+      visibility: hidden;
     }
   }
   @media screen and (max-width: ${breakpoint.xs}) {
     .xs-12 {
       width: 100%;
+    }
+    .xs-0 {
+      width: 0px;
+      max-width: 0px;
+      visibility: hidden;
+    }
+    .xs-4 {
+      width: 33.33%;
+    }
+    .xs-5 {
+      width: 41.66%;
     }
     .xs-6 {
       width: 50%;
@@ -206,8 +245,19 @@ export default css.global`
     }
   }
   @media screen and (max-width: ${breakpoint.xxs}) {
+    .xxs-0 {
+      width: 0px;
+      max-width: 0px;
+      visibility: hidden;
+    }
     .xxs-12 {
       width: 100%;
+    }
+    .xxs-2 {
+      width: 16.66%;
+    }
+    .xxs-10 {
+      width: 83.33%;
     }
   }
   .aspect-1 {
@@ -349,6 +399,92 @@ export default css.global`
     border-radius: 3px;
     padding: 1.7rem 1rem 0;
     background: white;
+  }
+
+  .btn-dialog {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 14px 28px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 5px;
+    text-transform: uppercase;
+    color: white;
+  }
+
+  .btn-cancel {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: rgb(070, 070, 070) !important;
+  }
+
+  .space {
+    display: inline-flex;
+    width: 15px;
+  }
+
+  .select-pop-up {
+    display: flex;
+    position: fixed;
+    top: -100%;
+    left: 0;
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+  }
+  .select-pop-up-on {
+    top: 0;
+    padding: 0 1rem;
+  }
+  .select-pop-up .popup {
+    background: white;
+    width: ${breakpoint.xxs};
+    max-width: ${breakpoint.xxs};
+    margin: auto;
+    border-radius: 5px;
+  }
+  .select-pop-up .popup .ul {
+    border-radius: 5px;
+    margin: 3px 0;
+  }
+  .select-pop-up .popup .ul .li {
+    height: 50px;
+    border-bottom: 1px solid #ddd;
+    line-height: 50px;
+    padding: 0 15px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .select-pop-up .popup .ul .li span {
+    height: 50px;
+    line-height: 50px;
+    margin-left: 15px;
+    padding-left: 10px;
+    border-left: 1px solid #818181;
+  }
+  .select-pop-up .popup .ul .li i {
+    display: inline-block;
+    height: 100%;
+    line-height: 50px;
+    height: 50px;
+    padding-top: 7.5px;
+  }
+  .select-pop-up .popup .ul .li:hover {
+    background: rgb(0, 0, 0, 0.1);
+  }
+
+  @media screen and (max-width: ${breakpoint.xs}) {
+    .btn-dialog {
+      padding: 10px;
+      font-size: 11px;
+    }
+    .space {
+      width: 5px;
+    }
   }
 
   @keyframes fade-in {
