@@ -1,5 +1,7 @@
 import dbConnect from '../../lib/dbConnect';
 import Talleritem from '../../models/talletitem';
+import Modulo from '../../models/modulo';
+import Recurso from '../../models/recurso';
 
 export default async function handler(req, res) {
   // console.log(req.headers.cookie);
@@ -23,10 +25,16 @@ export default async function handler(req, res) {
     case 'PATCH':
       try {
         const talleres = await Talleritem.find(req.body)
-          .populate({
-            path: 'modulos',
-            model: 'Modulo',
-          })
+          .populate([
+            {
+              path: 'modulos',
+              model: Modulo,
+              populate: {
+                path: 'recursos',
+                model: Recurso,
+              },
+            },
+          ])
           .lean();
 
         return res.status(200).json({ success: true, talleres });

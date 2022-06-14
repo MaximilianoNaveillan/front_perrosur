@@ -476,6 +476,35 @@ export default css.global`
   .select-pop-up .popup .ul .li:hover {
     background: rgb(0, 0, 0, 0.1);
   }
+  .confirm {
+    margin-top: 14px;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 20px;
+  }
+  .confirm-action {
+    display: block;
+    text-align: end;
+  }
+  .btn-nav-bar {
+    border: none;
+    background-color: rgba(7, 166, 224, 1);
+    padding: 14px 28px;
+    margin: 2rem 0 14px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 5px;
+    transition: 0.3s;
+    text-transform: uppercase;
+    color: white;
+  }
+  .cancel {
+    background: #818181;
+    margin-right: 10px;
+  }
 
   @media screen and (max-width: ${breakpoint.xs}) {
     .btn-dialog {
@@ -484,6 +513,9 @@ export default css.global`
     }
     .space {
       width: 5px;
+    }
+    .confirm {
+      font-size: 16px;
     }
   }
 

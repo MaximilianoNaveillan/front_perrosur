@@ -90,7 +90,7 @@ function Render({ handleDelete, setAlert, handleEdit }) {
                     role="presentation"
                   >
                     <div className="confirm">
-                      ¿ Confirmaseliminar {remove.nombre} ?
+                      ¿ Confirmas eliminar {remove.nombre} ?
                     </div>
                     <div className="confirm-action">
                       <button

@@ -4,7 +4,12 @@ const ModuloSchema = new mongoose.Schema({
   type: String,
   nombre: String,
   detalle: String,
-  recursos: Object,
+  recursos: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Recurso',
+    },
+  ],
   start: Date,
   end: Date,
   calendar: Object,

@@ -18,18 +18,18 @@ const _routes = [
     route: '/miespacio',
     icon: 'FaUsers',
   },
-  {
-    name: 'recursos',
-    menu: false,
-    route: '/miespacio',
-    icon: 'FaUsers',
-  },
-  {
-    name: 'Mis entrelazar',
-    menu: false,
-    route: '/miespacio',
-    icon: 'FaUsers',
-  },
+  // {
+  //   name: 'recursos',
+  //   menu: false,
+  //   route: '/miespacio',
+  //   icon: 'FaUsers',
+  // },
+  // {
+  //   name: 'Mis entrelazar',
+  //   menu: false,
+  //   route: '/miespacio',
+  //   icon: 'FaUsers',
+  // },
 ];
 
 export default function Navbarapp({ pathname, data, status, usuario }) {

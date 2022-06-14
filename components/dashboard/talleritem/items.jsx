@@ -12,11 +12,24 @@ function Card({
   handleSetTime,
   handleChange,
   setRecurso,
+  handleHidden,
 }) {
   const background = `rgb(${item.bg},${item.bg},${item.bg},0.2)`;
   return (
     <>
-      <div className="taller-items-card">
+      <div className="taller-items-card ">
+        {item.type === 'hidden' && (
+          <div>
+            <button
+              onClick={() => handleHidden(item._id, { type: '' })}
+              className="btn-restaurar"
+              type="button"
+            >
+              RESTAURAR
+            </button>
+            <div className="hidden-add" />
+          </div>
+        )}
         <div className="row">
           <div className="col-4 sm-3 xs-5 xxs-12">
             <div className="taller-items-card-image ">
@@ -361,6 +374,26 @@ function Card({
           box-shadow: 0.85rem 0.85rem 0px -4px ${item.color};
           background-clip: content-box;
         }
+        .card-hidden {
+          opacity: 0.5;
+          color: red;
+          background: white !important;
+          box-shadow: none;
+          border-color: grey;
+        }
+        .hidden-add {
+          position: absolute;
+          height: calc(100% + 1.4rem);
+          width: calc(100% + 1.4rem);
+          margin-top: -1.2rem;
+          margin-left: -1.2rem;
+          background: white;
+          z-index: 1;
+          opacity: 0.7;
+          -webkit-box-shadow: 0.7rem 0.7rem 0px -4px white;
+          box-shadow: 0.85rem 0.85rem 0px -4px white;
+          background-clip: content-box;
+        }
         .row {
           position: relative;
         }
@@ -593,6 +626,22 @@ function Card({
           text-transform: uppercase;
           color: black;
         }
+        .btn-restaurar {
+          position: fixed;
+          border: 3px solid black;
+          background-color: black;
+          padding: 10px 28px;
+          margin: auto;
+          font-size: 16px;
+          line-height: 20px;
+          font-weight: bold;
+          cursor: pointer;
+          display: inline-block;
+          transition: 0.3s;
+          text-transform: uppercase;
+          color: white;
+          z-index: 2;
+        }
         @media screen and (max-width: ${breakpoint.xs}) {
           .btn-continuar {
             font-size: 13px;
@@ -625,6 +674,7 @@ function RenderTallerItems({
   handleChange,
   squeleton,
   setRecurso,
+  handleHidden,
 }) {
   const [remove, setRemove] = useState(null);
   const [time, setTime] = useState(null);
@@ -739,6 +789,7 @@ function RenderTallerItems({
                 handleSetTime={handleSetTime}
                 handleChange={handleChange}
                 setRecurso={setRecurso}
+                handleHidden={handleHidden}
               />
             </div>
           ))}
@@ -755,7 +806,7 @@ function RenderTallerItems({
                   role="presentation"
                 >
                   <div className="confirm">
-                    ¿ Confirmaseliminar {remove.nombre} ?
+                    ¿ Confirmas eliminar {remove.nombre} ?
                   </div>
                   <div className="confirm-action">
                     <button
@@ -823,35 +874,7 @@ function RenderTallerItems({
             background-position: 315px 0, 0 0, 0 190px, 50px 195px;
           }
         }
-        .confirm {
-          margin-top: 14px;
-          text-transform: uppercase;
-          text-align: center;
-          font-size: 20px;
-        }
-        .confirm-action {
-          display: block;
-          text-align: end;
-        }
-        .btn-nav-bar {
-          border: none;
-          background-color: rgba(7, 166, 224, 1);
-          padding: 14px 28px;
-          margin: 2rem 0 14px;
-          font-size: 16px;
-          line-height: 20px;
-          font-weight: bold;
-          cursor: pointer;
-          display: inline-block;
-          border-radius: 5px;
-          transition: 0.3s;
-          text-transform: uppercase;
-          color: white;
-        }
-        .cancel {
-          background: #818181;
-          margin-right: 10px;
-        }
+
         @media screen and (max-width: ${breakpoint.sm}) {
           .squeleton-text {
             display: none;
@@ -864,9 +887,6 @@ function RenderTallerItems({
           .btn-nav-bar {
             font-size: 13px;
             padding: 7px 14px;
-          }
-          .confirm {
-            font-size: 16px;
           }
         }
         @media screen and (max-width: ${breakpoint.xxs}) {

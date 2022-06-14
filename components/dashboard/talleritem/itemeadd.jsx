@@ -3,7 +3,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 import { colors, breakpoint, fonts } from '../../../styles/theme';
 import CropImg from '../cropimg';
 import Select from './selectcolor';
-import SelectCat from './selectcategoria';
+import Eselect from './Eselect';
 import MenuToggle from './menutogglelevel';
 
 function TallerItemAdd({
@@ -11,6 +11,7 @@ function TallerItemAdd({
   setAdd,
   cat,
   tallerista,
+  talleristas,
   setAlert,
   handlePost,
   form,
@@ -60,13 +61,6 @@ function TallerItemAdd({
     });
   };
 
-  const handleChangeCategori = (val) => {
-    setForm({
-      ...form,
-      categoria: val,
-    });
-  };
-
   const handlesetBg = (bg) => {
     setForm({
       ...form,
@@ -75,14 +69,24 @@ function TallerItemAdd({
   };
 
   useEffect(() => {
-    setForm({
-      ...form,
-      tallerista: tallerista._id,
-    });
+    if (!tallerista._id) {
+      setForm({
+        ...form,
+        [`tallerista`]: tallerista._id,
+      });
+    }
   }, [tallerista]);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleChangeSelect = (e) => {
+    const { value, name } = e;
     setForm({
       ...form,
       [name]: value,
@@ -118,6 +122,8 @@ function TallerItemAdd({
   const colseDialog = () => {
     setAdd(false);
   };
+
+  // console.log(form);
 
   const { color, bg } = form;
   const background = `rgb(${bg},${bg},${bg},0.2)`;
@@ -231,16 +237,33 @@ function TallerItemAdd({
                 </div>
                 <div className="row">
                   <div className="col-6 sm-12">
+                    <div className="content-select-cat">
+                      <Eselect
+                        defaultValue={form.categoria}
+                        arr={cat}
+                        name="categoria"
+                        placeholder="CATEGORÍA ..."
+                        handleChange={handleChangeSelect}
+                      />
+                    </div>
+                    <div className="col-12" role="presentation">
+                      <div
+                        key={`select-${form.tallerista}`}
+                        className="content-select-cat"
+                      >
+                        <Eselect
+                          defaultValue={form.tallerista}
+                          arr={talleristas}
+                          name="tallerista"
+                          placeholder="TALLERISTA ..."
+                          handleChange={handleChangeSelect}
+                        />
+                      </div>
+                    </div>
                     <div className="level">
                       <MenuToggle
                         defaultvalue={form.dificultad}
                         handleLevel={handleLevel}
-                      />
-                    </div>
-                    <div className="content-select-cat">
-                      <SelectCat
-                        handleChangeCategori={handleChangeCategori}
-                        cat={cat}
                       />
                     </div>
                   </div>
@@ -404,7 +427,7 @@ function TallerItemAdd({
         }
 
         .content-bg-select {
-          margin-top: 14px;
+          margin: 14px 0;
           height: 30px;
           font-size: 13px;
         }

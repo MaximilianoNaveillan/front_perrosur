@@ -45,7 +45,7 @@ const _form = {
   imagen: '00',
 };
 
-function TallerItem({ tallerista }) {
+function TallerItem({ tallerista, talleristas }) {
   const [load, setload] = useState(false);
   const [add, setAdd] = useState(false);
   const [recurso, setRecurso] = useState(null);
@@ -58,12 +58,19 @@ function TallerItem({ tallerista }) {
   const [scrollTop, setScrollTop] = useState(0);
   const [form, setForm] = useState(_form);
 
+  const handleCacheRecurso = (data) => {
+    const itemrebuild = data.find((element) => element._id === recurso._id);
+    setRecurso(itemrebuild);
+  };
+
   const hadleMountTaller = () => {
-    const body = { tallerista: tallerista._id };
+    const body = tallerista.nivel !== 1 ? { tallerista: tallerista._id } : {};
     axios
       .patch(`/api/talleritem`, body)
       .then((res) => {
+        if (recurso) handleCacheRecurso(res.data.talleres);
         setItems(res.data.talleres);
+        // console.log(res.data.talleres);
         setSqueleton(false);
         SetKeyrender(keyrender + 1);
         setload(false);
@@ -198,7 +205,36 @@ function TallerItem({ tallerista }) {
       });
   };
 
+  const handleHidden = (id, hidden) => {
+    setload(true);
+    axios
+      .put(`${S_URL}/talleritem/${id}`, hidden, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        setAlert(res.data);
+        hadleMountTaller();
+        setload(false);
+        setAdd(false);
+      })
+      .catch((error) => {
+        setload(false);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.class
+        ) {
+          setAlert(error.response.data);
+        } else {
+          setAlert(defaulterror);
+        }
+      });
+  };
+
   const handlePost = (imageData) => {
+    if (!form.tallerista) return;
     if (form._id) {
       handlePut(imageData);
     } else {
@@ -235,6 +271,10 @@ function TallerItem({ tallerista }) {
       });
   };
   const handleDelete = (item) => {
+    if (item.modulos.length > 0) {
+      handleHidden(item._id, { type: 'hidden' });
+      return;
+    }
     const id = item._id;
     const fileName = `taller-item-${id}-${item.imagen}.png`;
     axios.delete(`${S_URL}/uploadimg/${fileName}`);
@@ -304,6 +344,7 @@ function TallerItem({ tallerista }) {
             setAlert={setAlert}
             cat={cat}
             tallerista={tallerista}
+            talleristas={talleristas}
             handlePost={handlePost}
             form={form}
             setForm={setForm}
@@ -357,6 +398,7 @@ function TallerItem({ tallerista }) {
             handleChange={handleChange}
             squeleton={squeleton}
             setRecurso={setRecurso}
+            handleHidden={handleHidden}
           />
         </div>
         <Alert alert={alert} setAlert={setAlert} />
@@ -492,12 +534,13 @@ export const getServerSideProps = async (context) => {
     await dbConnect();
     const res = await Usuario.findOne(
       { email: session.user.email },
-      { _id: 1, nombre: 1 }
+      { _id: 1, nombre: 1, nivel: 1 }
     ).lean();
 
     const tallerista = {
       nombre: res.nombre,
       _id: `${res._id}`,
+      nivel: res.nivel,
     };
 
     if (res.nivel > 2)
@@ -507,8 +550,32 @@ export const getServerSideProps = async (context) => {
           permanent: false,
         },
       };
+    try {
+      const _talleristas = await Usuario.find(
+        {},
+        { _id: 1, nombre: 1, nivel: 1 }
+      );
 
-    return { props: { session, tallerista } };
+      const talleristas =
+        res.nivel === 1
+          ? _talleristas.map((doc) => {
+              const _tallerista = doc.toObject();
+              // eslint-disable-next-line no-underscore-dangle
+              return {
+                value: `${_tallerista._id}`,
+                label: `${_tallerista.nombre}`,
+              };
+            }, [])
+          : [{ value: tallerista._id, label: `${tallerista.nombre}` }];
+      return { props: { session, tallerista, talleristas } };
+    } catch (error) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
   } catch (error) {
     return {
       redirect: {

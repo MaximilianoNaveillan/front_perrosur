@@ -9,8 +9,14 @@ const RecursoSchema = new mongoose.Schema({
   time: String,
   date: Date,
   index: Number,
-  modulo: String,
-  taller: String,
+  modulo: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Modulo',
+  },
+  taller: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Talleritem',
+  },
   tallerista: String,
   calendario: Array,
   eval: Number,

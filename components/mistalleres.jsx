@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { breakpoint, colors } from '../styles/theme';
 
 const S_URL = process.env.SERVER_URL;
@@ -256,9 +257,11 @@ function Card({ item }) {
 
           <div className="col-12">
             <div className="taller-items-card-action">
-              <button type="button" className="btn-continuar">
-                continuar
-              </button>
+              <Link href={`/miespacio/mientrelazar/${item._id}`} passHref>
+                <button type="button" className="btn-continuar">
+                  continuar
+                </button>
+              </Link>
             </div>
           </div>
         </div>

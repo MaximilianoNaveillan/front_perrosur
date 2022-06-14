@@ -113,7 +113,7 @@ export default function Footer() {
                   <i>
                     <FaMailBulk />
                   </i>
-                  <span>contacto@perrosurvalparaiso@gmail.com</span>
+                  <span>perrosurvalparaiso@gmail.com</span>
                 </div>
               </div>
             </div>
