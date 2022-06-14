@@ -359,6 +359,13 @@ function Usuarios({ session }) {
       [`${'nivel'}`]: value,
     });
   };
+  const handleDiosUser = () => {
+    const value = form.nivel === 1 ? 2 : 1;
+    setForm({
+      ...form,
+      [`${'nivel'}`]: value,
+    });
+  };
 
   useEffect(() => {
     const onScroll = (e) => {
@@ -442,17 +449,36 @@ function Usuarios({ session }) {
                       />
                     </label>
                   </div>
-                  <label htmlFor="isuser" className="switchBtn">
-                    <input
-                      id="isuser"
-                      onChange={handleNivelUser}
-                      type="checkbox"
-                      checked={form.nivel === 3}
-                    />
-                    <div className="slide round">
-                      {form.nivel === 3 ? 'USUARIO' : 'TALLERISTA'}
+                  {form.nivel !== 1 && (
+                    <label htmlFor="isuser" className="switchBtn">
+                      <input
+                        id="isuser"
+                        onChange={handleNivelUser}
+                        type="checkbox"
+                        checked={form.nivel === 3}
+                      />
+                      <div className="slide round">
+                        {form.nivel === 3 ? 'USUARIO' : 'TALLERISTA'}
+                      </div>
+                    </label>
+                  )}
+                  <br />
+                  <br />
+                  <div className="row">
+                    <div className="col-12">
+                      <label htmlFor="super" className="switchBtn">
+                        <input
+                          id="super"
+                          onChange={handleDiosUser}
+                          type="checkbox"
+                          checked={form.nivel !== 1}
+                        />
+                        <div className="slide round">
+                          {`Nivel ${form.nivel}`}
+                        </div>
+                      </label>
                     </div>
-                  </label>
+                  </div>
                 </div>
               </div>
               <div className="card-action">
