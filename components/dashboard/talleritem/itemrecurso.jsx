@@ -46,9 +46,11 @@ function ItemsRecursos({ setRecurso, recurso, hadleMountTaller, setload }) {
             <div className="content">
               <div className="contnet-card-text">
                 <div className="row">
-                  <div className="col-6 sm-10 xs-12 ">
+                  <div className="col-12">
+                    <div className="title">{taller.titulo}</div>
+                  </div>
+                  <div className="col-6 sm-12 xs-12">
                     <div className="content-head">
-                      <div className="title">{taller.titulo}</div>
                       <div className="subtitle">
                         <small>con </small>
                         {tallerista}
@@ -65,14 +67,9 @@ function ItemsRecursos({ setRecurso, recurso, hadleMountTaller, setload }) {
                       </div>
                     </div>
                   </div>
-                  <div className="col-6 sm-2 xs-0">
+                  <div className="col-6 sm-12 xs-12">
                     <div className="content-image image-right">
-                      <Image
-                        alt="portada-entrelazar2"
-                        src="/images/acuarela.png"
-                        height="300"
-                        width="400"
-                      />
+                      {taller.detalle}
                     </div>
                   </div>
                 </div>
@@ -142,7 +139,7 @@ function ItemsRecursos({ setRecurso, recurso, hadleMountTaller, setload }) {
           width: 100%;
         }
         .image-right {
-          justify-content: space-around;
+          justify-content: start;
           align-items: center;
           height: 100%;
           padding: 0 1.7rem;

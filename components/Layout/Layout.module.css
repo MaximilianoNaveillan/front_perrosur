@@ -1,11 +1,16 @@
 .nav {
   background: white;
+  max-width: 100vw;
+  overflow: auto;
+  overflow-x: hidden;
 }
 .contentt {
   opacity: 0;
   transition: 1s;
+  max-width: 100vw;
   height: auto;
   overflow: auto;
+  overflow-x: hidden;
 }
 
 .fadeIn {

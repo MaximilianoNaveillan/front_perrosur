@@ -13,6 +13,8 @@ export default css.global`
 
     scroll-behavior: smooth;
     z-index: 1;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   h1 {
     overflow: hidden;

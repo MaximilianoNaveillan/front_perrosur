@@ -87,15 +87,11 @@ function RenderYoutube({ url }) {
   const width =
     innerwidth < parseInt(breakpoint.xs, 10) ? 224 : window.innerWidth - 40;
 
-  const onPlayerReady = (event) => {
-    event.target.pauseVideo();
-  };
-
   const opts = {
     height: width * 0.45,
     width,
     playerVars: {
-      autoplay: 1,
+      autoplay: 0,
     },
   };
 
@@ -103,7 +99,7 @@ function RenderYoutube({ url }) {
     <>
       <div className="layout-vimeo">
         <div className="placeholder">
-          <YouTube videoId={url} opts={opts} onReady={onPlayerReady} />
+          <YouTube videoId={url} opts={opts} />
         </div>
       </div>
       <style jsx>{`
@@ -204,6 +200,13 @@ function RenderVimeo({ url }) {
 
 function RenderGoogleForm({ url }) {
   const [src, setSrc] = useState(window.innerWidth);
+  const [innerwidth, setInnerWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setInnerWidth(window.innerWidth);
+    });
+  }, []);
+
   useEffect(() => {
     if (url.includes('?usp')) {
       setSrc(url.split('?usp')[0]);
@@ -213,7 +216,7 @@ function RenderGoogleForm({ url }) {
     <iframe
       title="titulo"
       src={`${src}?embedded=true`}
-      width="100%"
+      width={`${innerwidth}`}
       height="100%"
       frameBorder="0"
       marginHeight="0"
@@ -236,13 +239,13 @@ function RenderGooglePresentation({ url }) {
   return (
     <iframe
       title="titulo"
-      src={`${src}/embed?start=false&loop=false&delayms=3000`}
+      src={`${src}/embed?start=true&loop=true&delayms=3000`}
       width="100%"
       height="100%"
       frameBorder="0"
-      allowFullScreen="true"
-      mozallowfullscreen="true"
-      webkitallowfullscreen="true"
+      allowFullScreen
+      mozallowfullscreen
+      webkitallowfullscreen
     >
       Cargando…
     </iframe>
@@ -374,7 +377,7 @@ function MiEntrelazar() {
               <button
                 type="button"
                 onClick={() => setModal(null)}
-                className="btn-dialog"
+                className="btn-dialog-modal"
               >
                 CERRAR
               </button>
@@ -395,88 +398,87 @@ function MiEntrelazar() {
         </div>
       </div>
       <div className={`container ${modal ? 'container-hidde-hoverflow' : ''}`}>
-        <div className="content">
-          <div className="row">
-            <div className="col-6 sm-10 xs-12 ">
-              <div className="content-head">
-                <div className="title">{taller.titulo}</div>
-                <div className="subtitle">
-                  <small>con </small>
-                  {tallerista}
-                </div>
-              </div>
-              <div className="content-image image-left">
-                <div>
-                  <Image
-                    src={`${S_URL}/uploadimg/image/taller-item-${taller._id}-${taller.imagen}.png`}
-                    height="300"
-                    width="400"
-                    alt={`taller-item-${taller._id}-${taller.imagen}`}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col-6 sm-2 xs-0">
-              <div className="content-image image-right">
-                <Image
-                  alt="portada-entrelazar2"
-                  src="/images/acuarela.png"
-                  height="300"
-                  width="400"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="content-modulo">
+        {taller && (
+          <div className="content">
             <div className="row">
-              {taller.modulos &&
-                taller.modulos.map((item) => (
-                  <div
-                    className="row"
-                    key={`item-rodulo-${item._id}`}
-                    role="presentation"
-                  >
-                    <div className="col-12">
-                      <div className="detalle">
-                        <div className="title">{item.nombre}</div>
-                        <div className="subtitle">{item.detalle}</div>
+              <div className="col-6 sm-10 xs-12 ">
+                <div className="content-head">
+                  <div className="title">{taller.titulo}</div>
+                  <div className="subtitle">
+                    <small>con </small>
+                    {tallerista}
+                  </div>
+                </div>
+                <div className="content-image image-left">
+                  <div>
+                    <Image
+                      src={`${S_URL}/uploadimg/image/taller-item-${taller._id}-${taller.imagen}.png`}
+                      height="300"
+                      width="400"
+                      alt={`taller-item-${taller._id}-${taller.imagen}`}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="col-6 sm-2 xs-0">
+                <div className="content-image image-right">
+                  {taller.detalle}
+                </div>
+              </div>
+            </div>
+            <div className="content-modulo">
+              <div className="row">
+                {taller.modulos &&
+                  taller.modulos.map((item) => (
+                    <div
+                      className="row"
+                      key={`item-rodulo-${item._id}`}
+                      role="presentation"
+                    >
+                      <div className="col-12">
+                        <div className="detalle">
+                          <div className="title">{item.nombre}</div>
+                          <div className="subtitle">{item.detalle}</div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="container-recurso">
-                        {item.recursos.map((recurso) => (
-                          <div key={`recurso-${recurso._id}`} className="">
-                            <div className="row">
-                              <div className="col-2">
-                                <Icon type={recurso.type} />
-                              </div>
-                              <div className="col-7 xs-10">
-                                <div className="content-title">
-                                  <div className="title">{recurso.nombre}</div>
+                      <div className="col-12">
+                        <div className="container-recurso">
+                          {item.recursos.map((recurso) => (
+                            <div key={`recurso-${recurso._id}`} className="">
+                              <div className="row">
+                                <div className="col-2">
+                                  <Icon type={recurso.type} />
+                                </div>
+                                <div className="col-7 xs-10">
+                                  <div className="content-title">
+                                    <div className="title">
+                                      {recurso.nombre}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-3 xs-12">
+                                  <button
+                                    onClick={() => handleRecurso(recurso)}
+                                    type="button"
+                                    className="btn-link"
+                                  >
+                                    Iniciar{' '}
+                                    <i>
+                                      <FaCaretRight />
+                                    </i>
+                                  </button>
                                 </div>
                               </div>
-                              <div className="col-3 xs-12">
-                                <button
-                                  onClick={() => handleRecurso(recurso)}
-                                  type="button"
-                                  className="btn-link"
-                                >
-                                  Iniciar{' '}
-                                  <i>
-                                    <FaCaretRight />
-                                  </i>
-                                </button>
-                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <style jsx>{`
@@ -505,18 +507,35 @@ function MiEntrelazar() {
         }
         .modal-card-text {
           background: rgb(0, 0, 0, 0.8);
-          height: calc(100vh - 70px);
-          min-height: calc(100vh - 70px);
+          height: 100vh;
+          min-height: 100vh;
           width: 100%;
           overflow-x: hidden;
         }
         .modal-card-action {
-          background: rgb(0, 0, 0, 0.3);
+          position: absolute;
+          background: transparent;
           display: flex;
-          height: 70px;
+          height: 65px;
           width: 100%;
           justify-content: end;
           align-items: center;
+          bottom: 0;
+        }
+        .btn-dialog-modal {
+          border: none;
+          background-color: ${colors.primary_darken};
+          padding: 14px 28px;
+          margin: 0;
+          font-size: 16px;
+          line-height: 20px;
+          font-weight: bold;
+          cursor: pointer;
+          display: inline-block;
+          border-radius: 5px;
+          transition: 0.3s;
+          text-transform: uppercase;
+          color: white;
         }
         .load {
           position: fixed;
@@ -575,6 +594,7 @@ function MiEntrelazar() {
         .content {
           padding: 1rem;
           margin-top: 160px;
+          text-align: center;
         }
         .nav-bar-content {
           max-width: ${breakpoint.media};
@@ -586,7 +606,6 @@ function MiEntrelazar() {
           text-transform: uppercase;
           font-size: 40px;
           font-weight: 1000;
-          max-width: 400px;
         }
         .align-right {
           text-align: center;
@@ -673,7 +692,8 @@ function MiEntrelazar() {
           width: 100%;
         }
         .image-right {
-          justify-content: space-around;
+          justify-content: start;
+          text-align: left;
           align-items: center;
           height: 100%;
           padding: 0 1.7rem;
@@ -701,6 +721,7 @@ function MiEntrelazar() {
         }
         .content-head {
           margin: 2.7rem 0 0;
+          text-align: left;
         }
         .content-head .title {
           font-size: 32px;
@@ -719,7 +740,9 @@ function MiEntrelazar() {
         }
 
         .detalle {
+          margin-top: 2rem;
           justify-content: start;
+          text-align: left;
         }
 
         .detalle .title {

@@ -244,6 +244,7 @@ function TallerItem({ categorias, usuario, session }) {
         }
         .content {
           padding: 1rem;
+          max-width: 100%;
         }
         .nav-bar-content {
           max-width: ${breakpoint.media};

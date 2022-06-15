@@ -269,7 +269,7 @@ function Main({
           setTransitionStage('fadeIn');
         }
       }}
-      className={`${styles.contentt} ${styles[transitionStage]}`}
+      className={`main ${styles.contentt} ${styles[transitionStage]}`}
     >
       {displayChildren}
     </div>

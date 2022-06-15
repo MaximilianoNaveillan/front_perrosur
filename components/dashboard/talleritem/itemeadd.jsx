@@ -127,7 +127,7 @@ function TallerItemAdd({
 
   const { color, bg } = form;
   const background = `rgb(${bg},${bg},${bg},0.2)`;
-  const phresumen = `Resumen ( breve descripción de taller )  Ej: ${'\n\n'} Un taller para aprender y practicar el ofifio de la impreción en serigrafia.`;
+  const phresumen = `Resumen ( se recomienda un máximo de 100 caracteres. )  Ej: ${'\n\n'} Un taller para aprender y practicar el oficio de la impresión en serigrafías.`;
   const phdetalle = `Detalle ( descripción detallada del taller )  Ej: ${'\n\n'}Pamela es miembro del Taller PerroSur y su experiencia en el arte de la pintura le permite transmitir en sus talleres el valor de la técnica y la comunicación a través de las obras.${'\n'}En este taller, podrás comprender cómo abordar ...`;
 
   return (
