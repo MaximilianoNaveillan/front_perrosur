@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaChevronDown } from 'react-icons/fa';
-// import dbConnect from '../../lib/dbConnect';
-// import Usuario from '../../models/usuario';
 import Navbar from '../Navbar';
 import Navbarapp from '../Navbar/app';
 import styles from './Layout.module.css';

@@ -126,7 +126,6 @@ function AddRecurso({ setAddRecurso, addrecurso, hadleRebuild, editrecurso }) {
   useEffect(() => {
     if (editrecurso) setForm(editrecurso);
   }, [editrecurso]);
-
   return (
     <>
       <div className="add" role="presentation">
@@ -137,7 +136,7 @@ function AddRecurso({ setAddRecurso, addrecurso, hadleRebuild, editrecurso }) {
             role="presentation"
           >
             <h2 className="title">Agrgando recurso</h2>
-            <h2 className="title">a {addrecurso.titulo}</h2>
+            <h2 className="title">a {addrecurso.nombre}</h2>
             <div className="form">
               <div className="omrs-input-group">
                 <div className="content-select">
@@ -226,6 +225,21 @@ function AddRecurso({ setAddRecurso, addrecurso, hadleRebuild, editrecurso }) {
                       )}
                   </div>
                 )}
+              {form.type === 'link' && (
+                <div className="omrs-input-group">
+                  <label htmlFor="key" className="omrs-input-filled">
+                    <input
+                      type="key"
+                      id="key"
+                      name="key"
+                      value={form.key}
+                      autoComplete="off"
+                      placeholder="key"
+                      onChange={handleChange}
+                    />
+                  </label>
+                </div>
+              )}
             </div>
             <div className="card-action">
               <div>

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { FaCaretRight } from 'react-icons/fa';
 import Vimeo from '@u-wave/react-vimeo';
 import YouTube from 'react-youtube';
-import { colors, breakpoint } from '../../../styles/theme';
+import { colors, breakpoint, fonts } from '../../../styles/theme';
 
 const _URL = process.env.BASE_URL;
 const S_URL = process.env.SERVER_URL;
@@ -85,7 +85,7 @@ function RenderYoutube({ url }) {
   }, []);
 
   const width =
-    innerwidth < parseInt(breakpoint.xs, 10) ? 224 : window.innerWidth - 40;
+    innerwidth < parseInt(breakpoint.xs, 10) ? 224 : window.innerWidth;
 
   const opts = {
     height: width * 0.45,
@@ -400,29 +400,34 @@ function MiEntrelazar() {
       <div className={`container ${modal ? 'container-hidde-hoverflow' : ''}`}>
         {taller && (
           <div className="content">
-            <div className="row">
-              <div className="col-6 sm-10 xs-12 ">
-                <div className="content-head">
+            <div className="content-head">
+              <div className="row">
+                <div className="col-12">
                   <div className="title">{taller.titulo}</div>
+                </div>
+                <div className="col-6 sm-10 xs-12 ">
                   <div className="subtitle">
                     <small>con </small>
                     {tallerista}
                   </div>
-                </div>
-                <div className="content-image image-left">
-                  <div>
-                    <Image
-                      src={`${S_URL}/uploadimg/image/taller-item-${taller._id}-${taller.imagen}.png`}
-                      height="300"
-                      width="400"
-                      alt={`taller-item-${taller._id}-${taller.imagen}`}
-                    />
+                  <div className="content-image image-left">
+                    <div>
+                      {taller._id && (
+                        <Image
+                          src={`${S_URL}/uploadimg/image/taller-item-${taller._id}-${taller.imagen}.png`}
+                          height="300"
+                          width="400"
+                          alt={`taller-item-${taller._id}-${taller.imagen}`}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-6 sm-2 xs-0">
-                <div className="content-image image-right">
-                  {taller.detalle}
+
+                <div className="col-6 sm-2 xs-0">
+                  <div className="content-image image-right">
+                    <pre>{taller.detalle}</pre>
+                  </div>
                 </div>
               </div>
             </div>
@@ -692,11 +697,26 @@ function MiEntrelazar() {
           width: 100%;
         }
         .image-right {
+          display: flex;
           justify-content: start;
           text-align: left;
           align-items: center;
           height: 100%;
+          max-width: 100%;
+          width: 100%;
           padding: 0 1.7rem;
+          overflow: hidden;
+        }
+        pre {
+          margin: auto;
+          display: block;
+          width: 100%;
+          max-width: 100%;
+          overflow: hidden;
+          unicode-bidi: embed;
+          font-size: 1.2rem;
+          font-family: ${fonts.base};
+          white-space: pre-line;
         }
         .image-left {
           justify-content: start;

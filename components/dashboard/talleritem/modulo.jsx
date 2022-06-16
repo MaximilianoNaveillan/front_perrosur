@@ -312,6 +312,21 @@ function Modulos({ taller, hadleRebuild }) {
         setAlert(_defaulterrormodulo);
       });
   };
+  const handleDeleteRecurso = (item) => {
+    const id = item._id;
+    axios
+      .delete(`${S_URL}/recurso/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        hadleRebuild();
+      })
+      .catch(() => {
+        setAlert(_defaulterrormodulo);
+      });
+  };
 
   const handleEditRecurso = (recurso) => {
     setEditrecurso(recurso);
@@ -427,6 +442,7 @@ function Modulos({ taller, hadleRebuild }) {
                 <Recurso
                   recursos={item.recursos}
                   handleEditRecurso={handleEditRecurso}
+                  handleDeleteRecurso={handleDeleteRecurso}
                 />
               </div>
             </div>

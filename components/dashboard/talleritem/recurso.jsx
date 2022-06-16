@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import { FaTrashAlt, FaPen } from 'react-icons/fa';
 import { breakpoint } from '../../../styles/theme';
@@ -68,9 +69,45 @@ function Icon({ type }) {
   );
 }
 
-function Recurso({ recursos, handleEditRecurso }) {
+function Recurso({ recursos, handleEditRecurso, handleDeleteRecurso }) {
+  const [remove, setRemove] = useState(null);
   return (
     <>
+      {remove && (
+        <div
+          className="add"
+          onClick={() => setRemove(null)}
+          role="presentation"
+        >
+          <div className="add-card">
+            <div
+              className="add-card-text"
+              onClick={(e) => e.stopPropagation()}
+              role="presentation"
+            >
+              <div className="confirm">
+                ¿ Confirmas eliminar {remove.nombre} ?
+              </div>
+              <div className="confirm-action">
+                <button
+                  type="button"
+                  className="btn-nav-bar cancel"
+                  onClick={() => setRemove(null)}
+                >
+                  CANCELAR
+                </button>
+                <button
+                  type="button"
+                  className="btn-nav-bar"
+                  onClick={() => handleDeleteRecurso(remove)}
+                >
+                  ELIMINAR
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="container-recurso">
         {recursos.map((item) => (
           <div key={`recurso-${item._id}`} className="">
@@ -91,7 +128,7 @@ function Recurso({ recursos, handleEditRecurso }) {
                   >
                     <FaPen />
                   </i>
-                  <i role="presentation">
+                  <i onClick={() => setRemove(item)} role="presentation">
                     <FaTrashAlt />
                   </i>
                 </div>
