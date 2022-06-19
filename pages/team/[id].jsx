@@ -1,4 +1,6 @@
 /* eslint-disable react/no-array-index-key */
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -9,8 +11,12 @@ import Img from '../../components/Img/revel';
 import { colors, breakpoint, fonts } from '../../styles/theme';
 
 const S_URL = process.env.SERVER_URL;
-function Team({ success, error, tiendas, equipo, equipos }) {
-  const tiendaslength = tiendas.length;
+const _URL = process.env.BASE_URL;
+
+function Team({ success, error, store, team, equipos }) {
+  const [equipo, setEquipo] = useState(null);
+  const [tiendas, setTiendas] = useState(null);
+  const tiendaslength = tiendas ? tiendas.length : 0;
   if (!success) {
     return (
       <div className="error-container">
@@ -27,22 +33,47 @@ function Team({ success, error, tiendas, equipo, equipos }) {
       </div>
     );
   }
+  const handleTeam = (_team) => {
+    setEquipo(_team);
+    const body = { equipo: _team._id };
+    axios
+      .patch(`${_URL}/api/tienda`, body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        setTiendas(res.data.tienda);
+      });
+  };
+  useEffect(() => {
+    setEquipo(team);
+  }, [team]);
+  useEffect(() => {
+    setTiendas(store);
+  }, [store]);
   return (
     <>
       <Head>
-        <title>{`${equipo.nombre} | perrosur`}</title>
-        <meta name="description" content={`Curriculum - ${equipo.nombre}`} />
+        <title>{`${team.nombre} | perrosur`}</title>
+        <meta name="description" content={`Curriculum - ${team.nombre}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container container-1">
-        <div className="content content-1">
-          <div className="row">
-            <div className="col-12">
-              <div className="row">
-                {equipos.map((item) => (
-                  <div key={item._id} className="col-3">
-                    <Link href={`/team/${item._id}`} passHref>
-                      <div className="aspect-1">
+      {equipo && (
+        <div className="container container-1">
+          <div className="content content-1">
+            <div className="row">
+              <div className="col-12">
+                <div className="row">
+                  {equipos.map((item) => (
+                    <div key={item._id} className="col-3">
+                      <div
+                        className="aspect-1"
+                        onClick={() => {
+                          handleTeam(item);
+                        }}
+                        role="presentation"
+                      >
                         <div className="col-img">
                           <Img
                             src={`${S_URL}/uploadimg/image/team-index-${item._id}.png`}
@@ -52,57 +83,59 @@ function Team({ success, error, tiendas, equipo, equipos }) {
                           />
                         </div>
                       </div>
-                    </Link>
-                  </div>
-                ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div className="col-6 sm-12">
-              <div className="container-img">
-                <div className="content-img">
-                  <div className="card-img">
-                    <div className="img">
-                      <Image
-                        src={`${S_URL}/uploadimg/image/team-blog-${equipo._id}.png`}
-                        alt={equipo.nombre}
-                        objectFit="cover"
-                        layout="fill"
-                        priority
-                      />
+              <div className="col-6 sm-12">
+                <div className="container-img">
+                  <div className="content-img">
+                    <div className="card-img">
+                      <div className="img">
+                        <Image
+                          src={`${S_URL}/uploadimg/image/team-blog-${equipo._id}.png`}
+                          alt={equipo.nombre}
+                          objectFit="cover"
+                          layout="fill"
+                          priority
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-6 sm-12">
-              <div className="row">
-                <div className="col-12">
-                  <h1 className=" title">{equipo.nombre}</h1>
-                </div>
-                <div className="col-12">
-                  <div className="detail">
-                    {equipo.items.map((item, i) => (
-                      <ul key={i}>
-                        <li>{item}</li>
-                      </ul>
-                    ))}
-                    <section>
-                      {equipo.sections.map((item, i) => (
-                        <p key={i}>{item}</p>
-                      ))}
-                    </section>
+              <div className="col-6 sm-12">
+                <div className="row">
+                  <div className="col-12">
+                    <h1 className=" title">{equipo.nombre}</h1>
+                  </div>
+                  <div className="col-12">
+                    {equipo && equipo.items && (
+                      <div className="detail">
+                        {equipo.items.map((item, i) => (
+                          <ul key={i}>
+                            <li>{item}</li>
+                          </ul>
+                        ))}
+                        <section>
+                          {equipo.sections.map((item, i) => (
+                            <p key={i}>{item}</p>
+                          ))}
+                        </section>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="container container-2">
         <div className="content content-2">
           <div className="row">
-            {tiendaslength > 0 ? (
+            {tiendas && tiendaslength > 0 ? (
               <>
                 <div className="col-12">
                   <h1 className="title">ALGUNAS DE SUS OBRAS </h1>
@@ -295,7 +328,7 @@ export default Team;
 export async function getServerSideProps({ params }) {
   try {
     await dbConnect();
-    const res = await Equipo.find({}, { _id: 1, nombre: 1 });
+    const res = await Equipo.find({});
     const equipos = res.map((doc) => {
       const equipo = doc.toObject();
       equipo._id = `${equipo._id}`;
@@ -311,12 +344,12 @@ export async function getServerSideProps({ params }) {
       try {
         await dbConnect();
         const res2 = await Tienda.find({ equipo: equipo._id });
-        const tiendas = res2.map((doc) => {
+        const store = res2.map((doc) => {
           const tienda = doc.toObject();
           tienda._id = `${tienda._id}`;
           return tienda;
         });
-        return { props: { success: true, tiendas, equipo, equipos } };
+        return { props: { success: true, store, team: equipo, equipos } };
       } catch (error) {
         return { props: { success: false, error: 'error de servidor' } };
       }

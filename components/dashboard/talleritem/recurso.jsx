@@ -57,6 +57,17 @@ function IconDocumento() {
   );
 }
 
+function IconLink() {
+  return (
+    <Image
+      src="/images/sincronico.png"
+      alt="icon-entrelazar-documento"
+      height={hw}
+      width={hw}
+    />
+  );
+}
+
 function Icon({ type }) {
   return (
     <>
@@ -65,6 +76,7 @@ function Icon({ type }) {
       <span className="rec">{type === 'test' && <IconTest />}</span>
       <span className="rec">{type === 'reunión' && <IconReunion />}</span>
       <span className="rec">{type === 'documento' && <IconDocumento />}</span>
+      <span className="rec">{type === 'link' && <IconLink />}</span>
     </>
   );
 }

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import dbConnect from '../lib/dbConnect';
 import Tienda from '../models/tienda';
-import { colors } from '../styles/theme';
+import { colors, breakpoint } from '../styles/theme';
 
 const S_URL = process.env.SERVER_URL;
 
@@ -10,7 +10,7 @@ function Store({ tiendas }) {
   return (
     <>
       <Head>
-        <title>Tienda | perrosur</title>
+        <title>Portafolio | perrosur</title>
         <meta
           name="description"
           content="nuestros productos perrosur - ofertas -ventas"
@@ -19,7 +19,7 @@ function Store({ tiendas }) {
       </Head>
       <div className="title">
         <div className="row">
-          <div className="col-4">
+          <div className="col-4 xxs-12">
             <Image
               src="/images/iconobolsa.png"
               alt="quehacemos1-entrelazar"
@@ -27,8 +27,8 @@ function Store({ tiendas }) {
               height={120}
             />
           </div>
-          <div className="col-4">
-            <h1>TIENDA</h1>
+          <div className="col-4 xxs-12">
+            <h1>PORTAFOLIO</h1>
           </div>
           <div className="col-4" />
         </div>
@@ -94,6 +94,11 @@ function Store({ tiendas }) {
           display: inline-block;
           margin: 2rem 0 2rem;
           font-size: 2.7rem;
+        }
+        @media screen and (max-width: ${breakpoint.xs}) {
+          .title h1 {
+            font-size: 2.2rem;
+          }
         }
         .col-img {
           position: absolute;

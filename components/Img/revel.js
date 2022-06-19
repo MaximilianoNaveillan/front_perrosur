@@ -26,9 +26,17 @@ export default function ImgEquipo({ src, name, selected }) {
           max-width: 80%;
           overflow: hidden;
         }
-        @media screen and (max-width: ${breakpoint.xs}) {
+        @media screen and (max-width: 490px) {
           .text {
-            left: 1rem;
+            left: 0.4rem;
+            font-size: 12.6px;
+            max-width: 100%;
+          }
+        }
+
+        @media screen and (max-width: ${breakpoint.xxs}) {
+          .text {
+            font-size: 8.6px;
           }
         }
       `}</style>

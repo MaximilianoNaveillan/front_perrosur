@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { breakpoint, colors } from '../../../styles/theme';
+import { breakpoint, colors, fonts } from '../../../styles/theme';
 import Modulos from './modulo';
 
 const S_URL = process.env.SERVER_URL;
@@ -69,7 +69,7 @@ function ItemsRecursos({ setRecurso, recurso, hadleMountTaller, setload }) {
                   </div>
                   <div className="col-6 sm-12 xs-12">
                     <div className="content-image image-right">
-                      {taller.detalle}
+                      <pre>{taller.detalle}</pre>
                     </div>
                   </div>
                 </div>
@@ -139,10 +139,26 @@ function ItemsRecursos({ setRecurso, recurso, hadleMountTaller, setload }) {
           width: 100%;
         }
         .image-right {
+          display: flex;
           justify-content: start;
+          text-align: left;
           align-items: center;
           height: 100%;
+          max-width: 100%;
+          width: 100%;
           padding: 0 1.7rem;
+          overflow: hidden;
+        }
+        pre {
+          margin: auto;
+          display: block;
+          width: 100%;
+          max-width: 100%;
+          overflow: hidden;
+          unicode-bidi: embed;
+          font-size: 1.2rem;
+          font-family: ${fonts.base};
+          white-space: pre-line;
         }
         .image-left {
           justify-content: start;

@@ -64,6 +64,16 @@ function IconDocumento() {
     />
   );
 }
+function IconLink() {
+  return (
+    <Image
+      src="/images/sincronico.png"
+      alt="icon-entrelazar-documento"
+      height={hw}
+      width={hw}
+    />
+  );
+}
 
 function Icon({ type }) {
   return (
@@ -73,6 +83,7 @@ function Icon({ type }) {
       <span className="rec">{type === 'test' && <IconTest />}</span>
       <span className="rec">{type === 'reunión' && <IconReunion />}</span>
       <span className="rec">{type === 'documento' && <IconDocumento />}</span>
+      <span className="rec">{type === 'link' && <IconLink />}</span>
     </>
   );
 }
@@ -319,6 +330,9 @@ function MiEntrelazar() {
   };
 
   const handleRecurso = (recurso) => {
+    if (recurso.type === 'link') {
+      document.location.href = `${recurso.url}`;
+    }
     if (
       recurso.type === 'video' ||
       recurso.type === 'test' ||
@@ -467,7 +481,9 @@ function MiEntrelazar() {
                                     type="button"
                                     className="btn-link"
                                   >
-                                    Iniciar{' '}
+                                    {recurso.type !== 'link'
+                                      ? 'Iniciar'
+                                      : ' Inr'}{' '}
                                     <i>
                                       <FaCaretRight />
                                     </i>
@@ -833,6 +849,7 @@ function MiEntrelazar() {
           margin: 0;
           font-size: 20px;
           line-height: 35px;
+          width: 140px;
           font-weight: bold;
           cursor: pointer;
           display: inline-block;

@@ -1,10 +1,16 @@
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { breakpoint, colors } from '../styles/theme';
 
 const S_URL = process.env.SERVER_URL;
 
 function Card({ item }) {
+  const [moduloslength, setModulosLength] = useState(0);
+  useEffect(() => {
+    const arr = item.modulos;
+    setModulosLength(arr.length);
+  }, [item.modulos]);
   const background = `rgb(${item.bg},${item.bg},${item.bg},0.2)`;
   return (
     <>
@@ -227,7 +233,9 @@ function Card({ item }) {
                           width="30px"
                         />
                       </span>
-                      <div className="span">Cursos</div>
+                      <div className="span">{` ${moduloslength} Modulos${
+                        moduloslength > 1 ? 's' : ''
+                      }`}</div>
                     </div>
                   </div>
                 </div>

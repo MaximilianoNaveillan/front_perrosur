@@ -7,6 +7,16 @@ export default async function handler(req, res) {
   await dbConnect();
   const { method } = req;
   switch (method) {
+    case 'GET':
+      try {
+        const tienda = await Tienda.findById(req.body.id).lean();
+
+        return res.status(200).json({ success: true, tienda });
+      } catch (error) {
+        return res
+          .status(400)
+          .json({ succes: false, error: 'Falla de servidor' });
+      }
     case 'POST':
       try {
         const tienda = new Tienda(req.body);
@@ -20,7 +30,7 @@ export default async function handler(req, res) {
       }
     case 'PATCH':
       try {
-        const tienda = await Tienda.findById(req.body.id).lean();
+        const tienda = await Tienda.find(req.body).lean();
 
         return res.status(200).json({ success: true, tienda });
       } catch (error) {

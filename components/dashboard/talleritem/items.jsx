@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FaTrashAlt, FaPen } from 'react-icons/fa';
 import { breakpoint, colors } from '../../../styles/theme';
@@ -14,6 +14,11 @@ function Card({
   setRecurso,
   handleHidden,
 }) {
+  const [moduloslength, setModulosLength] = useState(0);
+  useEffect(() => {
+    const arr = item.modulos;
+    setModulosLength(arr.length);
+  }, [item.modulos]);
   const background = `rgb(${item.bg},${item.bg},${item.bg},0.2)`;
   return (
     <>
@@ -297,7 +302,9 @@ function Card({
                           width="30px"
                         />
                       </span>
-                      <div className="span">Cursos</div>
+                      <div className="span">{` ${moduloslength} Modulos${
+                        moduloslength > 1 ? 's' : ''
+                      }`}</div>
                     </div>
                   </div>
                 </div>
