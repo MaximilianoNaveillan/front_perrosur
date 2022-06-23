@@ -302,7 +302,7 @@ function Card({
                           width="30px"
                         />
                       </span>
-                      <div className="span">{` ${moduloslength} Modulos${
+                      <div className="span">{` ${moduloslength} Modulo${
                         moduloslength > 1 ? 's' : ''
                       }`}</div>
                     </div>

@@ -135,8 +135,19 @@ function AddRecurso({ setAddRecurso, addrecurso, hadleRebuild, editrecurso }) {
             onClick={(e) => e.stopPropagation()}
             role="presentation"
           >
-            <h2 className="title">Agrgando recurso</h2>
-            <h2 className="title">a {addrecurso.nombre}</h2>
+            {!editrecurso && (
+              <>
+                <h2 className="title">Agrgando recurso</h2>
+                <h2 className="title">a {addrecurso.nombre}</h2>
+              </>
+            )}
+            {editrecurso && (
+              <>
+                <h2 className="title">Editando recurso</h2>
+                <h2 className="title">{editrecurso.nombre}</h2>
+              </>
+            )}
+
             <div className="form">
               <div className="omrs-input-group">
                 <div className="content-select">
@@ -225,7 +236,7 @@ function AddRecurso({ setAddRecurso, addrecurso, hadleRebuild, editrecurso }) {
                       )}
                   </div>
                 )}
-              {form.type === 'link' && (
+              {form.type === 'actividad' && (
                 <div className="omrs-input-group">
                   <label htmlFor="key" className="omrs-input-filled">
                     <input
@@ -256,7 +267,7 @@ function AddRecurso({ setAddRecurso, addrecurso, hadleRebuild, editrecurso }) {
                   className="btn-dialog"
                   type="button"
                 >
-                  CREAR
+                  {!editrecurso ? 'CREAR' : 'EDITAR'}
                 </button>
               </div>
             </div>

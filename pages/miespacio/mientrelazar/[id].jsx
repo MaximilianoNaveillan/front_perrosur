@@ -330,7 +330,7 @@ function MiEntrelazar() {
   };
 
   const handleRecurso = (recurso) => {
-    if (recurso.type === 'link') {
+    if (recurso.type === 'link' || recurso.type === 'actividad') {
       document.location.href = `${recurso.url}`;
     }
     if (
@@ -438,7 +438,7 @@ function MiEntrelazar() {
                   </div>
                 </div>
 
-                <div className="col-6 sm-2 xs-0">
+                <div className="col-6 sm-2 xs-12">
                   <div className="content-image image-right">
                     <pre>{taller.detalle}</pre>
                   </div>
@@ -483,7 +483,7 @@ function MiEntrelazar() {
                                   >
                                     {recurso.type !== 'link'
                                       ? 'Iniciar'
-                                      : ' Inr'}{' '}
+                                      : ' Ir'}{' '}
                                     <i>
                                       <FaCaretRight />
                                     </i>
@@ -737,7 +737,7 @@ function MiEntrelazar() {
         .image-left {
           justify-content: start;
         }
-        @media screen and (max-width: ${breakpoint.xs}) {
+        @media screen and (max-width: ${breakpoint.md}) {
           .image-left {
             justify-content: center;
           }
