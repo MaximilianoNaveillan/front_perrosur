@@ -1,15 +1,8 @@
 import nodemailer from 'nodemailer';
 
-// Email HTML body
-function html({ url, host, email }: Record<'url' | 'host' | 'email', string>) {
-  // Insert invisible space into domains and email address to prevent both the
-  // email address and the domain from being turned into a hyperlink by email
-  // clients like Outlook and Apple mail, as this is confusing because it seems
-  // like they are supposed to click on their email address to sign in.
+function html({ url, host, email }) {
   const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`;
   const escapedHost = `${host.replace(/\./g, '&#8203;.')}`;
-
-  // Some simple styling options
   const backgroundColor = '#f9f9f9';
   const textColor = '#444444';
   const mainBackgroundColor = '#ffffff';
@@ -52,7 +45,7 @@ function html({ url, host, email }: Record<'url' | 'host' | 'email', string>) {
 }
 
 // Email Text body (fallback for email clients that don't render HTML, e.g. feature phones)
-function text({ url, host }: Record<'url' | 'host', string>) {
+function text({ url, host }) {
   return `Iniciar sesión como ${host}\n${url}\n\n`;
 }
 
@@ -60,7 +53,7 @@ export default async function customVerificationRequest({
   identifier: email,
   url,
   provider: { server, from },
-}): Promise<void> {
+}) {
   const { host } = new URL(url);
   const transport = nodemailer.createTransport(server);
   await transport.sendMail({
