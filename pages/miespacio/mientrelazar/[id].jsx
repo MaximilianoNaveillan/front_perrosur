@@ -95,8 +95,7 @@ function RenderYoutube({ url }) {
     });
   }, []);
 
-  const width =
-    innerwidth < parseInt(breakpoint.xs, 10) ? 224 : window.innerWidth;
+  const width = innerwidth;
 
   const opts = {
     height: width * 0.45,
@@ -161,8 +160,7 @@ function RenderVimeo({ url }) {
     });
   }, []);
 
-  const width =
-    innerwidth < parseInt(breakpoint.xs, 10) ? 224 : window.innerWidth - 40;
+  const width = innerwidth;
   return (
     <>
       <div className="layout-vimeo">
@@ -546,8 +544,9 @@ function MiEntrelazar() {
         .btn-dialog-modal {
           border: none;
           background-color: ${colors.primary_darken};
-          padding: 14px 28px;
-          margin: 0;
+          padding: 7px 28px;
+          margin-bottom: -28px;
+          margin-right: -3px;
           font-size: 16px;
           line-height: 20px;
           font-weight: bold;
@@ -634,9 +633,9 @@ function MiEntrelazar() {
         .btn-nav-bar {
           border: none;
           background-color: rgba(140, 140, 140, 0.5);
-          padding: 14px 28px;
+          padding: 10px 28px;
           margin: 2rem 0;
-          font-size: 16px;
+          font-size: 14px;
           line-height: 20px;
           font-weight: bold;
           cursor: pointer;
@@ -663,17 +662,10 @@ function MiEntrelazar() {
         }
         @media screen and (max-width: ${breakpoint.xs}) {
           .btn-nav-bar {
-            font-size: 13px;
             padding: 7px 14px;
           }
           .nav-bar-content .title {
             font-size: 24px;
-          }
-        }
-        @media screen and (max-width: ${breakpoint.xxs}) {
-          .btn-nav-bar {
-            margin-top: 10px;
-            font-size: 11px;
           }
         }
         .add-card {

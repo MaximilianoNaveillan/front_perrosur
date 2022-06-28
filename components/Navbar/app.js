@@ -3,7 +3,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaChevronDown, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
+import {
+  FaUser,
+  FaChevronDown,
+  FaBars,
+  FaTimes,
+  FaSearch,
+} from 'react-icons/fa';
 import { IconContext } from 'react-icons/lib';
 import Login from '../home/login';
 import Icon from './Iconapp';
@@ -99,12 +105,26 @@ export default function Navbarapp({ pathname, data, status, usuario }) {
               <a href="#!" className="btn" onClick={() => handleRoute()}>
                 {data ? (
                   <i>
-                    <Image
-                      src={data.user.image}
-                      alt="portada-entrelazar"
-                      objectFit="cover"
-                      layout="fill"
-                    />
+                    {data.user.image ? (
+                      <Image
+                        src={data.user.image}
+                        alt="portada-entrelazar"
+                        objectFit="cover"
+                        layout="fill"
+                      />
+                    ) : (
+                      <IconContext.Provider
+                        value={{
+                          style: {
+                            height: '100%',
+                            width: '100%',
+                            padding: '20%',
+                          },
+                        }}
+                      >
+                        <FaUser />
+                      </IconContext.Provider>
+                    )}
                   </i>
                 ) : (
                   ''
@@ -204,12 +224,26 @@ export default function Navbarapp({ pathname, data, status, usuario }) {
                       <div className="container-user">
                         {data ? (
                           <i>
-                            <Image
-                              src={data.user.image}
-                              alt="portada-entrelazar"
-                              objectFit="cover"
-                              layout="fill"
-                            />
+                            {data.user.image ? (
+                              <Image
+                                src={data.user.image}
+                                alt="portada-entrelazar"
+                                objectFit="cover"
+                                layout="fill"
+                              />
+                            ) : (
+                              <IconContext.Provider
+                                value={{
+                                  style: {
+                                    height: '100%',
+                                    width: '100%',
+                                    padding: '20%',
+                                  },
+                                }}
+                              >
+                                <FaUser />
+                              </IconContext.Provider>
+                            )}
                           </i>
                         ) : (
                           'REGISTRARSE'

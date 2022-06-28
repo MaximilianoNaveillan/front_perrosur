@@ -450,6 +450,7 @@ function Card({
         .taller-items-card-image {
           margin-left: -0.7rem;
           margin-top: -0.7rem;
+          min-height: 100%;
         }
         .taller-items-card-level {
           display: block;

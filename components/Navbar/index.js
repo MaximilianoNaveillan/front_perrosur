@@ -51,13 +51,18 @@ export default function Navbar({ routes, router, pathname, asPath, data }) {
             <div className="nav-user">
               <a href="#!" className="btn" onClick={() => handleRoute()}>
                 {data ? (
+                  // eslint-disable-next-line react/jsx-no-useless-fragment
                   <i>
-                    <Image
-                      src={data.user.image}
-                      alt="portada-entrelazar"
-                      objectFit="cover"
-                      layout="fill"
-                    />
+                    {data.user.image ? (
+                      <Image
+                        src={data.user.image}
+                        alt="portada-entrelazar"
+                        objectFit="cover"
+                        layout="fill"
+                      />
+                    ) : (
+                      <>m</>
+                    )}
                   </i>
                 ) : (
                   ''

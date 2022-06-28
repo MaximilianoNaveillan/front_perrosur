@@ -1,12 +1,25 @@
 import { signIn, signOut, getProviders } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { FaRegUserCircle, FaEyeSlash } from 'react-icons/fa';
+import { FaRegUserCircle } from 'react-icons/fa';
 // FaRegUserCircle
 import Link from 'next/link';
 import { colors } from '../../styles/theme';
+import Spiner from '../Spiner';
 
 export default function Login({ handleCloseModalLogin, usersession, _class }) {
   const [providers, setProviders] = useState([]);
+  const [email, setEmail] = useState('');
+  const [load, setLoad] = useState(false);
+
+  // const handleOAuthSignIn = (provider) => () => signIn(provider);
+
+  // eslint-disable-next-line consistent-return
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email) return false;
+    setLoad(true);
+    signIn('email', { email, redirect: true });
+  };
 
   useEffect(() => {
     (async () => {
@@ -18,6 +31,15 @@ export default function Login({ handleCloseModalLogin, usersession, _class }) {
   return (
     <>
       <div id="login-modal" className={_class}>
+        {load && (
+          <div className="load">
+            <div className="card-text-load">
+              <div className="spiner">
+                <Spiner />
+              </div>
+            </div>
+          </div>
+        )}
         <div>
           <button
             type="button"
@@ -45,33 +67,37 @@ export default function Login({ handleCloseModalLogin, usersession, _class }) {
           ) : (
             <div className="actions">
               <div className="col-12 content-login-correo">
-                <div className="omrs-input-group">
-                  <label htmlFor="email" className="omrs-input-filled">
-                    <input id="email" type="email" required />
-                    <span className="omrs-input-label">Correo</span>
-                    <span className="omrs-input-helper" />
-                    <FaRegUserCircle />{' '}
-                  </label>
-                </div>
-                <div className="omrs-input-group">
-                  <label htmlFor="password" className="omrs-input-filled">
-                    <input id="password" type="password" required />
-                    <span className="omrs-input-label">Password</span>
-                    <span className="omrs-input-helper" />
-                    <FaEyeSlash />{' '}
-                  </label>
-                </div>
+                <form onSubmit={handleSubmit}>
+                  <div className="omrs-input-group">
+                    <label htmlFor="email" className="omrs-input-filled">
+                      <input
+                        id="email"
+                        type="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <span className="omrs-input-label">Correo</span>
+                      <span className="omrs-input-helper" />
+                      <FaRegUserCircle />{' '}
+                    </label>
+                  </div>
+                  <button className="btn-dialog" type="submit">
+                    Login
+                  </button>
+                </form>
               </div>
               {providers &&
                 Object.values(providers).map((provider) => (
-                  <a
-                    key={provider.name}
-                    onClick={() => signIn(provider.id)}
-                    className="link"
-                    href="#!"
-                  >
-                    Ingresar con {provider.name}
-                  </a>
+                  <div key={provider.name}>
+                    {provider.name !== 'Email' && (
+                      <a
+                        onClick={() => signIn(provider.id)}
+                        className="link"
+                        href="#!"
+                      >
+                        Ingresar con {provider.name}
+                      </a>
+                    )}
+                  </div>
                 ))}
               <p>
                 <small>
@@ -92,11 +118,31 @@ export default function Login({ handleCloseModalLogin, usersession, _class }) {
         </div>
       </div>
       <style jsx>{`
-        label {
-          bacground-color: red;
-        }
         h1 {
           padding-top: 1rem;
+        }
+        .load {
+          position: fixed;
+          top: 0;
+          right: 0;
+          background-color: rgba(255, 255, 255, 0.45) !important;
+          border: none !important;
+          height: 100vh !important;
+          width: 100vw !important;
+          z-index: 9;
+        }
+        .card-text-load {
+          height: 100%;
+          z-index: 9;
+        }
+        .load .spiner {
+          display: flex;
+          height: 100%;
+          overflow: hidden;
+          width: 100%;
+          justify-content: space-around;
+          align-items: center;
+          z-index: 9;
         }
         .modal-window {
           position: fixed;
@@ -176,6 +222,14 @@ export default function Login({ handleCloseModalLogin, usersession, _class }) {
           background: ${colors.secondary_lighten};
           text-align: left;
           padding: 0.7rem 0;
+        }
+        .content-login-correo button {
+          margin: 0 8px;
+          width: calc(100% - 16px);
+        }
+        .omrs-input-group label input {
+          font-size: 14px;
+          margin-bottom: 0;
         }
         .link {
           display: block;
