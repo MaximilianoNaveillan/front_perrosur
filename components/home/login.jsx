@@ -101,16 +101,16 @@ export default function Login({ handleCloseModalLogin, usersession, _class }) {
                 ))}
               <p>
                 <small>
-                  AL ingresar tus datos y unirte estás aceptando las póliticas
+                  AL ingresar tus datos y unirte estás aceptando las políticas
                   de privacidad y condiciones de uso
                 </small>
               </p>
               <p>
-                <Link href="/terminosycondiciones">Terminos y condiciones</Link>
+                <Link href="/terminosycondiciones">Términos y condiciones</Link>
               </p>
               <p>
                 <Link href="/politicadeprivacidad">
-                  Póliticas de privacidad
+                  Políticas de privacidad
                 </Link>
               </p>
             </div>
