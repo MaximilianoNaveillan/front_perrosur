@@ -24,23 +24,12 @@ const _routes = [
     route: '/miespacio',
     icon: 'FaUsers',
   },
-  // {
-  //   name: 'recursos',
-  //   menu: false,
-  //   route: '/miespacio',
-  //   icon: 'FaUsers',
-  // },
-  // {
-  //   name: 'Mis entrelazar',
-  //   menu: false,
-  //   route: '/miespacio',
-  //   icon: 'FaUsers',
-  // },
 ];
 
 export default function Navbarapp({ pathname, data, status, usuario }) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [classModal, setClassModal] = useState('modal-window');
+  const [searchinput, setSearchinput] = useState('');
   const [check, setCheck] = useState(-1);
   const [routes, setRoutes] = useState([]);
 
@@ -54,6 +43,10 @@ export default function Navbarapp({ pathname, data, status, usuario }) {
   };
   const handleCloseModalLogin = () => {
     setClassModal('modal-window');
+  };
+
+  const changeSearch = (e) => {
+    setSearchinput(e.target.value);
   };
 
   useEffect(() => {
@@ -145,13 +138,29 @@ export default function Navbarapp({ pathname, data, status, usuario }) {
                     <label htmlFor="buscar" className="omrs-input-filled">
                       <input
                         type="text"
+                        value={searchinput}
                         id="buscar"
-                        name="buscar"
+                        list="ietmslist"
+                        name="searchinput"
                         autoComplete="off"
                         placeholder="BUSCA TU TALLER"
+                        onChange={(e) => changeSearch(e)}
                         required
                       />
-                      <FaSearch />
+                      <IconContext.Provider
+                        value={{
+                          style: {
+                            fontSize: '20px',
+                            marginTop: '-3px',
+                          },
+                        }}
+                      >
+                        <FaSearch />
+                      </IconContext.Provider>
+
+                      <Link href={`miespacio/#t-${searchinput}`} passHref>
+                        <button type="button">ir</button>
+                      </Link>
                     </label>
                   </div>
                 </li>

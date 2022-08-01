@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 const UsuarioSchema = new mongoose.Schema({
-  token: String,
-  nombre: String,
-  email: String,
-  fono: String,
-  direccion: String,
-  nivel: Number,
+  token: { type: String, default: '' },
+  nombre: { type: String, default: '' },
+  email: { type: String, default: '' },
+  fono: { type: String, default: '' },
+  direccion: { type: String, default: '' },
+  nivel: { type: Number, default: 3 },
   mistalleres: [
     {
       status: Boolean,
@@ -25,7 +25,7 @@ const UsuarioSchema = new mongoose.Schema({
       },
     },
   ],
-  date: Date,
+  date: { type: Date, default: Date.now },
 });
 
 export default mongoose.models.Usuario ||

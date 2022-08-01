@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import dbConnect from '../../lib/dbConnect';
 import Categoria from '../../models/categoria';
 import { colors, breakpoint } from '../../styles/theme';
@@ -16,16 +17,123 @@ const defaulterrortaller = {
 };
 const _URL = process.env.BASE_URL;
 
+const _form = {
+  nombre: '',
+  fono: '',
+  direccion: '',
+  nivel: 3,
+  email: '',
+};
+
+function NwUser({ form, setForm }) {
+  const [namevalid, setNamevalid] = useState(undefined);
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    if (name === 'nombre') {
+      setNamevalid(!!value);
+    }
+
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+  return (
+    <>
+      <div className="row">
+        <div className="col-12">
+          <div className="omrs-input-group">
+            <label htmlFor="nombre" className="omrs-input-filled">
+              <input
+                type="text"
+                id="nombre"
+                value={form.nombre}
+                name="nombre"
+                autoComplete="off"
+                placeholder="Nombre de usuario"
+                onChange={handleChange}
+                required
+                className={`valid-${namevalid}`}
+              />
+            </label>
+          </div>
+          <div className="omrs-input-group">
+            <label htmlFor="fono" className="omrs-input-filled">
+              <input
+                type="text"
+                id="fono"
+                value={form.fono}
+                name="fono"
+                autoComplete="off"
+                placeholder="Fono de usuario"
+                onChange={handleChange}
+                required
+                className={`valid-${namevalid}`}
+              />
+            </label>
+          </div>
+          <div className="omrs-input-group">
+            <label htmlFor="direccion" className="omrs-input-filled">
+              <input
+                type="text"
+                id="direccion"
+                value={form.direccion}
+                name="direccion"
+                autoComplete="off"
+                placeholder="Direccion de usuario"
+                onChange={handleChange}
+                required
+                className={`valid-${namevalid}`}
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+      <style jsx>{`
+        .omrs-input-group {
+          background: white;
+          padding: 0;
+          border-radius: 3px;
+        }
+        .omrs-input-group label input {
+          border: none;
+          height: 60px;
+          padding: 0 1rem;
+          margin: 0;
+          border: 1px solid #ddd;
+        }
+
+        .valid-false {
+          animation-name: invalid;
+          animation-duration: 2s;
+          border: 1px solid red !important;
+        }
+
+        .valid-true {
+          animation-name: valid;
+          animation-duration: 2s;
+          border: 1px solid #ddd;
+        }
+      `}</style>
+    </>
+  );
+}
+
 function TallerItem({ categorias, usuario, session }) {
   const [alert, setAlert] = useState(undefined);
   const [keyrender, SetKeyrender] = useState(0);
   const [items, setItems] = useState([]);
+  const [add, setAdd] = useState(false);
   const [squeleton, setSqueleton] = useState(true);
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
   const [toggleleft, setToggleLeft] = useState(false);
   const [misrecursos, setMisrecursos] = useState([]);
   const [mistalleres, setMistalleres] = useState([]);
+  const [form, setForm] = useState(_form);
+
+  const router = useRouter();
 
   const hadleMountTaller = () => {
     axios
@@ -46,6 +154,62 @@ function TallerItem({ categorias, usuario, session }) {
           setAlert(defaulterrortaller);
         }
       });
+  };
+
+  const createUser = () => {
+    if (!form.fono || !form.direccion) return;
+    axios
+      .post(`/api/usuario`, form, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        setAdd(false);
+      })
+      .catch(() => {
+        setAlert(defaulterrortaller);
+      });
+  };
+
+  const addMistalleres = (key) => {
+    const tempArr = [...mistalleres];
+    tempArr.push({ status: false, talleritem: key });
+    const body = {
+      email: session.user.email,
+      mistalleres: tempArr,
+    };
+    axios
+      .patch(`/api/subscripcion`, body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        if (res.data.usuario) {
+          setMistalleres(res.data.usuario.mistalleres);
+          router.push(`/miespacio/mientrelazar/${key}`);
+        } else {
+          setAdd(true);
+          setForm({
+            ...form,
+            [`nombre`]: session.user.name,
+            [`email`]: session.user.email,
+          });
+        }
+      })
+      .catch(() => {
+        setAlert(defaulterrortaller);
+      });
+  };
+
+  const handleAddMistalleres = (key) => {
+    const index = mistalleres.findIndex((obj) => obj.talleritem._id === key);
+    if (index === -1) {
+      addMistalleres(key);
+    } else {
+      router.push(`/miespacio/mientrelazar/${key}`);
+    }
   };
 
   const userHandler = () => {
@@ -93,6 +257,34 @@ function TallerItem({ categorias, usuario, session }) {
 
   return (
     <>
+      <datalist id="ietmslist">
+        {items.map((item) => (
+          <option key={item._id}>{item.titulo}</option>
+        ))}
+      </datalist>
+      {add && (
+        <div className="add" onClick={() => setAdd(false)} role="presentation">
+          <div className="add-card">
+            <div
+              className="add-card-text"
+              onClick={(e) => e.stopPropagation()}
+              role="presentation"
+            >
+              <h4>AGREGANDO USUARIO</h4>
+              <NwUser form={form} setForm={setForm} />
+              <div className="card-action">
+                <button
+                  type="button"
+                  onClick={createUser}
+                  className="btn-nav-bar"
+                >
+                  guardar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div
         className={`${!scrolling ? 'container-nav-bar' : ' nav-bar-hidden'}`}
       />
@@ -132,6 +324,7 @@ function TallerItem({ categorias, usuario, session }) {
             squeleton={squeleton}
             misrecursos={misrecursos}
             mistalleres={mistalleres}
+            handleAddMistalleres={handleAddMistalleres}
           />
         </div>
         <Alert alert={alert} setAlert={setAlert} />
@@ -309,6 +502,23 @@ function TallerItem({ categorias, usuario, session }) {
             margin-top: 10px;
             font-size: 11px;
           }
+        }
+        .add-card-text {
+          padding: 1.7rem 1.7rem 0 !important;
+        }
+
+        h4 {
+          margin: 0 0 1rem 0;
+        }
+        .add-card-text .title {
+          padding: 30px 30px 15px 15px;
+        }
+
+        .card-action {
+          text-align: right;
+        }
+        .card-action .btn-nav-bar {
+          margin: 0 0 0.7rem;
         }
       `}</style>
     </>

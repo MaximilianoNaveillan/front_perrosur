@@ -16,7 +16,7 @@
       "jsx": true,
       "modules": true
     },
-    "ecmaVersion": "latest",
+    "ecmaVersion": 12,
     "sourceType": "module"
   },
   "plugins": ["react", "prettier"],
@@ -35,8 +35,5 @@
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
     "no-underscore-dangle": "off"
-  },
-  "globals": {
-    "React": "writable"
   }
 }

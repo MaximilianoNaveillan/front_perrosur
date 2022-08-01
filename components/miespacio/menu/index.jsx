@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
+import Link from 'next/link';
 import Image from 'next/image';
 import { colors, breakpoint, fonts } from '../../../styles/theme';
 
@@ -75,100 +76,116 @@ export default function Menu({
             <ul>
               {categorias.map((item) => (
                 <li key={item._id}>
-                  <a>{item.nombre}</a>
+                  <Link href={`miespacio/#c-${item._id}`} passHref>
+                    <a>{item.nombre}</a>
+                  </Link>
                 </li>
               ))}
             </ul>
 
             <p className="subtitle">Por Dificultad</p>
             <ul>
-              <li>
-                <a>introductorio</a>
-                <span className="level">
-                  <Image
-                    src="/images/ICONONIVEL1.png"
-                    alt="portada-entrelazar"
-                    height="25px"
-                    width="80px"
-                  />
-                </span>
-              </li>
-              <li>
-                <a>intermedio</a>
-                <span className="level">
-                  <Image
-                    src="/images/ICONONIVEL2.png"
-                    alt="portada-entrelazar"
-                    height="25px"
-                    width="80px"
-                  />
-                </span>
-              </li>
-              <li>
-                <a>avanzado</a>
-                <span className="level">
-                  <Image
-                    src="/images/ICONONIVEL3.png"
-                    alt="portada-entrelazar"
-                    height="25px"
-                    width="80px"
-                  />
-                </span>
-              </li>
+              <Link href="miespacio/#dif-1" passHref>
+                <li>
+                  <a>introductorio</a>
+                  <span className="level">
+                    <Image
+                      src="/images/ICONONIVEL1.png"
+                      alt="portada-entrelazar"
+                      height="25px"
+                      width="80px"
+                    />
+                  </span>
+                </li>
+              </Link>
+              <Link href="miespacio/#dif-2" passHref>
+                <li>
+                  <a>intermedio</a>
+                  <span className="level">
+                    <Image
+                      src="/images/ICONONIVEL2.png"
+                      alt="portada-entrelazar"
+                      height="25px"
+                      width="80px"
+                    />
+                  </span>
+                </li>
+              </Link>
+              <Link href="miespacio/#dif-3" passHref>
+                <li>
+                  <a>avanzado</a>
+                  <span className="level">
+                    <Image
+                      src="/images/ICONONIVEL3.png"
+                      alt="portada-entrelazar"
+                      height="25px"
+                      width="80px"
+                    />
+                  </span>
+                </li>
+              </Link>
             </ul>
             <p className="subtitle">Por Duración</p>
             <ul>
               <li>
-                <a>
-                  <span className="clock">
-                    <Image
-                      src="/images/ICONORELOJ.png"
-                      alt="portada-entrelazar"
-                      height="23px"
-                      width="23px"
-                    />
-                  </span>
-                  20-30min
-                </a>
+                <Link href="miespacio/#dur-20-30" passHref>
+                  <a>
+                    <span className="clock">
+                      <Image
+                        src="/images/ICONORELOJ.png"
+                        alt="portada-entrelazar"
+                        height="23px"
+                        width="23px"
+                      />
+                    </span>
+                    20-30min
+                  </a>
+                </Link>
               </li>
               <li>
-                <a>
-                  <span className="clock">
-                    <Image
-                      src="/images/ICONORELOJ.png"
-                      alt="portada-entrelazar"
-                      height="23px"
-                      width="23px"
-                    />
-                  </span>
-                  31-60min
-                </a>
+                <Link href="miespacio/#dur-31-60" passHref>
+                  <a>
+                    <span className="clock">
+                      <Image
+                        src="/images/ICONORELOJ.png"
+                        alt="portada-entrelazar"
+                        height="23px"
+                        width="23px"
+                      />
+                    </span>
+                    31-60min
+                  </a>
+                </Link>
               </li>
               <li>
-                <a>
-                  <span className="clock">
-                    <Image
-                      src="/images/ICONORELOJ.png"
-                      alt="portada-entrelazar"
-                      height="23px"
-                      width="23px"
-                    />
-                  </span>
-                  61-90min
-                </a>
+                <Link href="miespacio/#dur-61-90" passHref>
+                  <a>
+                    <span className="clock">
+                      <Image
+                        src="/images/ICONORELOJ.png"
+                        alt="portada-entrelazar"
+                        height="23px"
+                        width="23px"
+                      />
+                    </span>
+                    61-90min
+                  </a>
+                </Link>
               </li>
               <li>
-                <a>
-                  <span className="clock">
-                    <Image
-                      src="/images/ICONORELOJ.png"
-                      alt="portada-entrelazar"
-                      height="23px"
-                      width="23px"
-                    />
-                  </span>
-                  91-120min
-                </a>
+                <Link href="miespacio/#dur-91-120" passHref>
+                  <a>
+                    <span className="clock">
+                      <Image
+                        src="/images/ICONORELOJ.png"
+                        alt="portada-entrelazar"
+                        height="23px"
+                        width="23px"
+                      />
+                    </span>
+                    91-120min
+                  </a>
+                </Link>
               </li>
             </ul>
             <p className="subtitle">Por Recursos</p>
@@ -428,6 +445,7 @@ export default function Menu({
           cursor: pointer;
           text-decoration: none;
           text-transform: capitalize;
+          color: black;
         }
         .level {
           display: flex;

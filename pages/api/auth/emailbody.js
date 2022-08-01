@@ -56,11 +56,25 @@ export default async function customVerificationRequest({
 }) {
   const { host } = new URL(url);
   const transport = nodemailer.createTransport(server);
-  await transport.sendMail({
+  await new Promise((resolve, reject) => {
+    // verify connection configuration
+    transport.verify((error, success) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(success);
+      }
+    });
+  });
+  const result = await transport.sendMail({
     to: email,
     from,
     subject: `Inicio de sesión ${host}`,
     text: text({ url, host }),
     html: html({ url, host, email }),
   });
+  const failed = result.rejected.concat(result.pending).filter(Boolean);
+  if (failed.length) {
+    throw new Error(`Email(s) (${failed.join(', ')}) could not be sent`);
+  }
 }

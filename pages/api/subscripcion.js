@@ -7,11 +7,17 @@ export default async function handler(req, res) {
   // console.log(req.headers.cookie);
 
   await dbConnect();
-  const { method } = req;
+  const { method, body } = req;
   switch (method) {
     case 'PATCH':
+      // const usuario = await Usuario.findByIdAndUpdate(id, form, { new: true, runValidators: true, });
       try {
-        const usuario = await Usuario.findOne(req.body)
+        const filter = { email: body.email };
+        const update = { mistalleres: body.mistalleres };
+        const usuario = await Usuario.findOneAndUpdate(filter, update, {
+          new: true,
+          runValidators: true,
+        })
           .populate({
             path: 'mistalleres.talleritem',
             model: Talleritem,
@@ -23,34 +29,7 @@ export default async function handler(req, res) {
             select: ['nombre', 'type'],
           })
           .lean();
-
         return res.status(200).json({ success: true, usuario });
-      } catch (error) {
-        return res.status(400).json({
-          statusCode: 400,
-          timestamp: new Date().toISOString(),
-          class: 'bad-request',
-          message: '¡ Ups. ! Creo que tenemos problemascon el servidor',
-        });
-      }
-    case 'POST':
-      try {
-        const usuario = await Usuario.create(req.body);
-
-        return res.status(200).json({ success: true, usuario });
-      } catch (error) {
-        return res.status(400).json({
-          statusCode: 400,
-          timestamp: new Date().toISOString(),
-          class: 'bad-request',
-          message: '¡ Ups. ! Creo que tenemos problemascon el servidor',
-        });
-      }
-    case 'GET':
-      try {
-        // const usuarios = await Usuario.find({ nivel: { $gt: 1 } }).lean();
-        const usuarios = await Usuario.find({}).lean();
-        return res.status(200).json({ success: true, usuarios });
       } catch (error) {
         return res.status(400).json({
           statusCode: 400,

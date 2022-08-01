@@ -229,17 +229,38 @@ export default css`
   }
 
   ul .omrs-input-group {
-    height: 100%;
-    max-width: 450px;
+    height: 55px;
+    margin: 7px 0 4px -2px;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 0 !important;
   }
   ul .omrs-input-group label input {
-    border: 2px solid black;
-    height: 60px;
-    margin-top: 5px;
+    height: 55px;
+    width: 85%;
     padding-top: 0;
+    border: none;
+    margin: 0 !important;
+  }
+  ul .omrs-input-group label button {
+    display: inline-flex;
+    float: right;
+    border: none;
+    width: 15%;
+    height: 100%;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+    transition: 0.3s;
+    text-transform: uppercase;
+    color: white;
+    background-color: rgb(254, 167, 000, 0.6);
   }
 
-  ul .omrs-input-group label input:hover {
+  ul .omrs-input-group:hover {
     background-color: rgb(254, 167, 000, 0.6);
   }
 

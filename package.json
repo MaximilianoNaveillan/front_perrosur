@@ -48,5 +48,17 @@
   },
   "main": "index.js",
   "author": "MaximilianoNaveillan <maximilianonaveillan@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaximilianoNaveillan/front_perrosur.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MaximilianoNaveillan/front_perrosur/issues"
+  },
+  "homepage": "https://github.com/MaximilianoNaveillan/front_perrosur#readme"
 }

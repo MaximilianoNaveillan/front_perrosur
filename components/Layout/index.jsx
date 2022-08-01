@@ -340,7 +340,6 @@ export default function Layout({
   ];
 
   const userHandler = () => {
-    //    if (!isapp) router.push('/miespacio');
     axios
       .patch(
         `${_URL}/api/usuario`,

@@ -13,7 +13,7 @@ function Team({ success, error, tallers }) {
       <div className="error-container">
         <div className="row">
           <div>
-            <h4>{error}</h4>
+            <h4>{error}..</h4>
           </div>
           <div>
             <Link href="/#equipo">

@@ -24,9 +24,6 @@ export default function Navbar({ routes, router, pathname, asPath, data }) {
     router.push(pathname, '/');
   };
 
-  const handleRoute = () => {
-    router.push(pathname, '/#login-modal');
-  };
   useEffect(() => {
     if (asPath.includes('/#login-modal')) {
       setClassModal('modal-window modal-on');
@@ -47,27 +44,6 @@ export default function Navbar({ routes, router, pathname, asPath, data }) {
                 height="60px"
                 width="85px"
               />
-            </div>
-            <div className="nav-user">
-              <a href="#!" className="btn" onClick={() => handleRoute()}>
-                {data ? (
-                  // eslint-disable-next-line react/jsx-no-useless-fragment
-                  <i>
-                    {data.user.image ? (
-                      <Image
-                        src={data.user.image}
-                        alt="portada-entrelazar"
-                        objectFit="cover"
-                        layout="fill"
-                      />
-                    ) : (
-                      <>m</>
-                    )}
-                  </i>
-                ) : (
-                  ''
-                )}
-              </a>
             </div>
             <button
               type="button"

@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { breakpoint, colors } from '../styles/theme';
+import ItemSqueleton from './dashboard/talleritem/itemsqueleton';
 
 const S_URL = process.env.SERVER_URL;
 
-function Card({ item }) {
+function Card({ item, handleContinue }) {
   const [moduloslength, setModulosLength] = useState(0);
   useEffect(() => {
     const arr = item.modulos;
@@ -14,10 +15,13 @@ function Card({ item }) {
   const background = `rgb(${item.bg},${item.bg},${item.bg},0.2)`;
   return (
     <>
-      <div className="taller-items-card">
-        <div className="row">
-          <div className="col-4 sm-3 xs-5 xxs-12">
-            <div className="taller-items-card-image ">
+      <div id={`t-${encodeURI(item.titulo)}`} className="taller-items-card">
+        <div id={`dif-${item.dificultad}`} className="row">
+          <div id={`dur-${item.duracion}`} className="col-4 sm-3 xs-5 xxs-12">
+            <div
+              id={`c-${item.categoria}`}
+              className="taller-items-card-image "
+            >
               <Image
                 src={`${S_URL}/uploadimg/image/taller-item-${item._id}-${item.imagen}.png`}
                 height="300"
@@ -265,11 +269,13 @@ function Card({ item }) {
 
           <div className="col-12">
             <div className="taller-items-card-action">
-              <Link href={`/miespacio/mientrelazar/${item._id}`} passHref>
-                <button type="button" className="btn-continuar">
-                  continuar
-                </button>
-              </Link>
+              <button
+                type="button"
+                onClick={() => handleContinue(item)}
+                className="btn-continuar"
+              >
+                continuar
+              </button>
             </div>
           </div>
         </div>
@@ -498,125 +504,26 @@ function Card({ item }) {
   );
 }
 
-function RenderTallerItems({ items, squeleton }) {
+function RenderTallerItems({ items, squeleton, handleAddMistalleres }) {
+  const handleContinue = (item) => {
+    const key = item._id;
+    handleAddMistalleres(key);
+  };
   return (
-    <>
+    <div className="">
+      {squeleton && (
+        <>
+          <ItemSqueleton /> <ItemSqueleton />
+        </>
+      )}
       <div className="">
-        {squeleton && (
-          <div className="col-12">
-            <div className="row content-squeleton">
-              <div className="col-4 sm-4 xs-6 xxs-12 content-squeleton-image">
-                <div className="squeleton-image squeleton" />
-                <div className="row">
-                  <div className="col-12 squeleton squeleton-btn" />
-                </div>
-              </div>
-              <div className="col-8 sm-12">
-                <div className="squeleton-content-btn">
-                  <div className="row">
-                    <div className="col-12">
-                      <div className="squeleton-text" />
-                    </div>
-                    <div className="col-4 sm-4 xs-6 xxs-12">
-                      <div className="squeleton squeleton-btn" />
-                    </div>
-                    <div className="col-4 sm-4 xs-6 xxs-12">
-                      <div className="squeleton squeleton-btn" />
-                    </div>
-                    <div className="col-4 sm-4 xs-6 xxs-12">
-                      <div className="squeleton squeleton-btn" />
-                    </div>
-                    <div className="col-4 sm-4 xs-6 xxs-12">
-                      <div className="squeleton squeleton-btn" />
-                    </div>
-                    <div className="col-4 sm-4 xs-6 xxs-12">
-                      <div className="squeleton squeleton-btn" />
-                    </div>
-                    <div className="col-4 sm-4 xs-6 xxs-12">
-                      <div className="squeleton squeleton-btn" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        {items.map((item) => (
+          <div key={item._id}>
+            <Card item={item} handleContinue={handleContinue} />
           </div>
-        )}
-        <div className="">
-          {items.map((item) => (
-            <div key={item._id}>
-              <Card item={item} />
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
-      <style jsx>{`
-        .content-squeleton {
-          border: 8px solid #ddd;
-          max-width: ${breakpoint.sm};
-          margin: 15px auto;
-          padding: 5px;
-          border-radius: 5px;
-        }
-        .squeleton-text {
-          min-width: 100%;
-          min-height: 180px;
-        }
-        .squeleton {
-          border-radius: 5px;
-          cursor: progress;
-          background: linear-gradient(0.25turn, transparent, #fff, transparent),
-            linear-gradient(#ddd, #ddd), linear-gradient(#ddd, #ddd);
-          background-repeat: no-repeat;
-          background-position: -315px 0, 0 0, 0px 190px, 50px 195px;
-          animation: loading 1.5s infinite;
-        }
-        .content-squeleton-image {
-          padding-left: 15px;
-        }
-        .content-squeleton-image .squeleton-btn {
-          margin: 10px 0 0 !important;
-        }
-        .squeleton-image {
-          min-height: 50%;
-          max-width: 400px;
-          height: 250px;
-        }
-        .squeleton-content-btn {
-          padding: 10px;
-        }
-        .squeleton-btn {
-          min-height: 40px;
-          margin: 10px 5px;
-        }
-
-        @media screen and (max-width: ${breakpoint.sm}) {
-          .squeleton-text {
-            display: none;
-          }
-          .squeleton-image {
-            max-height: 130px;
-          }
-        }
-        @media screen and (max-width: ${breakpoint.xs}) {
-          .btn-nav-bar {
-            font-size: 13px;
-            padding: 7px 14px;
-          }
-          .confirm {
-            font-size: 16px;
-          }
-        }
-        @media screen and (max-width: ${breakpoint.xxs}) {
-          .btn-nav-bar {
-            font-size: 11px;
-          }
-          .content-squeleton-image {
-            margin: 15px 15px 0;
-            padding: 0;
-          }
-        }
-      `}</style>
-    </>
+    </div>
   );
 }
 
