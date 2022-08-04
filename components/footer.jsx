@@ -42,7 +42,7 @@ export default function Footer() {
                 />
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-5">
               <ul className={`ul${!showMobileMenu}`}>
                 {routes.map((item) => (
                   <div
@@ -64,7 +64,20 @@ export default function Footer() {
                 ))}
               </ul>
             </div>
-            <div className="col-4" />
+            <div className="col-7 xs-12">
+              <div className="footer-image">
+                <Image
+                  src="/images/corfo.png"
+                  alt="portada-entrelazar"
+                  height="1222px"
+                  width="1114px"
+                />
+              </div>
+              <small className="x-small">
+                Financiado en el marco de la Convocatoria Pública 2021 para
+                Organizaciones Culturales enfocadas en Desarrollo Social Local
+              </small>
+            </div>
             <div className="col-4" />
             <div className="row detail">
               <div className="col-5 sm-12">
@@ -267,6 +280,18 @@ export default function Footer() {
         }
         .write-use span {
           margin-left: 1.5rem;
+        }
+        .footer-image {
+          width: 200px;
+          margin: auto;
+          margin-top: 1rem;
+          margin-bottom: 0;
+        }
+        .x-small {
+          display: block;
+          max-width: 380px;
+          margin: auto;
+          padding: 0.7rem 0 0;
         }
       `}</style>
     </>
